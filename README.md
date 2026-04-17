@@ -14,6 +14,12 @@ Features:
 - Theater mode for distraction-free watching
 - Picture-in-Picture support (no-subs only)
 
+## Instal bun
+```bash
+curl -fsSL https://bun.sh/install | bash
+source <PATH>
+```
+
 ## Setup
 
 Make sure to install dependencies:
