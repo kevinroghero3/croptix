@@ -27,6 +27,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: extension-package-v3
           path: build/*.zip
-          compression-level: 0
+          archive: false
