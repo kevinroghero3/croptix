@@ -1,34 +1,32 @@
 name: Build Chrome Extension
 
 on:
-  push:
-    branches: [ main ] # Si attiva ad ogni push su main
-  workflow_dispatch:   # Ti permette di avviarlo manualmente dalla scheda Actions
+  # push:
+  #  branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout del codice
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Installa Bun
+      - name: Install Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - name: Installa le dipendenze
+      - name: Install dependencies
         run: bun install
 
-      - name: Compilazione estensione
+      - name: Build Extension
         run: bun run build:v3
 
-      - name: Carica lo ZIP come Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: extension-package-v3
-          # Puntiamo direttamente al file zip dentro la cartella build
-          # Se il file ha un nome specifico (es. extension.zip), 
-          # puoi scrivere: build/nome-file.zip
           path: build/*.zip
+          compression-level: 0
