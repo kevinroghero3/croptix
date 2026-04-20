@@ -17188,2522 +17188,2529 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                                                                 d.current = void 0
                                                             }, n.keyboardDebounceTimeoutMs)
 
-                                            d.current = o.current.valueAsNumber
-                                            updateVisuals(d.current)
+                                                            d.current = o.current.valueAsNumber
+                                                            updateVisuals(d.current)
+                                                        }
+                                                    })
+                                                ]
+                                            }),
+                                            oi.jsx('span', {
+                                                className: 'kat:text-center kat:flex kat:justify-end kat:text-[rgb(249, 249, 250)] kat:text-[14px] kat:min-w-100',
+                                                style: { fontVariantNumeric: 'tabular-nums' },
+                                                children: remainingTime
+                                            })
+                                        ]
+                                    })
+                                }),
+                                cv = () => {
+                                    let {
+                                            viewModelContainer: { timelineScrubberVM: e }
+                                        } = oO(),
+                                        [t, i] = (0, h.useState)(0),
+                                        [r, a] = (0, h.useState)(ci(0)),
+                                        { t: n } = oL(),
+                                        s = (0, h.useRef)(null),
+                                        o = (0, h.useCallback)(
+                                            (t) => {
+                                                e.setPosition(t)
+                                            },
+                                            [e]
+                                        )
+                                    ;(0, h.useEffect)(() => {
+                                        let t = []
+                                        return (
+                                            t.push(
+                                                e.currentPlayhead$.subscribe((e) => {
+                                                    var t
+                                                    null == (t = s.current) || t.updatePosition(e)
+                                                })
+                                            ),
+                                            t.push(
+                                                e.duration$.subscribe((e) => {
+                                                    ;(i(e), a(ci(e)))
+                                                })
+                                            ),
+                                            () => {
+                                                t.forEach((e) => e.unsubscribe())
+                                            }
+                                        )
+                                    }, [e])
+                                    let l = (0, h.useCallback)(
+                                        (e) =>
+                                            n('timeline.ariaValueText', {
+                                                elapsed: ci(e),
+                                                duration: r
+                                            }),
+                                        [r, n]
+                                    )
+                                    return oi.jsx(cg, {
+                                        ref: s,
+                                        duration: t,
+                                        seekTo: o,
+                                        getThumbnailUri: e.getThumbnailUri,
+                                        getAriaValueText: l,
+                                        ariaLabel: n('timeline.ariaLabel')
+                                    })
+                                },
+                                cm = ({ elapsedTime: e, remainingTime: t, ariaLabel: i }) =>
+                                    oi.jsxs('span', {
+                                        'data-testid': 'timestamp',
+                                        className:
+                                            'kat:select-none kat:text-[18px] kat:font-bold kat:leading-24 kat:tracking-[-0.36px] kat:p-8 kat:h-44 kat:@lg:h-64 kat:flex kat:items-center kat:whitespace-pre',
+                                        'aria-label': i,
+                                        children: [
+                                            oi.jsx('span', {
+                                                className: 'kat:text-neutral-300',
+                                                children: e
+                                            }),
+                                            oi.jsx('span', {
+                                                className: 'kat:text-neutral-500',
+                                                children: ' / '
+                                            }),
+                                            oi.jsx('span', {
+                                                className: 'kat:text-neutral-300',
+                                                children: t
+                                            })
+                                        ]
+                                    }),
+                                c_ = () => {
+                                    let {
+                                            viewModelContainer: { timestampDisplayVM: e }
+                                        } = oO(),
+                                        [t, i] = (0, h.useState)('00:00'),
+                                        [r, a] = (0, h.useState)('00:00')
+                                    return (
+                                        (0, h.useEffect)(() => {
+                                            let t = e.elapsedTime$.subscribe((e) => {
+                                                    i(e)
+                                                }),
+                                                r = e.remainingTime$.subscribe((e) => {
+                                                    a(e)
+                                                })
+                                            return () => {
+                                                ;(t.unsubscribe(), r.unsubscribe())
+                                            }
+                                        }, [e]),
+                                        {
+                                            elapsedTime: t,
+                                            remainingTime: r
                                         }
+                                    )
+                                },
+                                cy = () => {
+                                    let { elapsedTime: e, remainingTime: t } = c_(),
+                                        { t: i } = oL(),
+                                        r = `${i('elapsed', {
+                                            timestamp: e
+                                        })} ${i('remaining', {
+                                            timestamp: t
+                                        })}`
+                                    return oi.jsx(cm, {
+                                        elapsedTime: e,
+                                        remainingTime: `-${t}`,
+                                        ariaLabel: r
                                     })
-                                ]
-                            }),
-                            oi.jsx('span', {
-                                className: 'kat:text-center kat:flex kat:justify-end kat:text-[rgb(249, 249, 250)] kat:text-[14px] kat:min-w-100',
-                                style: { fontVariantNumeric: 'tabular-nums' },
-                                children: remainingTime
-                            })
-                        ]
-                    })
-                }),
-                cv = () => {
-                    let {
-                            viewModelContainer: { timelineScrubberVM: e }
-                        } = oO(),
-                        [t, i] = (0, h.useState)(0),
-                        [r, a] = (0, h.useState)(ci(0)),
-                        { t: n } = oL(),
-                        s = (0, h.useRef)(null),
-                        o = (0, h.useCallback)(
-                            (t) => {
-                                e.setPosition(t)
-                            },
-                            [e]
-                        )
-                    ;(0, h.useEffect)(() => {
-                        let t = []
-                        return (
-                            t.push(
-                                e.currentPlayhead$.subscribe((e) => {
-                                    var t
-                                    null == (t = s.current) || t.updatePosition(e)
-                                })
-                            ),
-                            t.push(
-                                e.duration$.subscribe((e) => {
-                                    ;(i(e), a(ci(e)))
-                                })
-                            ),
-                            () => {
-                                t.forEach((e) => e.unsubscribe())
-                            }
-                        )
-                    }, [e])
-                    let l = (0, h.useCallback)(
-                        (e) =>
-                            n('timeline.ariaValueText', {
-                                elapsed: ci(e),
-                                duration: r
-                            }),
-                        [r, n]
-                    )
-                    return oi.jsx(cg, {
-                        ref: s,
-                        duration: t,
-                        seekTo: o,
-                        getThumbnailUri: e.getThumbnailUri,
-                        getAriaValueText: l,
-                        ariaLabel: n('timeline.ariaLabel')
-                    })
-                },
-                cm = ({ elapsedTime: e, remainingTime: t, ariaLabel: i }) =>
-                    oi.jsxs('span', {
-                        'data-testid': 'timestamp',
-                        className:
-                            'kat:select-none kat:text-[18px] kat:font-bold kat:leading-24 kat:tracking-[-0.36px] kat:p-8 kat:h-44 kat:@lg:h-64 kat:flex kat:items-center kat:whitespace-pre',
-                        'aria-label': i,
-                        children: [
-                            oi.jsx('span', {
-                                className: 'kat:text-neutral-300',
-                                children: e
-                            }),
-                            oi.jsx('span', {
-                                className: 'kat:text-neutral-500',
-                                children: ' / '
-                            }),
-                            oi.jsx('span', {
-                                className: 'kat:text-neutral-300',
-                                children: t
-                            })
-                        ]
-                    }),
-                c_ = () => {
-                    let {
-                            viewModelContainer: { timestampDisplayVM: e }
-                        } = oO(),
-                        [t, i] = (0, h.useState)('00:00'),
-                        [r, a] = (0, h.useState)('00:00')
-                    return (
-                        (0, h.useEffect)(() => {
-                            let t = e.elapsedTime$.subscribe((e) => {
-                                    i(e)
-                                }),
-                                r = e.remainingTime$.subscribe((e) => {
-                                    a(e)
-                                })
-                            return () => {
-                                ;(t.unsubscribe(), r.unsubscribe())
-                            }
-                        }, [e]),
-                        {
-                            elapsedTime: t,
-                            remainingTime: r
-                        }
-                    )
-                },
-                cy = () => {
-                    let { elapsedTime: e, remainingTime: t } = c_(),
-                        { t: i } = oL(),
-                        r = `${i('elapsed', {
-                            timestamp: e
-                        })} ${i('remaining', {
-                            timestamp: t
-                        })}`
-                    return oi.jsx(cm, {
-                        elapsedTime: e,
-                        remainingTime: `-${t}`,
-                        ariaLabel: r
-                    })
-                },
-                cb = (e) =>
-                    h.createElement(
-                        'svg',
-                        {
-                            width: 20,
-                            height: 20,
-                            viewBox: '0 0 24 24',
-                            fill: 'none',
-                            xmlns: 'http://www.w3.org/2000/svg',
-                            ...e
-                        },
-                        h.createElement('path', {
-                            d: 'M14 16.0003H5.9999V14.0002L14 14.0002V16.0003Z',
-                            fill: 'currentColor'
-                        }),
-                        h.createElement('path', {
-                            d: 'M17.9999 16.0003H16.0001V14.0002H17.9999V16.0003Z',
-                            fill: 'currentColor'
-                        }),
-                        h.createElement('path', {
-                            d: 'M8 12.0001L5.9999 12.0001L5.9999 10H8V12.0001Z',
-                            fill: 'currentColor'
-                        }),
-                        h.createElement('path', {
-                            d: 'M17.9999 12.0001H10.0001V10L17.9999 10V12.0001Z',
-                            fill: 'currentColor'
-                        }),
-                        h.createElement('path', {
-                            fillRule: 'evenodd',
-                            clipRule: 'evenodd',
-                            d: 'M22.0001 19.9999L2 19.9999L2 4L22.0001 4L22.0001 19.9999ZM4.0001 18.0001L20 18.0001L20 6.0001L4.0001 6.0001L4.0001 18.0001Z',
-                            fill: 'currentColor'
-                        })
-                    ),
-                cE = ({ className: e, ...t }) =>
-                    oi.jsx(cb, {
-                        className: e,
-                        ...t
-                    }),
-                cA = ({ onToggle: e, isOpen: t }) => {
-                    let { t: i } = oL()
-                    return oi.jsx(oo, {
-                        Icon: oi.jsx(cE, {
-                            className: 'kat:w-20 kat:h-20 kat:shrink-0'
-                        }),
-                        label: i('trackSelection.ariaLabel'),
-                        onClick: () => e(!t),
-                        'aria-expanded': t,
-                        'aria-haspopup': 'menu',
-                        'data-testid': 'track-selection-button'
-                    })
-                },
-                cT = ({ audioTracks: e, textTracks: t, selectedAudioTrack: i, selectedTextTrack: r, onAudioTrackSelect: a, onTextTrackSelect: n }) => {
-                    let { t: s } = oL(),
-                        o = (e) => {
-                            let t = e.displayName !== e.language ? e.displayName : s(e.language) || e.language
-                            return e.role === na.AUDIO_DESCRIPTION
-                                ? s('trackSelectionMenu.audioTrack.audioDescription', {
-                                      trackName: t
-                                  })
-                                : t
-                        },
-                        l = (e) => {
-                            let t = e.displayName !== e.language ? e.displayName : s(e.language) || e.language
-                            return e.role === nP.CLOSED_CAPTION
-                                ? s('trackSelectionMenu.textTrack.closedCaption', {
-                                      trackName: t
-                                  })
-                                : t
-                        }
-                    return oi.jsx('div', {
-                        className: 'kat:flex kat:w-400 kat:min-h-100 kat:max-h-394 kat:flex-1 kat:flex-col',
-                        'data-testid': 'audio-text-track-menu',
-                        children: oi.jsxs('div', {
-                            className: 'kat:flex kat:flex-row kat:w-full kat:min-h-0 kat:flex-1',
-                            children: [
-                                oi.jsx('div', {
-                                    className: 'kat:flex-1 kat:flex kat:flex-col kat:min-h-0',
-                                    children: oi.jsxs(oM, {
-                                        ariaLabel: s('audioTrackSelection'),
-                                        children: [
-                                            oi.jsx(oU, {
-                                                label: s('audio')
-                                            }),
-                                            oi.jsx('div', {
-                                                className: 'kat:flex-1 kat:overflow-y-auto kat:min-h-0',
-                                                children: e.map((t) => {
-                                                    let r =
-                                                        (null == i ? void 0 : i.language) === t.language &&
-                                                        (null == i ? void 0 : i.role) === t.role &&
-                                                        (null == i ? void 0 : i.format) === t.format
-                                                    return oi.jsx(
-                                                        oB,
-                                                        {
-                                                            label: o(t),
-                                                            selected: r || 1 === e.length,
-                                                            onSelect: () => a(t),
-                                                            disabled: !t.canUse || e.length <= 1
-                                                        },
-                                                        `${t.language}-${t.role}`
-                                                    )
-                                                })
-                                            })
-                                        ]
-                                    })
-                                }),
-                                oi.jsx('div', {
-                                    className: 'kat:flex kat:items-center kat:justify-center kat:self-stretch kat:rounded-0',
-                                    role: 'separator',
-                                    'aria-orientation': 'vertical',
-                                    children: oi.jsx('div', {
-                                        className: 'kat:w-1 kat:h-full kat:bg-neutral-600'
-                                    })
-                                }),
-                                oi.jsx('div', {
-                                    className: 'kat:flex-1 kat:flex kat:flex-col kat:min-h-0',
-                                    children: oi.jsxs(oM, {
-                                        ariaLabel: s('subtitleAndCcSelection'),
-                                        children: [
-                                            oi.jsx(oU, {
-                                                label: s('subtitlesCc')
-                                            }),
-                                            oi.jsx('div', {
-                                                className: 'kat:flex-1 kat:overflow-y-auto kat:min-h-0',
-                                                children: t.map((e) => {
-                                                    let t =
-                                                        (null == r ? void 0 : r.language) === e.language &&
-                                                        (null == r ? void 0 : r.role) === e.role &&
-                                                        (null == r ? void 0 : r.format) === e.format
-                                                    return oi.jsx(
-                                                        oB,
-                                                        {
-                                                            label: l(e),
-                                                            selected: t,
-                                                            onSelect: () => n(e)
-                                                        },
-                                                        `${e.language}-${e.role}`
-                                                    )
-                                                })
-                                            })
-                                        ]
-                                    })
-                                })
-                            ]
-                        })
-                    })
-                },
-                ck = () => {
-                    let {
-                            viewModelContainer: { trackSelectionVM: e }
-                        } = oO(),
-                        [t, i] = (0, h.useState)([]),
-                        [r, a] = (0, h.useState)(void 0),
-                        [n, s] = (0, h.useState)([]),
-                        [o, l] = (0, h.useState)(void 0)
-                    ;(0, h.useEffect)(() => {
-                        let t = e.availableAudioTracks$.subscribe((e) => {
-                                i(e)
-                            }),
-                            r = e.activeAudioTrack$.subscribe((e) => {
-                                a(e)
-                            }),
-                            n = e.availableTextTracks$.subscribe((e) => {
-                                s(e)
-                            }),
-                            o = e.activeTextTrack$.subscribe((e) => {
-                                l(e)
-                            })
-                        return () => {
-                            ;(t.unsubscribe(), r.unsubscribe(), n.unsubscribe(), o.unsubscribe())
-                        }
-                    }, [e])
-                    let u = (0, h.useCallback)(
-                            (t) => {
-                                e.setAudioTrack(t)
-                            },
-                            [e]
-                        ),
-                        c = (0, h.useCallback)(
-                            (t) => {
-                                e.setTextTrack(t)
-                            },
-                            [e]
-                        )
-                    return oi.jsx(cT, {
-                        audioTracks: t,
-                        textTracks: n,
-                        selectedAudioTrack: r,
-                        selectedTextTrack: o,
-                        onAudioTrackSelect: u,
-                        onTextTrackSelect: c
-                    })
-                },
-                cC = () => {
-                    let [e, t] = (0, h.useState)(!1),
-                        i = (0, h.useRef)(null),
-                        r = (0, h.useCallback)(() => {
-                            t(!1)
-                        }, []),
-                        a = (0, h.useCallback)((e) => {
-                            ;(t(!1), e.preventDefault())
-                        }, []),
-                        n = (0, h.useCallback)((e) => {
-                            t(e)
-                        }, [])
-                    return oi.jsxs(oi.Fragment, {
-                        children: [
-                            e &&
-                                oi.jsx('div', {
-                                    'data-testid': 'menu-background',
-                                    className: 'kat:absolute kat:inset-0',
-                                    onClick: a
-                                }),
-                            oi.jsx('div', {
-                                className: os('kat:relative', e ? 'kat:z-1' : ''),
-                                ref: i,
-                                children: oi.jsx(cA, {
-                                    onToggle: n,
-                                    isOpen: e
-                                })
-                            }),
-                            oi.jsx(oJ, {
-                                isVisible: e,
-                                toggleVisibility: r,
-                                anchorElement: i.current,
-                                expandDirection: 'up',
-                                children: oi.jsx(ck, {})
-                            })
-                        ]
-                    })
-                },
-                cS = ({ className: e, size: t = 80, ariaLabel: i }) =>
-                    oi.jsx('div', {
-                        'data-testid': 'buffering-indicator-medium',
-                        className: os('kat-buffering-medium-arc', e),
-                        role: 'progressbar',
-                        'aria-label': i,
-                        'aria-valuemin': 0,
-                        'aria-valuemax': 100,
-                        children: oi.jsx(oy, {
-                            size: t
-                        })
-                    }),
-                cw = ({ className: e, size: t = 80, ariaLabel: i }) =>
-                    oi.jsx('div', {
-                        'data-testid': 'buffering-indicator-low',
-                        className: os('kat-buffering-low-icon', e),
-                        role: 'progressbar',
-                        'aria-label': i,
-                        'aria-valuemin': 0,
-                        'aria-valuemax': 100,
-                        children: oi.jsx(ou, {
-                            size: t
-                        })
-                    }),
-                cI = ({ isVisible: e, size: t = 80, className: i, ariaLabel: r }) =>
-                    e
-                        ? oi.jsxs('div', {
-                              'data-testid': 'buffering-indicator',
-                              className: os('kat:absolute kat:inset-0 kat:flex kat:items-center kat:justify-center kat:pointer-events-none', i),
-                              children: [
-                                  oi.jsx('div', {
-                                      className: 'kat-buffering-medium-wrapper',
-                                      children: oi.jsx(cS, {
-                                          size: t,
-                                          ariaLabel: r
-                                      })
-                                  }),
-                                  oi.jsx('div', {
-                                      className: 'kat-buffering-low-wrapper',
-                                      children: oi.jsx(cw, {
-                                          size: t,
-                                          ariaLabel: r
-                                      })
-                                  })
-                              ]
-                          })
-                        : null,
-                cP = () => {
-                    let {
-                            viewModelContainer: { bufferingVM: e }
-                        } = oO(),
-                        [t, i] = (0, h.useState)(!1)
-                    return (
-                        (0, h.useEffect)(() => {
-                            let t = eL([e.isLoading$, e.isRebuffering$]).subscribe(([e, t]) => {
-                                i(e || t)
-                            })
-                            return () => {
-                                t.unsubscribe()
-                            }
-                        }, [e]),
-                        {
-                            isBuffering: t
-                        }
-                    )
-                },
-                cR = () => {
-                    let { isBuffering: e } = cP(),
-                        { t: t } = oL()
-                    return oi.jsx(cI, {
-                        isVisible: e,
-                        ariaLabel: t('buffering.ariaLabel')
-                    })
-                },
-                cx = ({ icon: e, onToggle: t, ariaLabel: i }) =>
-                    oi.jsx(oo, {
-                        Icon: e,
-                        label: i,
-                        onClick: t,
-                        'data-testid': 'play-pause-button'
-                    }),
-                cN = ({ icon: e, ariaLabel: t, onJump: i, testId: r }) =>
-                    oi.jsx(oo, {
-                        Icon: e,
-                        label: t,
-                        onClick: i,
-                        'data-testid': r
-                    }),
-                cO = () => {
-                    let {
-                            viewModelContainer: { playPauseButtonVM: e }
-                        } = oO(),
-                        [t, i] = (0, h.useState)(void 0)
-                    return (
-                        (0, h.useEffect)(() => {
-                            let t = e.isPlaying$.subscribe((e) => {
-                                i(e)
-                            })
-                            return () => {
-                                t.unsubscribe()
-                            }
-                        }, [e]),
-                        {
-                            isPlaying: t,
-                            togglePlayPause: (0, h.useCallback)(() => {
-                                e.togglePlayPause()
-                            }, [e])
-                        }
-                    )
-                },
-                cL = () => {
-                    let {
-                            viewModelContainer: { jumpButtonsVM: e }
-                        } = oO(),
-                        t = (0, h.useRef)(void 0)
-                    return (
-                        (0, h.useEffect)(() => {
-                            let i = e.currentPosition$.subscribe((e) => {
-                                t.current = e
-                            })
-                            return () => {
-                                i.unsubscribe()
-                            }
-                        }, [e]),
-                        {
-                            currentPosition: t,
-                            jumpForward: (0, h.useCallback)(() => {
-                                e.jumpForward()
-                            }, [e]),
-                            jumpBackward: (0, h.useCallback)(() => {
-                                e.jumpBackward()
-                            }, [e])
-                        }
-                    )
-                },
-                cD = () => {
-                    let { isPlaying: e, togglePlayPause: t } = cO(),
-                        { t: i } = oL()
-                    ls({
-                        shortcut: uv.PlayPause,
-                        handleShortcut: t
-                    })
-                    let r = i(e ? 'pause' : 'play'),
-                        a = e
-                            ? oi.jsx(oT, {
-                                  size: 20
-                              })
-                            : oi.jsx(ow, {
-                                  size: 20
-                              })
-                    return oi.jsx(cx, {
-                        icon: a,
-                        onToggle: t,
-                        ariaLabel: r
-                    })
-                },
-                cM = ({ isForward: e }) => {
-                    let { jumpForward: t, jumpBackward: i } = cL(),
-                        { t: r } = oL()
-                    ls(
-                        e
-                            ? {
-                                  shortcut: uv.JumpForward,
-                                  handleShortcut: t
-                              }
-                            : {
-                                  shortcut: uv.JumpBackward,
-                                  handleShortcut: i
-                              }
-                    )
-                    let a = (0, h.useCallback)(() => {
-                            e ? t() : i()
-                        }, [e, i, t]),
-                        n = r(e ? 'jump.forward.ariaLabel' : 'jump.backward.ariaLabel')
-                    return oi.jsx(cN, {
-                        icon: oi.jsx(om, {
-                            isForward: e
-                        }),
-                        ariaLabel: n,
-                        onJump: a,
-                        testId: e ? 'jump-forward-button' : 'jump-backward-button'
-                    })
-                },
-                cU = () =>
-                    oi.jsx(cM, {
-                        isForward: !0
-                    }),
-                cV = () =>
-                    oi.jsx(cM, {
-                        isForward: !1
-                    }),
-                cH = () => {
-                    let {
-                            viewModelContainer: { volumeVM: e }
-                        } = oO(),
-                        [t, i] = (0, h.useState)(void 0),
-                        [r, a] = (0, h.useState)(void 0)
-                    ;(0, h.useEffect)(() => {
-                        let t = e.volumePercent$.subscribe((e) => {
-                                i(e)
-                            }),
-                            r = e.isMuted$.subscribe((e) => {
-                                a(e)
-                            })
-                        return () => {
-                            ;(t.unsubscribe(), r.unsubscribe())
-                        }
-                    }, [e])
-                    let n = (0, h.useCallback)(() => {
-                        e.toggleMute()
-                    }, [e])
-                    return {
-                        volumePercent: t,
-                        isMuted: r,
-                        toggleMute: n,
-                        setVolumePercent: (0, h.useCallback)(
-                            (t) => {
-                                e.setVolumePercent(t)
-                            },
-                            [e]
-                        ),
-                        incrementVolume: (0, h.useCallback)(() => {
-                            e.incrementVolume()
-                        }, [e]),
-                        decrementVolume: (0, h.useCallback)(() => {
-                            e.decrementVolume()
-                        }, [e])
-                    }
-                },
-                cB = ({ value: e, onChange: t, className: i, style: r, ...a }) => {
-                    let n = (0, h.useCallback)(
-                        (e) => {
-                            t(Number(e.target.value))
-                        },
-                        [t]
-                    )
-                    return oi.jsx('input', {
-                        type: 'range',
-                        min: 0,
-                        max: 100,
-                        step: 1,
-                        value: e,
-                        onChange: n,
-                        'data-testid': 'volume-slider',
-                        className: os('volume-slider', 'kat:m-0', 'kat:cursor-pointer', 'kat:appearance-none', 'kat:bg-transparent', 'kat:p-0', i),
-                        style: {
-                            '--volume-percent': `${e}%`,
-                            ...r
-                        },
-                        ...a
-                    })
-                },
-                cj = {
-                    low: 33,
-                    medium: 66
-                },
-                c$ = (e, t = cj) => (void 0 === e || 0 === e ? 'off' : e <= t.low ? 'low' : e <= t.medium ? 'medium' : 'high'),
-                cF = ['Enter', ' '],
-                cG = (0, h.forwardRef)(({ volumePercent: e, isMuted: t, label: i, onIconClick: r, onVolumeChange: a, className: n, ...s }, o) => {
-                    let l = Math.max(0, Math.min(100, e)),
-                        u = c$(l),
-                        c = os(
-                            'volume-container',
-                            'kat:h-40 kat:w-40 kat:flex kat:flex-col kat:items-center kat:hover:pt-8 kat:hover:bg-neutral-700 kat:hover:rounded-xl kat:focus-visible:pt-8 kat:focus-visible:bg-neutral-700 kat:focus-visible:rounded-xl',
-                            n
-                        ),
-                        d = (0, h.useCallback)(
-                            (e) => {
-                                cF.includes(e.key) && (e.preventDefault(), r())
-                            },
-                            [r]
-                        ),
-                        p = (0, h.useCallback)(
-                            (e) => {
-                                ;(e.target.closest('svg') && r(), e.preventDefault())
-                            },
-                            [r]
-                        )
-                    return oi.jsxs('div', {
-                        ref: o,
-                        className: c,
-                        'data-testid': 'volume-slider-container',
-                        role: 'slider',
-                        tabIndex: 0,
-                        'aria-label': i,
-                        onClick: p,
-                        onKeyDown: d,
-                        ...s,
-                        children: [
-                            oi.jsxs('div', {
-                                'aria-hidden': 'true',
-                                className: 'volume-slider-content',
-                                children: [
-                                    oi.jsx(cB, {
-                                        value: l,
-                                        onChange: a,
-                                        'aria-hidden': 'true',
-                                        tabIndex: -1,
-                                        className: 'kat:h-100'
+                                },
+                                cb = (e) =>
+                                    h.createElement(
+                                        'svg',
+                                        {
+                                            width: 20,
+                                            height: 20,
+                                            viewBox: '0 0 24 24',
+                                            fill: 'none',
+                                            xmlns: 'http://www.w3.org/2000/svg',
+                                            ...e
+                                        },
+                                        h.createElement('path', {
+                                            d: 'M14 16.0003H5.9999V14.0002L14 14.0002V16.0003Z',
+                                            fill: 'currentColor'
+                                        }),
+                                        h.createElement('path', {
+                                            d: 'M17.9999 16.0003H16.0001V14.0002H17.9999V16.0003Z',
+                                            fill: 'currentColor'
+                                        }),
+                                        h.createElement('path', {
+                                            d: 'M8 12.0001L5.9999 12.0001L5.9999 10H8V12.0001Z',
+                                            fill: 'currentColor'
+                                        }),
+                                        h.createElement('path', {
+                                            d: 'M17.9999 12.0001H10.0001V10L17.9999 10V12.0001Z',
+                                            fill: 'currentColor'
+                                        }),
+                                        h.createElement('path', {
+                                            fillRule: 'evenodd',
+                                            clipRule: 'evenodd',
+                                            d: 'M22.0001 19.9999L2 19.9999L2 4L22.0001 4L22.0001 19.9999ZM4.0001 18.0001L20 18.0001L20 6.0001L4.0001 6.0001L4.0001 18.0001Z',
+                                            fill: 'currentColor'
+                                        })
+                                    ),
+                                cE = ({ className: e, ...t }) =>
+                                    oi.jsx(cb, {
+                                        className: e,
+                                        ...t
                                     }),
-                                    oi.jsx('span', {
-                                        className: 'kat:text-white kat:text-sm kat:font-medium kat:select-none kat:mt-5 kat:w-full kat:tabular-nums kat:text-center',
-                                        'data-testid': 'volume-slider-percentage',
-                                        children: Math.round(l)
+                                cA = ({ onToggle: e, isOpen: t }) => {
+                                    let { t: i } = oL()
+                                    return oi.jsx(oo, {
+                                        Icon: oi.jsx(cE, {
+                                            className: 'kat:w-20 kat:h-20 kat:shrink-0'
+                                        }),
+                                        label: i('trackSelection.ariaLabel'),
+                                        onClick: () => e(!t),
+                                        'aria-expanded': t,
+                                        'aria-haspopup': 'menu',
+                                        'data-testid': 'track-selection-button'
                                     })
-                                ]
-                            }),
-                            oi.jsx(ox, {
-                                className: os(
-                                    'volume-icon',
-                                    'kat:h-40 kat:w-40 kat:flex kat:items-center kat:justify-center kat:rounded-full kat:border-transparent kat:border-4 kat:p-6 kat:hover:bg-neutral-700 kat:transition-opacity kat:duration-200 kat:ease-linear kat:hover:opacity-75 kat:focus:opacity-75 kat:active:fill-icon-tertiary-pressed kat:active:text-icon-tertiary-pressed kat:focus:border-neutral-50 kat:focus:border-solid kat:cursor-pointer kat:text-icon-tertiary kat:opacity-100 kat:hover:text-icon-tertiary-hover kat:focus-visible:text-icon-tertiary-hover'
-                                ),
-                                isMuted: t,
-                                volumeTier: u
-                            })
-                        ]
-                    })
-                })
-            cG.displayName = 'VolumeSliderContainer'
-            let cq = () => {
-                    let { toggleMute: e, isMuted: t, volumePercent: i, incrementVolume: r, decrementVolume: a, setVolumePercent: n } = cH(),
-                        { t: s } = oL()
-                    ;(ls({
-                        shortcut: uv.Mute,
-                        handleShortcut: e
-                    }),
-                        ls({
-                            shortcut: uv.VolUp,
-                            handleShortcut: r
-                        }),
-                        ls({
-                            shortcut: uv.VolDown,
-                            handleShortcut: a
-                        }))
-                    let o = i ?? 0,
-                        l = t ? s('muted') : `${o}%`
-                    return oi.jsx(cG, {
-                        className: 'kat:relative',
-                        volumePercent: o,
-                        isMuted: t,
-                        onIconClick: e,
-                        label: s('volume'),
-                        onVolumeChange: n,
-                        'aria-valuemin': 0,
-                        'aria-valuemax': 100,
-                        'aria-valuenow': o,
-                        'aria-valuetext': l
-                    })
-                },
-                cK = (0, h.createContext)(void 0),
-                cZ = 6e3,
-                cY = 0.1,
-                cz = ({ children: e, eventTarget: t, enabled: i = !0, idleTimeoutMs: r = cZ, mouseIdlePercentage: a = cY }) => {
-                    let [n, s] = (0, h.useState)(!0),
-                        [o, l] = (0, h.useState)(!0),
-                        u = (0, h.useRef)(void 0),
-                        c = (0, h.useRef)(!1),
-                        d = i && !!t,
-                        p = (0, h.useCallback)(() => {
-                            void 0 !== u.current && (window.clearTimeout(u.current), (u.current = void 0))
-                        }, []),
-                        f = o ? r : r * a,
-                        v = (0, h.useCallback)(() => {
-                            if ((p(), !d)) {
-                                s(!0)
-                                return
-                            }
-                            u.current = window.setTimeout(() => {
-                                s(!1)
-                            }, f)
-                        }, [p, d, f]),
-                        _ = (0, h.useCallback)(() => {
-                            ;(s(!0), v())
-                        }, [v]),
-                        y = (0, h.useCallback)(() => {
-                            _()
-                        }, [_])
-                    ;((0, h.useEffect)(() => {
-                        if (!i) return (s(!0), p(), p)
-                        if (!t) return (c.current || (g.warn('AutohiderProvider: No event target provided for autohider interaction handling'), (c.current = !0)), s(!0), p(), p)
-                        let e = ['mousemove', 'mousedown', 'keydown', 'focusin'],
-                            r = () => {
-                                _()
-                            }
-                        for (let i of (_(), e)) t.addEventListener(i, r)
-                        return () => {
-                            for (let i of e) t.removeEventListener(i, r)
-                            p()
-                        }
-                    }, [t, _, p, i]),
-                        (0, h.useEffect)(() => {
-                            let e = () => l(!0),
-                                r = () => l(!1)
-                            return (
-                                i && t && (t.addEventListener('mouseenter', e), t.addEventListener('mouseleave', r)),
-                                () => {
-                                    i && t && (t.removeEventListener('mouseenter', e), t.removeEventListener('mouseleave', r))
+                                },
+                                cT = ({ audioTracks: e, textTracks: t, selectedAudioTrack: i, selectedTextTrack: r, onAudioTrackSelect: a, onTextTrackSelect: n }) => {
+                                    let { t: s } = oL(),
+                                        o = (e) => {
+                                            let t = e.displayName !== e.language ? e.displayName : s(e.language) || e.language
+                                            return e.role === na.AUDIO_DESCRIPTION
+                                                ? s('trackSelectionMenu.audioTrack.audioDescription', {
+                                                      trackName: t
+                                                  })
+                                                : t
+                                        },
+                                        l = (e) => {
+                                            let t = e.displayName !== e.language ? e.displayName : s(e.language) || e.language
+                                            return e.role === nP.CLOSED_CAPTION
+                                                ? s('trackSelectionMenu.textTrack.closedCaption', {
+                                                      trackName: t
+                                                  })
+                                                : t
+                                        }
+                                    return oi.jsx('div', {
+                                        className: 'kat:flex kat:w-400 kat:min-h-100 kat:max-h-394 kat:flex-1 kat:flex-col',
+                                        'data-testid': 'audio-text-track-menu',
+                                        children: oi.jsxs('div', {
+                                            className: 'kat:flex kat:flex-row kat:w-full kat:min-h-0 kat:flex-1',
+                                            children: [
+                                                oi.jsx('div', {
+                                                    className: 'kat:flex-1 kat:flex kat:flex-col kat:min-h-0',
+                                                    children: oi.jsxs(oM, {
+                                                        ariaLabel: s('audioTrackSelection'),
+                                                        children: [
+                                                            oi.jsx(oU, {
+                                                                label: s('audio')
+                                                            }),
+                                                            oi.jsx('div', {
+                                                                className: 'kat:flex-1 kat:overflow-y-auto kat:min-h-0',
+                                                                children: e.map((t) => {
+                                                                    let r =
+                                                                        (null == i ? void 0 : i.language) === t.language &&
+                                                                        (null == i ? void 0 : i.role) === t.role &&
+                                                                        (null == i ? void 0 : i.format) === t.format
+                                                                    return oi.jsx(
+                                                                        oB,
+                                                                        {
+                                                                            label: o(t),
+                                                                            selected: r || 1 === e.length,
+                                                                            onSelect: () => a(t),
+                                                                            disabled: !t.canUse || e.length <= 1
+                                                                        },
+                                                                        `${t.language}-${t.role}`
+                                                                    )
+                                                                })
+                                                            })
+                                                        ]
+                                                    })
+                                                }),
+                                                oi.jsx('div', {
+                                                    className: 'kat:flex kat:items-center kat:justify-center kat:self-stretch kat:rounded-0',
+                                                    role: 'separator',
+                                                    'aria-orientation': 'vertical',
+                                                    children: oi.jsx('div', {
+                                                        className: 'kat:w-1 kat:h-full kat:bg-neutral-600'
+                                                    })
+                                                }),
+                                                oi.jsx('div', {
+                                                    className: 'kat:flex-1 kat:flex kat:flex-col kat:min-h-0',
+                                                    children: oi.jsxs(oM, {
+                                                        ariaLabel: s('subtitleAndCcSelection'),
+                                                        children: [
+                                                            oi.jsx(oU, {
+                                                                label: s('subtitlesCc')
+                                                            }),
+                                                            oi.jsx('div', {
+                                                                className: 'kat:flex-1 kat:overflow-y-auto kat:min-h-0',
+                                                                children: t.map((e) => {
+                                                                    let t =
+                                                                        (null == r ? void 0 : r.language) === e.language &&
+                                                                        (null == r ? void 0 : r.role) === e.role &&
+                                                                        (null == r ? void 0 : r.format) === e.format
+                                                                    return oi.jsx(
+                                                                        oB,
+                                                                        {
+                                                                            label: l(e),
+                                                                            selected: t,
+                                                                            onSelect: () => n(e)
+                                                                        },
+                                                                        `${e.language}-${e.role}`
+                                                                    )
+                                                                })
+                                                            })
+                                                        ]
+                                                    })
+                                                })
+                                            ]
+                                        })
+                                    })
+                                },
+                                ck = () => {
+                                    let {
+                                            viewModelContainer: { trackSelectionVM: e }
+                                        } = oO(),
+                                        [t, i] = (0, h.useState)([]),
+                                        [r, a] = (0, h.useState)(void 0),
+                                        [n, s] = (0, h.useState)([]),
+                                        [o, l] = (0, h.useState)(void 0)
+                                    ;(0, h.useEffect)(() => {
+                                        let t = e.availableAudioTracks$.subscribe((e) => {
+                                                i(e)
+                                            }),
+                                            r = e.activeAudioTrack$.subscribe((e) => {
+                                                a(e)
+                                            }),
+                                            n = e.availableTextTracks$.subscribe((e) => {
+                                                s(e)
+                                            }),
+                                            o = e.activeTextTrack$.subscribe((e) => {
+                                                l(e)
+                                            })
+                                        return () => {
+                                            ;(t.unsubscribe(), r.unsubscribe(), n.unsubscribe(), o.unsubscribe())
+                                        }
+                                    }, [e])
+                                    let u = (0, h.useCallback)(
+                                            (t) => {
+                                                e.setAudioTrack(t)
+                                            },
+                                            [e]
+                                        ),
+                                        c = (0, h.useCallback)(
+                                            (t) => {
+                                                e.setTextTrack(t)
+                                            },
+                                            [e]
+                                        )
+                                    return oi.jsx(cT, {
+                                        audioTracks: t,
+                                        textTracks: n,
+                                        selectedAudioTrack: r,
+                                        selectedTextTrack: o,
+                                        onAudioTrackSelect: u,
+                                        onTextTrackSelect: c
+                                    })
+                                },
+                                cC = () => {
+                                    let [e, t] = (0, h.useState)(!1),
+                                        i = (0, h.useRef)(null),
+                                        r = (0, h.useCallback)(() => {
+                                            t(!1)
+                                        }, []),
+                                        a = (0, h.useCallback)((e) => {
+                                            ;(t(!1), e.preventDefault())
+                                        }, []),
+                                        n = (0, h.useCallback)((e) => {
+                                            t(e)
+                                        }, [])
+                                    return oi.jsxs(oi.Fragment, {
+                                        children: [
+                                            e &&
+                                                oi.jsx('div', {
+                                                    'data-testid': 'menu-background',
+                                                    className: 'kat:absolute kat:inset-0',
+                                                    onClick: a
+                                                }),
+                                            oi.jsx('div', {
+                                                className: os('kat:relative', e ? 'kat:z-1' : ''),
+                                                ref: i,
+                                                children: oi.jsx(cA, {
+                                                    onToggle: n,
+                                                    isOpen: e
+                                                })
+                                            }),
+                                            oi.jsx(oJ, {
+                                                isVisible: e,
+                                                toggleVisibility: r,
+                                                anchorElement: i.current,
+                                                expandDirection: 'up',
+                                                children: oi.jsx(ck, {})
+                                            })
+                                        ]
+                                    })
+                                },
+                                cS = ({ className: e, size: t = 80, ariaLabel: i }) =>
+                                    oi.jsx('div', {
+                                        'data-testid': 'buffering-indicator-medium',
+                                        className: os('kat-buffering-medium-arc', e),
+                                        role: 'progressbar',
+                                        'aria-label': i,
+                                        'aria-valuemin': 0,
+                                        'aria-valuemax': 100,
+                                        children: oi.jsx(oy, {
+                                            size: t
+                                        })
+                                    }),
+                                cw = ({ className: e, size: t = 80, ariaLabel: i }) =>
+                                    oi.jsx('div', {
+                                        'data-testid': 'buffering-indicator-low',
+                                        className: os('kat-buffering-low-icon', e),
+                                        role: 'progressbar',
+                                        'aria-label': i,
+                                        'aria-valuemin': 0,
+                                        'aria-valuemax': 100,
+                                        children: oi.jsx(ou, {
+                                            size: t
+                                        })
+                                    }),
+                                cI = ({ isVisible: e, size: t = 80, className: i, ariaLabel: r }) =>
+                                    e
+                                        ? oi.jsxs('div', {
+                                              'data-testid': 'buffering-indicator',
+                                              className: os('kat:absolute kat:inset-0 kat:flex kat:items-center kat:justify-center kat:pointer-events-none', i),
+                                              children: [
+                                                  oi.jsx('div', {
+                                                      className: 'kat-buffering-medium-wrapper',
+                                                      children: oi.jsx(cS, {
+                                                          size: t,
+                                                          ariaLabel: r
+                                                      })
+                                                  }),
+                                                  oi.jsx('div', {
+                                                      className: 'kat-buffering-low-wrapper',
+                                                      children: oi.jsx(cw, {
+                                                          size: t,
+                                                          ariaLabel: r
+                                                      })
+                                                  })
+                                              ]
+                                          })
+                                        : null,
+                                cP = () => {
+                                    let {
+                                            viewModelContainer: { bufferingVM: e }
+                                        } = oO(),
+                                        [t, i] = (0, h.useState)(!1)
+                                    return (
+                                        (0, h.useEffect)(() => {
+                                            let t = eL([e.isLoading$, e.isRebuffering$]).subscribe(([e, t]) => {
+                                                i(e || t)
+                                            })
+                                            return () => {
+                                                t.unsubscribe()
+                                            }
+                                        }, [e]),
+                                        {
+                                            isBuffering: t
+                                        }
+                                    )
+                                },
+                                cR = () => {
+                                    let { isBuffering: e } = cP(),
+                                        { t: t } = oL()
+                                    return oi.jsx(cI, {
+                                        isVisible: e,
+                                        ariaLabel: t('buffering.ariaLabel')
+                                    })
+                                },
+                                cx = ({ icon: e, onToggle: t, ariaLabel: i }) =>
+                                    oi.jsx(oo, {
+                                        Icon: e,
+                                        label: i,
+                                        onClick: t,
+                                        'data-testid': 'play-pause-button'
+                                    }),
+                                cN = ({ icon: e, ariaLabel: t, onJump: i, testId: r }) =>
+                                    oi.jsx(oo, {
+                                        Icon: e,
+                                        label: t,
+                                        onClick: i,
+                                        'data-testid': r
+                                    }),
+                                cO = () => {
+                                    let {
+                                            viewModelContainer: { playPauseButtonVM: e }
+                                        } = oO(),
+                                        [t, i] = (0, h.useState)(void 0)
+                                    return (
+                                        (0, h.useEffect)(() => {
+                                            let t = e.isPlaying$.subscribe((e) => {
+                                                i(e)
+                                            })
+                                            return () => {
+                                                t.unsubscribe()
+                                            }
+                                        }, [e]),
+                                        {
+                                            isPlaying: t,
+                                            togglePlayPause: (0, h.useCallback)(() => {
+                                                e.togglePlayPause()
+                                            }, [e])
+                                        }
+                                    )
+                                },
+                                cL = () => {
+                                    let {
+                                            viewModelContainer: { jumpButtonsVM: e }
+                                        } = oO(),
+                                        t = (0, h.useRef)(void 0)
+                                    return (
+                                        (0, h.useEffect)(() => {
+                                            let i = e.currentPosition$.subscribe((e) => {
+                                                t.current = e
+                                            })
+                                            return () => {
+                                                i.unsubscribe()
+                                            }
+                                        }, [e]),
+                                        {
+                                            currentPosition: t,
+                                            jumpForward: (0, h.useCallback)(() => {
+                                                e.jumpForward()
+                                            }, [e]),
+                                            jumpBackward: (0, h.useCallback)(() => {
+                                                e.jumpBackward()
+                                            }, [e])
+                                        }
+                                    )
+                                },
+                                cD = () => {
+                                    let { isPlaying: e, togglePlayPause: t } = cO(),
+                                        { t: i } = oL()
+                                    ls({
+                                        shortcut: uv.PlayPause,
+                                        handleShortcut: t
+                                    })
+                                    let r = i(e ? 'pause' : 'play'),
+                                        a = e
+                                            ? oi.jsx(oT, {
+                                                  size: 20
+                                              })
+                                            : oi.jsx(ow, {
+                                                  size: 20
+                                              })
+                                    return oi.jsx(cx, {
+                                        icon: a,
+                                        onToggle: t,
+                                        ariaLabel: r
+                                    })
+                                },
+                                cM = ({ isForward: e }) => {
+                                    let { jumpForward: t, jumpBackward: i } = cL(),
+                                        { t: r } = oL()
+                                    ls(
+                                        e
+                                            ? {
+                                                  shortcut: uv.JumpForward,
+                                                  handleShortcut: t
+                                              }
+                                            : {
+                                                  shortcut: uv.JumpBackward,
+                                                  handleShortcut: i
+                                              }
+                                    )
+                                    let a = (0, h.useCallback)(() => {
+                                            e ? t() : i()
+                                        }, [e, i, t]),
+                                        n = r(e ? 'jump.forward.ariaLabel' : 'jump.backward.ariaLabel')
+                                    return oi.jsx(cN, {
+                                        icon: oi.jsx(om, {
+                                            isForward: e
+                                        }),
+                                        ariaLabel: n,
+                                        onJump: a,
+                                        testId: e ? 'jump-forward-button' : 'jump-backward-button'
+                                    })
+                                },
+                                cU = () =>
+                                    oi.jsx(cM, {
+                                        isForward: !0
+                                    }),
+                                cV = () =>
+                                    oi.jsx(cM, {
+                                        isForward: !1
+                                    }),
+                                cH = () => {
+                                    let {
+                                            viewModelContainer: { volumeVM: e }
+                                        } = oO(),
+                                        [t, i] = (0, h.useState)(void 0),
+                                        [r, a] = (0, h.useState)(void 0)
+                                    ;(0, h.useEffect)(() => {
+                                        let t = e.volumePercent$.subscribe((e) => {
+                                                i(e)
+                                            }),
+                                            r = e.isMuted$.subscribe((e) => {
+                                                a(e)
+                                            })
+                                        return () => {
+                                            ;(t.unsubscribe(), r.unsubscribe())
+                                        }
+                                    }, [e])
+                                    let n = (0, h.useCallback)(() => {
+                                        e.toggleMute()
+                                    }, [e])
+                                    return {
+                                        volumePercent: t,
+                                        isMuted: r,
+                                        toggleMute: n,
+                                        setVolumePercent: (0, h.useCallback)(
+                                            (t) => {
+                                                e.setVolumePercent(t)
+                                            },
+                                            [e]
+                                        ),
+                                        incrementVolume: (0, h.useCallback)(() => {
+                                            e.incrementVolume()
+                                        }, [e]),
+                                        decrementVolume: (0, h.useCallback)(() => {
+                                            e.decrementVolume()
+                                        }, [e])
+                                    }
+                                },
+                                cB = ({ value: e, onChange: t, className: i, style: r, ...a }) => {
+                                    let n = (0, h.useCallback)(
+                                        (e) => {
+                                            t(Number(e.target.value))
+                                        },
+                                        [t]
+                                    )
+                                    return oi.jsx('input', {
+                                        type: 'range',
+                                        min: 0,
+                                        max: 100,
+                                        step: 1,
+                                        value: e,
+                                        onChange: n,
+                                        'data-testid': 'volume-slider',
+                                        className: os('volume-slider', 'kat:m-0', 'kat:cursor-pointer', 'kat:appearance-none', 'kat:bg-transparent', 'kat:p-0', i),
+                                        style: {
+                                            '--volume-percent': `${e}%`,
+                                            ...r
+                                        },
+                                        ...a
+                                    })
+                                },
+                                cj = {
+                                    low: 33,
+                                    medium: 66
+                                },
+                                c$ = (e, t = cj) => (void 0 === e || 0 === e ? 'off' : e <= t.low ? 'low' : e <= t.medium ? 'medium' : 'high'),
+                                cF = ['Enter', ' '],
+                                cG = (0, h.forwardRef)(({ volumePercent: e, isMuted: t, label: i, onIconClick: r, onVolumeChange: a, className: n, ...s }, o) => {
+                                    let l = Math.max(0, Math.min(100, e)),
+                                        u = c$(l),
+                                        c = os(
+                                            'volume-container',
+                                            'kat:h-40 kat:w-40 kat:flex kat:flex-col kat:items-center kat:hover:pt-8 kat:hover:bg-neutral-700 kat:hover:rounded-xl kat:focus-visible:pt-8 kat:focus-visible:bg-neutral-700 kat:focus-visible:rounded-xl',
+                                            n
+                                        ),
+                                        d = (0, h.useCallback)(
+                                            (e) => {
+                                                cF.includes(e.key) && (e.preventDefault(), r())
+                                            },
+                                            [r]
+                                        ),
+                                        p = (0, h.useCallback)(
+                                            (e) => {
+                                                ;(e.target.closest('svg') && r(), e.preventDefault())
+                                            },
+                                            [r]
+                                        )
+                                    return oi.jsxs('div', {
+                                        ref: o,
+                                        className: c,
+                                        'data-testid': 'volume-slider-container',
+                                        role: 'slider',
+                                        tabIndex: 0,
+                                        'aria-label': i,
+                                        onClick: p,
+                                        onKeyDown: d,
+                                        ...s,
+                                        children: [
+                                            oi.jsxs('div', {
+                                                'aria-hidden': 'true',
+                                                className: 'volume-slider-content',
+                                                children: [
+                                                    oi.jsx(cB, {
+                                                        value: l,
+                                                        onChange: a,
+                                                        'aria-hidden': 'true',
+                                                        tabIndex: -1,
+                                                        className: 'kat:h-100'
+                                                    }),
+                                                    oi.jsx('span', {
+                                                        className:
+                                                            'kat:text-white kat:text-sm kat:font-medium kat:select-none kat:mt-5 kat:w-full kat:tabular-nums kat:text-center',
+                                                        'data-testid': 'volume-slider-percentage',
+                                                        children: Math.round(l)
+                                                    })
+                                                ]
+                                            }),
+                                            oi.jsx(ox, {
+                                                className: os(
+                                                    'volume-icon',
+                                                    'kat:h-40 kat:w-40 kat:flex kat:items-center kat:justify-center kat:rounded-full kat:border-transparent kat:border-4 kat:p-6 kat:hover:bg-neutral-700 kat:transition-opacity kat:duration-200 kat:ease-linear kat:hover:opacity-75 kat:focus:opacity-75 kat:active:fill-icon-tertiary-pressed kat:active:text-icon-tertiary-pressed kat:focus:border-neutral-50 kat:focus:border-solid kat:cursor-pointer kat:text-icon-tertiary kat:opacity-100 kat:hover:text-icon-tertiary-hover kat:focus-visible:text-icon-tertiary-hover'
+                                                ),
+                                                isMuted: t,
+                                                volumeTier: u
+                                            })
+                                        ]
+                                    })
+                                })
+                            cG.displayName = 'VolumeSliderContainer'
+                            let cq = () => {
+                                    let { toggleMute: e, isMuted: t, volumePercent: i, incrementVolume: r, decrementVolume: a, setVolumePercent: n } = cH(),
+                                        { t: s } = oL()
+                                    ;(ls({
+                                        shortcut: uv.Mute,
+                                        handleShortcut: e
+                                    }),
+                                        ls({
+                                            shortcut: uv.VolUp,
+                                            handleShortcut: r
+                                        }),
+                                        ls({
+                                            shortcut: uv.VolDown,
+                                            handleShortcut: a
+                                        }))
+                                    let o = i ?? 0,
+                                        l = t ? s('muted') : `${o}%`
+                                    return oi.jsx(cG, {
+                                        className: 'kat:relative',
+                                        volumePercent: o,
+                                        isMuted: t,
+                                        onIconClick: e,
+                                        label: s('volume'),
+                                        onVolumeChange: n,
+                                        'aria-valuemin': 0,
+                                        'aria-valuemax': 100,
+                                        'aria-valuenow': o,
+                                        'aria-valuetext': l
+                                    })
+                                },
+                                cK = (0, h.createContext)(void 0),
+                                cZ = 6e3,
+                                cY = 0.1,
+                                cz = ({ children: e, eventTarget: t, enabled: i = !0, idleTimeoutMs: r = cZ, mouseIdlePercentage: a = cY }) => {
+                                    let [n, s] = (0, h.useState)(!0),
+                                        [o, l] = (0, h.useState)(!0),
+                                        u = (0, h.useRef)(void 0),
+                                        c = (0, h.useRef)(!1),
+                                        d = i && !!t,
+                                        p = (0, h.useCallback)(() => {
+                                            void 0 !== u.current && (window.clearTimeout(u.current), (u.current = void 0))
+                                        }, []),
+                                        f = o ? r : r * a,
+                                        v = (0, h.useCallback)(() => {
+                                            if ((p(), !d)) {
+                                                s(!0)
+                                                return
+                                            }
+                                            u.current = window.setTimeout(() => {
+                                                s(!1)
+                                            }, f)
+                                        }, [p, d, f]),
+                                        _ = (0, h.useCallback)(() => {
+                                            ;(s(!0), v())
+                                        }, [v]),
+                                        y = (0, h.useCallback)(() => {
+                                            _()
+                                        }, [_])
+                                    ;((0, h.useEffect)(() => {
+                                        if (!i) return (s(!0), p(), p)
+                                        if (!t)
+                                            return (
+                                                c.current || (g.warn('AutohiderProvider: No event target provided for autohider interaction handling'), (c.current = !0)),
+                                                s(!0),
+                                                p(),
+                                                p
+                                            )
+                                        let e = ['mousemove', 'mousedown', 'keydown', 'focusin'],
+                                            r = () => {
+                                                _()
+                                            }
+                                        for (let i of (_(), e)) t.addEventListener(i, r)
+                                        return () => {
+                                            for (let i of e) t.removeEventListener(i, r)
+                                            p()
+                                        }
+                                    }, [t, _, p, i]),
+                                        (0, h.useEffect)(() => {
+                                            let e = () => l(!0),
+                                                r = () => l(!1)
+                                            return (
+                                                i && t && (t.addEventListener('mouseenter', e), t.addEventListener('mouseleave', r)),
+                                                () => {
+                                                    i && t && (t.removeEventListener('mouseenter', e), t.removeEventListener('mouseleave', r))
+                                                }
+                                            )
+                                        }, [i, t]))
+                                    let b = (0, h.useMemo)(
+                                        () => ({
+                                            isVisible: n,
+                                            bump: y,
+                                            enabled: i,
+                                            idleTimeoutMs: r
+                                        }),
+                                        [n, y, i, r]
+                                    )
+                                    return oi.jsx(cK.Provider, {
+                                        value: b,
+                                        children: e
+                                    })
                                 }
-                            )
-                        }, [i, t]))
-                    let b = (0, h.useMemo)(
-                        () => ({
-                            isVisible: n,
-                            bump: y,
-                            enabled: i,
-                            idleTimeoutMs: r
-                        }),
-                        [n, y, i, r]
-                    )
-                    return oi.jsx(cK.Provider, {
-                        value: b,
-                        children: e
-                    })
-                }
-            function cW() {
-                let e = (0, h.useContext)(cK)
-                if (!e) throw Error('useAutohider must be used within an AutohiderProvider')
-                return e
-            }
-            let cQ = ({ isVisible: e, children: t, className: i = '', 'data-testid': r }) => {
-                    let a = 'kat:transition-opacity',
-                        n = i ? `${a} ${i}` : a
-                    return oi.jsx('div', {
-                        className: n,
-                        style: {
-                            opacity: e ? 1 : 0,
-                            transitionDuration: '200ms',
-                            transitionTimingFunction: 'ease',
-                            pointerEvents: e ? 'auto' : 'none'
-                        },
-                        'data-overlay-visible': e,
-                        'data-testid': r,
-                        children: t
-                    })
-                },
-                cJ = (e) =>
-                    oi.jsx(cQ, {
-                        'data-testid': 'top-controls-autohide',
-                        ...e
-                    }),
-                cX = (e) =>
-                    oi.jsx(cQ, {
-                        'data-testid': 'bottom-controls-autohide',
-                        ...e
-                    }),
-                c0 = ({ children: e, ...t }) => {
-                    let {
-                            viewModelContainer: { playPauseButtonVM: i }
-                        } = oO(),
-                        r = (0, h.useRef)(null),
-                        a = (0, h.useCallback)(
-                            (e) => {
-                                null !== r.current && r.current.contains(e.target) && !1 === e.defaultPrevented && i.togglePlayPause()
-                            },
-                            [i]
-                        )
-                    return oi.jsx('div', {
-                        ref: r,
-                        onClick: a,
-                        ...t,
-                        children: oi.jsx(oY.Provider, {
-                            value: r,
-                            children: e
-                        })
-                    })
-                },
-                c1 = () => {
-                    let {
-                            viewModelContainer: { ratingsAdvisoriesVM: e }
-                        } = oO(),
-                        [t, i] = (0, h.useState)(void 0),
-                        [r, a] = (0, h.useState)(!1),
-                        n = (0, h.useRef)(0),
-                        s = (0, h.useRef)(void 0)
-                    ;((0, h.useEffect)(() => {
-                        let t = e.ratingsAdvisories$.subscribe((e) => {
-                            i(e)
-                        })
-                        return () => t.unsubscribe()
-                    }, [e]),
-                        (0, h.useEffect)(() => {
-                            t && !t.isReady && ((n.current = 0), a(!1))
-                        }, [null == t ? void 0 : t.isReady]))
-                    let o = (0, h.useCallback)(() => {
-                        void 0 !== s.current && (clearInterval(s.current), (s.current = void 0))
-                    }, [])
-                    ;(0, h.useEffect)(
-                        () => (
-                            (null == t ? void 0 : t.isReady) !== !0 || r
-                                ? o()
-                                : (s.current = setInterval(() => {
-                                      ;((n.current += 100), n.current >= 5e3 && (o(), a(!0)))
-                                  }, 100)),
-                            o
-                        ),
-                        [null == t ? void 0 : t.isReady, r, o]
-                    )
-                    let l = (null == t ? void 0 : t.ratingDisplayName) !== void 0 && (null == t ? void 0 : t.ratingSystem) !== void 0
-                    return {
-                        ratingDisplayName: null == t ? void 0 : t.ratingDisplayName,
-                        ratingSystem: null == t ? void 0 : t.ratingSystem,
-                        advisoryComponents: (null == t ? void 0 : t.advisoryComponents) ?? [],
-                        isActive: l && (null == t ? void 0 : t.isReady) === !0 && !r,
-                        isReady: (null == t ? void 0 : t.isReady) === !0
-                    }
-                },
-                c2 = {
-                    L: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=False, Rating=L'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#00A651'
-                                    }),
-                                    h.createElement('path', {
-                                        id: 'L',
-                                        fillRule: 'evenodd',
-                                        clipRule: 'evenodd',
-                                        d: 'M23.6706 19.3121C26.5534 19.2721 29.4559 19.3121 32.3386 19.2921C32.4187 27.7394 32.3586 36.2066 32.3586 44.6538C37.0028 44.6738 41.6472 44.6139 46.3114 44.6738C46.3715 46.6756 46.3314 48.6974 46.3314 50.6991C38.7845 50.7191 31.2375 50.6991 23.6706 50.6991C23.6506 40.2701 23.6506 29.8011 23.6706 19.3121Z',
-                                        fill: 'white'
-                                    })
-                                )
-                            )
-                        ),
-                    10: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=False, Rating=10'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#0095DA'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 10
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M45.1693 44.6082C45.1693 46.3298 45.0291 47.4908 44.769 48.0912C44.4887 48.6917 44.0283 48.992 43.3877 48.992C42.7071 48.992 42.2466 48.7317 41.9864 48.1913C41.7261 47.6508 41.606 46.4498 41.606 44.6082V25.3516C41.606 23.6702 41.7462 22.5092 42.0063 21.8887C42.2866 21.2681 42.747 20.9479 43.4076 20.9479C44.0682 20.9479 44.5287 21.2281 44.789 21.8086C45.0493 22.3692 45.1693 23.5501 45.1693 25.3316V44.6082ZM50.394 19.0462C49.093 17.4249 46.7508 16.6041 43.3877 16.6041C40.0245 16.6041 37.6825 17.4249 36.3613 19.0462C35.0601 20.6676 34.3995 23.6503 34.3995 27.994V41.9459C34.3995 46.2896 35.0401 49.2922 36.3613 50.9336C37.6623 52.5751 40.0045 53.3959 43.3877 53.3959C46.7308 53.3959 49.0728 52.5751 50.394 50.9137C51.7153 49.2523 52.3759 46.2697 52.3759 41.9461V27.994C52.3759 23.6503 51.7354 20.6676 50.394 19.0462Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M20.7469 20.2273C19.9061 21.1482 18.8452 21.9488 17.624 22.6494V29.0349C18.4648 28.7347 19.2255 28.3543 19.9261 27.9138C20.6268 27.4534 21.2674 26.933 21.8679 26.3126V52.7552H28.7542V17.1646H22.7087C22.2483 18.2856 21.6076 19.3066 20.7469 20.2273Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    12: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=False, Rating=12'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#FBC115'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 12
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M52.0256 26.5628V27.0832C52.0256 28.7246 51.7853 30.2659 51.3049 31.6872C50.8245 33.1083 50.0038 34.6297 48.8626 36.2711L40.8353 47.6608H52.6261V53.0655H33.5486V46.4399L41.8562 34.3295C42.8171 32.9483 43.5578 31.6471 44.0584 30.4062C44.5588 29.1651 44.8191 28.064 44.8191 27.1033V25.6621C44.8191 23.8804 44.6988 22.6994 44.4387 22.1389C44.1784 21.5584 43.718 21.2783 43.0374 21.2783C42.3968 21.2783 41.9563 21.5786 41.696 22.1791C41.4359 22.7795 41.3157 23.9405 41.3157 25.6621V27.1033H34.1091V26.5828C34.1091 22.9397 34.7697 20.4176 36.071 19.0362C37.3922 17.6351 39.7344 16.9346 43.0973 16.9346C46.4605 16.9346 48.7827 17.6152 50.0837 18.9963C51.385 20.3575 52.0256 22.8796 52.0256 26.5628Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M22.4784 17.495H28.504V53.0656H21.6177V26.6028C21.0172 27.2233 20.3766 27.7439 19.6758 28.2041C18.9753 28.6446 18.2146 29.0249 17.3738 29.3252V22.9396C18.5949 22.2391 19.6558 21.4384 20.4966 20.5175C21.3774 19.6168 22.018 18.5959 22.4784 17.495Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    14: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=False, Rating=14'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#F58220'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 14
-                                        },
-                                        h.createElement('path', {
-                                            d: 'M27.8334 17.2448H21.8079C21.3674 18.3456 20.7068 19.3666 19.866 20.2873C19.0052 21.2082 17.9643 22.0088 16.7432 22.7094V29.0749C17.564 28.7747 18.3247 28.3943 19.0252 27.9539C19.726 27.4936 20.3666 26.9731 20.9671 26.3526V52.7553H27.8334V17.2448Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M48.9726 17.2449H39.2435L32.5975 38.9034V44.9687H42.2263V52.7554H48.9726V44.9687H53.2564V39.6641H48.9726V17.2449ZM37.8424 39.6641L42.4065 22.4093H42.847L42.4464 39.6641H37.8424Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    16: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=False, Rating=16'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#EC1D25'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 16
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M52.256 25.742V25.3617C52.256 22.0387 51.6154 19.7568 50.3343 18.5157C49.073 17.2746 46.771 16.6542 43.428 16.6542C40.1048 16.6542 37.8028 17.4748 36.5015 19.0962C35.2003 20.7177 34.5397 23.7003 34.5397 28.0239V41.936C34.5397 46.2796 35.2003 49.2622 36.5015 50.9036C37.8028 52.525 40.1048 53.3457 43.428 53.3457C46.731 53.3457 49.0331 52.525 50.3343 50.8836C51.6355 49.2422 52.2961 46.2596 52.2961 41.936V38.0926C52.2961 35.3101 51.8357 33.2684 50.9148 32.0073C49.9939 30.7462 48.5327 30.1058 46.5509 30.1058C45.5299 30.1058 44.609 30.306 43.8283 30.7063C43.0477 31.1066 42.3269 31.7271 41.7063 32.5479V25.3617C41.7063 23.7003 41.8465 22.5393 42.0866 21.9186C42.3469 21.2982 42.7874 20.9778 43.4078 20.9778C44.0285 20.9778 44.469 21.258 44.7091 21.7986C44.9494 22.3591 45.0694 23.5401 45.0694 25.3617V25.742H52.256ZM44.7091 36.0908C44.9494 36.6513 45.0694 37.8323 45.0694 39.6539V44.5782C45.0694 46.2997 44.9294 47.4605 44.6891 48.0612C44.4288 48.6617 44.0085 48.9619 43.3879 48.9619C42.7472 48.9619 42.307 48.6816 42.0666 48.1411C41.8265 47.5808 41.7063 46.3998 41.7063 44.5782V39.6539C41.7063 37.9725 41.8465 36.8315 42.0866 36.2108C42.3469 35.5904 42.7874 35.2702 43.4078 35.2702C44.0285 35.2702 44.469 35.5504 44.7091 36.0908Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            d: 'M28.7946 17.2347H22.7691C22.3086 18.3355 21.668 19.3565 20.8272 20.2772C19.9664 21.1981 18.9255 21.9987 17.7043 22.6993V29.0648C18.5252 28.7646 19.2858 28.3843 19.9864 27.9438C20.6872 27.4835 21.3278 26.963 21.9283 26.3425V52.7452H28.7946V17.2347Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    18: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=False, Rating=18'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: 'black'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 18
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M35.8207 31.6572C36.6615 32.8182 37.8225 33.6188 39.304 34.0391C37.7025 34.4996 36.4813 35.3404 35.6607 36.5613C34.8399 37.7824 34.4194 39.3438 34.4194 41.2453V44.5081C34.4194 47.5709 35.1002 49.7726 36.4813 51.1138C37.8627 52.455 40.1248 53.1356 43.2476 53.1356C46.3705 53.1356 48.6325 52.455 50.0339 51.0938C51.4552 49.7327 52.1557 47.5507 52.1557 44.5081V41.2453C52.1557 39.3637 51.7354 37.8024 50.8946 36.5813C50.0538 35.3404 48.8327 34.4996 47.2512 34.0391C48.7326 33.6188 49.8936 32.8382 50.7144 31.6772C51.5353 30.5162 51.9556 29.1149 51.9556 27.4936V25.4718C51.9556 22.4291 51.2949 20.2273 49.9338 18.8861C48.5926 17.545 46.3705 16.8644 43.3077 16.8644C40.2248 16.8644 37.9827 17.525 36.6216 18.8861C35.2402 20.2473 34.5597 22.4291 34.5597 25.4718V27.4936C34.5597 29.1149 34.98 30.4962 35.8207 31.6572ZM41.3659 44.4681V41.1052C41.3659 39.4238 41.5059 38.2828 41.8064 37.7023C42.0866 37.1218 42.587 36.8215 43.3077 36.8215C44.0283 36.8215 44.5087 37.1018 44.789 37.6421C45.0493 38.1827 45.1895 39.3437 45.1895 41.1052V44.4681C45.1895 46.1295 45.0493 47.2504 44.769 47.871C44.4887 48.4915 43.9883 48.7917 43.2876 48.7917C42.567 48.7917 42.0664 48.5115 41.7862 47.9711C41.5059 47.4306 41.3659 46.2496 41.3659 44.4681ZM41.5261 27.2533V25.4918C41.5261 23.7905 41.6461 22.6294 41.8865 22.0288C42.1465 21.4483 42.587 21.148 43.2276 21.148C43.8882 21.148 44.3285 21.4283 44.5888 21.9888C44.8491 22.5493 44.9691 23.7103 44.9691 25.4718V27.2333C44.9691 28.9548 44.8491 30.1158 44.6088 30.6963C44.3687 31.2769 43.9282 31.5771 43.2876 31.5771C42.627 31.5771 42.1665 31.3168 41.9064 30.7765C41.6461 30.2559 41.5261 29.0749 41.5261 27.2533Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            d: 'M28.814 17.4449H22.8686C22.4281 18.5458 21.7877 19.5467 20.9267 20.4475C20.0859 21.3482 19.0651 22.1488 17.844 22.8296V29.135C18.6646 28.8548 19.4253 28.4744 20.1061 28.0339C20.8066 27.5937 21.4473 27.0531 22.0278 26.4526V52.5351H28.814V17.4449Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    AL: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=True, Rating=L'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#00A651'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'AL'
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M36.1244 20.0371C38.8669 19.9971 40.3883 20.0371 43.1308 20.0171C43.2109 28.064 43.151 34.8499 43.151 42.8968C47.5749 42.9168 52.9398 42.8567 57.3639 42.9168C57.424 44.8385 57.3839 48.0412 57.3839 49.9629C50.1973 49.9829 43.311 49.9629 36.1244 49.9629C36.1244 40.0143 36.1045 30.0257 36.1244 20.0371Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M21.2507 39.2336L22.6321 26.923L24.0134 39.2336H21.2507ZM28.5376 20.0171H16.7265L12.6029 49.9829H20.8704L21.3308 44.4981H23.9333L24.3937 49.9829H32.6612L28.5376 20.0171Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    A10: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=True, Rating=10'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#0095DA'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'A10'
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M63.7164 28.2441V41.6958C63.7164 45.8594 63.0757 48.7417 61.7947 50.3432C60.5134 51.9444 58.2713 52.7453 55.0484 52.7453C51.7853 52.7453 49.5232 51.9444 48.2621 50.3631C47.0011 48.7819 46.3604 45.8993 46.3604 41.6958V28.2441C46.3604 24.0606 47.0011 21.178 48.2621 19.6167C49.5232 18.0354 51.7853 17.2548 55.0484 17.2548C58.2913 17.2548 60.5334 18.0354 61.8146 19.6167C63.0757 21.198 63.7164 24.0606 63.7164 28.2441ZM56.7699 25.682C56.7699 23.9605 56.6499 22.8394 56.3896 22.2791C56.1495 21.7186 55.689 21.4583 55.0484 21.4583C54.4077 21.4583 53.9675 21.7585 53.7072 22.359C53.4469 22.9597 53.3268 24.0806 53.3268 25.682V44.2579C53.3268 46.0394 53.4469 47.1804 53.7072 47.701C53.9473 48.2213 54.4077 48.4816 55.0684 48.4816C55.689 48.4816 56.1293 48.1814 56.3896 47.6009C56.6499 47.0204 56.7699 45.8993 56.7699 44.2379V25.682Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M34.6697 17.595H40.6151V52.6652H33.8289V26.6028C33.2484 27.2033 32.6077 27.7236 31.9072 28.1841C31.2064 28.6445 30.4657 29.0049 29.6451 29.285V22.9997C30.8662 22.3191 31.887 21.5183 32.7278 20.6176C33.5686 19.6969 34.2292 18.6959 34.6697 17.595Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M16.3529 40.1344L17.9743 25.802L19.5958 40.1344H16.3529ZM24.8407 17.7551H11.088L6.28357 52.6651H15.9124L16.4529 46.2796H19.4957L20.0362 52.6651H29.6451L24.8407 17.7551Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    A12: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=True, Rating=12'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#FBC115'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'A12'
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M63.6863 26.5726V27.093C63.6863 28.7344 63.446 30.2758 62.9656 31.6971C62.4852 33.1182 61.6646 34.6395 60.5233 36.281L52.496 47.6707H64.2868V53.0754H45.2094V46.4497L53.517 34.3393C54.4778 32.9582 55.2185 31.6569 55.7189 30.416C56.2195 29.1749 56.4798 28.0738 56.4798 27.1132V25.6719C56.4798 23.8903 56.3596 22.7093 56.0993 22.1488C55.8392 21.5683 55.3787 21.288 54.6982 21.288C54.0575 21.288 53.6171 21.5884 53.3568 22.1889C53.0967 22.7894 52.9764 23.9504 52.9764 25.6719V27.1132H45.7699V26.5726C45.7699 22.9294 46.4305 20.4072 47.7317 19.0261C49.0529 17.625 51.3951 16.9244 54.7581 16.9244C58.1212 16.9244 60.4434 17.605 61.7445 18.9862C63.0257 20.3873 63.6863 22.9094 63.6863 26.5726Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M34.3194 17.5048H40.3449V53.0755H33.4586V26.6327C32.8581 27.2533 32.2175 27.7737 31.5167 28.2341C30.8162 28.6744 30.0555 29.0547 29.2147 29.355V22.9695C30.4358 22.2689 31.4968 21.4683 32.3376 20.5474C33.2183 19.6267 33.8789 18.6259 34.3194 17.5048Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M10.6976 16.9443L5.71301 53.0755H15.6822L16.2428 46.4696H19.4056L19.9663 53.0755H29.9353L24.9307 16.9443H10.6976ZM17.8243 25.2715L19.5058 40.1243H16.1427L17.8243 25.2715Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    A14: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=True, Rating=14'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#F58220'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'A14'
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M54.0773 22.2991L49.5132 39.534H54.1173L54.5178 22.2791H54.0773V22.2991ZM50.9143 17.1147H60.6434V39.534H64.9273V44.8384H60.6434V52.6252H53.8971V44.8384H44.2683V38.7733L50.9143 17.1147Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M33.6786 17.1146H39.7041V52.6251H32.8378V26.2225C32.2373 26.8429 31.5967 27.3635 30.8961 27.8237C30.1954 28.2642 29.4347 28.6446 28.6139 28.9448V22.5593C29.835 21.8587 30.8759 21.0581 31.7367 20.1372C32.5775 19.2365 33.2181 18.2357 33.6786 17.1146Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M9.9568 17.4749L5.07227 52.8853H14.8411L15.3817 46.4199H18.4646L19.0051 52.8853H28.774L23.9096 17.4749H9.9568ZM16.9232 25.6421L18.5646 40.1744H15.2816L16.9232 25.6421Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    A16: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'A=True, Rating=16'
-                                },
-                                h.createElement('rect', {
-                                    width: 70,
-                                    height: 70,
-                                    rx: 4,
-                                    fill: 'white'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'Content'
-                                    },
-                                    h.createElement('rect', {
-                                        x: 3,
-                                        y: 3,
-                                        width: 64,
-                                        height: 64,
-                                        rx: 3.31034,
-                                        fill: '#EC1D25'
-                                    }),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'A16'
-                                        },
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M57.4206 39.6539C57.4206 37.8323 57.3006 36.6513 57.0602 36.0908C56.8201 35.5504 56.3797 35.2702 55.759 35.2702C55.1386 35.2702 54.6981 35.5904 54.4378 36.2108C54.1977 36.8315 54.0575 37.9725 54.0575 39.6539V44.5782C54.0575 46.3998 54.1777 47.5808 54.4178 48.1411C54.6581 48.6817 55.0984 48.9619 55.739 48.9619C56.3597 48.9619 56.78 48.6617 57.0403 48.0612C57.2806 47.4605 57.4206 46.2997 57.4206 44.5782V39.6539ZM64.6272 25.3817V25.762H57.4406V25.3817C57.4406 23.5601 57.3205 22.3791 57.0802 21.8186C56.8401 21.2782 56.3997 20.998 55.7792 20.998C55.1585 20.998 54.7181 21.3182 54.458 21.9386C54.2177 22.5593 54.0776 23.7203 54.0776 25.3817V32.5678C54.6981 31.747 55.4188 31.1266 56.1995 30.7263C56.9802 30.3259 57.901 30.1258 58.922 30.1258C60.9038 30.1258 62.3651 30.7662 63.286 32.0273C64.2069 33.2884 64.6673 35.3301 64.6673 38.1126V41.936C64.6673 46.2596 64.0067 49.2422 62.7055 50.8836C61.4042 52.525 59.1022 53.3457 55.7992 53.3457C52.4762 53.3457 50.1739 52.525 48.8727 50.9036C47.5717 49.2622 46.9111 46.2796 46.9111 41.936V28.0239C46.9111 23.7003 47.5717 20.7177 48.8727 19.0962C50.1739 17.4748 52.4762 16.6542 55.7992 16.6542C59.1422 16.6542 61.4444 17.2746 62.7055 18.5157C63.9867 19.7568 64.6272 22.0387 64.6272 25.3817Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M35.1201 17.2347H41.1457V52.7452H34.2794V26.3425C33.6789 26.963 33.0382 27.4835 32.3375 27.9438C31.6369 28.3843 30.8762 28.7646 30.0554 29.0648V22.6993C31.2766 21.9987 32.3175 21.1981 33.1783 20.2772C34.0191 19.3565 34.6797 18.3557 35.1201 17.2347Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            fillRule: 'evenodd',
-                                            clipRule: 'evenodd',
-                                            d: 'M10.2173 17.595L5.33276 53.0053H15.0816L15.6222 46.5398H18.7051L19.2456 53.0053H29.0145L24.1501 17.595H10.2173ZM17.1837 25.782L18.8251 40.3145H15.5421L17.1837 25.782Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    A18: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('rect', {
-                                width: 70,
-                                height: 70,
-                                rx: 4,
-                                fill: 'white'
-                            }),
-                            h.createElement('rect', {
-                                x: 3,
-                                y: 3,
-                                width: 64,
-                                height: 64,
-                                rx: 3.31034,
-                                fill: 'black'
-                            }),
-                            h.createElement('path', {
-                                fillRule: 'evenodd',
-                                clipRule: 'evenodd',
-                                d: 'M51.0949 34.0391C49.6135 33.6188 48.4525 32.8182 47.6117 31.6572C46.7709 30.4962 46.3506 29.1149 46.3506 27.4936V25.4718C46.3506 22.4291 47.0312 20.2473 48.4123 18.8861C49.7737 17.525 52.0158 16.8644 55.0985 16.8644C58.1614 16.8644 60.3833 17.545 61.7247 18.8861C63.0859 20.2273 63.7465 22.4291 63.7465 25.4718V27.4936C63.7465 29.1149 63.3262 30.5162 62.5054 31.6772C61.6846 32.8382 60.5236 33.6188 59.0421 34.0391C60.6236 34.4996 61.8448 35.3404 62.6856 36.5813C63.5264 37.8024 63.9466 39.3637 63.9466 41.2453V44.5081C63.9466 47.5507 63.2461 49.7327 61.8248 51.0938C60.4235 52.455 58.1614 53.1356 55.0386 53.1356C51.9157 53.1356 49.6536 52.455 48.2723 51.1138C46.8909 49.7726 46.2104 47.5709 46.2104 44.5081V41.2453C46.2104 39.3438 46.6309 37.7824 47.4515 36.5613C48.2723 35.3404 49.4934 34.4996 51.0949 34.0391ZM53.1768 41.1052V44.4681C53.1768 46.2496 53.317 47.4306 53.5971 47.9711C53.8773 48.5115 54.3779 48.7917 55.0985 48.7917C55.7992 48.7917 56.2996 48.4915 56.5799 47.871C56.8602 47.2504 57.0004 46.1295 57.0004 44.4681V41.1052C57.0004 39.3437 56.8602 38.1827 56.5999 37.6421C56.3196 37.1018 55.8392 36.8215 55.1187 36.8215C54.3979 36.8215 53.8975 37.1218 53.6173 37.7023C53.3168 38.2828 53.1768 39.4238 53.1768 41.1052ZM53.3168 25.4918V27.2533C53.3168 29.0749 53.4371 30.2559 53.6972 30.7765C53.9574 31.3168 54.4179 31.5771 55.0785 31.5771C55.7191 31.5771 56.1596 31.2769 56.3997 30.6963C56.64 30.1158 56.7601 28.9548 56.7601 27.2333V25.4718C56.7601 23.7103 56.64 22.5493 56.3797 21.9888C56.1194 21.4283 55.6792 21.148 55.0186 21.148C54.3779 21.148 53.9375 21.4483 53.6772 22.0288C53.4371 22.6294 53.3168 23.7905 53.3168 25.4918Z',
-                                fill: 'white'
-                            }),
-                            h.createElement('path', {
-                                d: 'M34.8798 17.4449H40.8252V52.5351H34.039V26.4526C33.4585 27.0531 32.8178 27.5937 32.1173 28.0339C31.4365 28.4744 30.6758 28.8548 29.8552 29.135V22.8296C31.0763 22.1488 32.0971 21.3482 32.9379 20.4475C33.7989 19.5467 34.4393 18.5458 34.8798 17.4449Z',
-                                fill: 'white'
-                            }),
-                            h.createElement('path', {
-                                fillRule: 'evenodd',
-                                clipRule: 'evenodd',
-                                d: 'M24.8708 17.3449L29.7554 52.7353H19.9863L19.4458 46.2697H16.3631L15.8225 52.7353H6.05347L10.938 17.3449H24.8708ZM16.263 40.0444H19.5459L17.9044 25.5119L16.263 40.0444Z',
-                                fill: 'white'
-                            })
-                        )
-                },
-                c4 = {
-                    G: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    clipPath: 'url(#clip0_2542_572)'
-                                },
-                                h.createElement('path', {
-                                    d: 'M70 35C70 15.67 54.33 0 35 0C15.67 0 0 15.67 0 35C0 54.33 15.67 70 35 70C54.33 70 70 54.33 70 35Z',
-                                    fill: '#42C758'
-                                }),
-                                h.createElement('path', {
-                                    d: 'M44.6699 47.5967L45.4224 51.4063H50.1256V33.2522H36.0162V38.7549H43.4471C43.2284 41.1064 42.4442 42.9089 41.0956 44.1635C39.7787 45.3863 37.8974 45.9977 35.4518 45.9977C33.7893 45.9977 32.3784 45.6838 31.219 45.0571C30.0895 44.4267 29.1231 43.5409 28.3971 42.4703C27.6645 41.3786 27.1237 40.1698 26.7981 38.896C26.4836 37.5389 26.3258 36.1502 26.3278 34.7572C26.3278 33.2839 26.4842 31.8566 26.7981 30.4774C27.1426 29.0982 27.6763 27.8742 28.3971 26.8089C29.1055 25.7233 30.076 24.8337 31.219 24.2222C32.3784 23.5638 33.7893 23.2346 35.4518 23.2346C37.239 23.2346 38.7593 23.7049 40.0138 24.6455C41.2684 25.5861 42.1138 26.9971 42.5535 28.8783H49.6082C49.4201 26.9653 48.9028 25.2722 48.0562 23.7989C47.2354 22.3548 46.1316 21.0911 44.811 20.0835C43.5039 19.069 42.0213 18.3037 40.4371 17.826C38.8295 17.2916 37.1459 17.0216 35.4518 17.0264C32.8815 17.0264 30.5606 17.4814 28.4912 18.3903C26.4535 19.2992 24.7287 20.5538 23.3178 22.1528C21.9068 23.7519 20.8251 25.6332 20.0726 27.7966C19.3201 29.9294 18.9438 32.2481 18.9438 34.7572C18.9438 37.2028 19.3201 39.4921 20.0726 41.6238C20.8251 43.7238 21.9068 45.5591 23.3178 47.1264C24.7287 48.6938 26.4535 49.933 28.4912 50.8419C30.5606 51.7202 32.8804 52.1588 35.4518 52.1588C37.0815 52.1588 38.697 51.8296 40.296 51.1711C41.8951 50.4821 43.3531 49.2899 44.6699 47.5967Z',
-                                    fill: 'black'
-                                })
-                            ),
-                            h.createElement(
-                                'defs',
-                                null,
-                                h.createElement(
-                                    'clipPath',
-                                    {
-                                        id: 'clip0_2542_572'
-                                    },
-                                    h.createElement('rect', {
-                                        width: 70,
-                                        height: 70,
-                                        fill: 'white'
-                                    })
-                                )
-                            )
-                        ),
-                    PG: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    clipPath: 'url(#clip0_2542_565)'
-                                },
-                                h.createElement('path', {
-                                    d: 'M70 35C70 15.67 54.33 0 35 0C15.67 0 0 15.67 0 35C0 54.33 15.67 70 35 70C54.33 70 70 54.33 70 35Z',
-                                    fill: '#FFEF00'
-                                }),
-                                h.createElement('path', {
-                                    d: 'M17.813 34.0682V26.11H22.3499C23.0193 26.11 23.6635 26.1592 24.2837 26.2588C24.9027 26.3572 25.4485 26.5563 25.9199 26.8538C26.3902 27.1272 26.7621 27.5232 27.0355 28.0438C27.333 28.5644 27.4818 29.2469 27.4818 30.0891C27.4818 30.9313 27.333 31.6138 27.0355 32.1344C26.7621 32.655 26.3902 33.0641 25.9199 33.3616C25.4496 33.635 24.9027 33.821 24.2837 33.9194C23.6635 34.0178 23.0193 34.0682 22.3499 34.0682H17.813ZM11.9746 21.5732V48.125H17.813V38.605H23.949C25.6093 38.605 27.0224 38.3699 28.1884 37.8985C29.3532 37.403 30.2949 36.7577 31.0146 35.9647C31.746 35.1924 32.2928 34.2642 32.6137 33.25C32.9571 32.2315 33.1329 31.164 33.1343 30.0891C33.1369 29.0139 32.961 27.9457 32.6137 26.9282C32.2928 25.914 31.746 24.9858 31.0146 24.2135C30.2949 23.4205 29.3532 22.7883 28.1884 22.3169C27.0224 21.8214 25.6093 21.5732 23.949 21.5732H11.9746ZM55.2226 45.1128L55.8176 48.125H59.5363V33.7707H48.3801V38.1216H54.2568C54.0818 39.981 53.4627 41.4061 52.3974 42.3982C51.3551 43.365 49.8676 43.8485 47.9349 43.8485C46.6202 43.8485 45.5046 43.6002 44.588 43.1047C43.6949 42.6063 42.9308 41.9059 42.3568 41.0594C41.7771 40.1963 41.3491 39.2404 41.0913 38.2332C40.8426 37.1601 40.7178 36.0621 40.7195 34.9607C40.7195 33.7958 40.8441 32.6671 41.0913 31.5766C41.3648 30.4861 41.7859 29.5192 42.3557 28.676C42.9158 27.8175 43.6831 27.1141 44.587 26.6307C45.5057 26.11 46.6213 25.8497 47.9338 25.8497C49.347 25.8497 50.5501 26.2216 51.541 26.9653C52.5331 27.7091 53.2035 28.8247 53.5502 30.3122H59.1284C58.9785 28.7996 58.5705 27.4608 57.9001 26.296C57.2514 25.1542 56.379 24.155 55.3352 23.3582C54.3013 22.5559 53.1286 21.9509 51.8757 21.5732C50.6046 21.1506 49.2733 20.9371 47.9338 20.941C45.9016 20.941 44.0663 21.3008 42.4301 22.0194C40.819 22.738 39.4551 23.73 38.3395 24.9944C37.2238 26.2588 36.3696 27.7463 35.7746 29.4569C35.1796 31.1424 34.8821 32.9777 34.8821 34.9607C34.8821 36.8944 35.1785 38.7046 35.7746 40.39C36.3696 42.0514 37.2238 43.5017 38.3405 44.741C39.4562 45.9802 40.819 46.9602 42.4312 47.6788C44.0663 48.3733 45.9016 48.72 47.9349 48.72C49.2507 48.7147 50.5524 48.4493 51.7652 47.9391C53.0285 47.3933 54.1824 46.4516 55.2226 45.1128Z',
-                                    fill: 'black'
-                                })
-                            ),
-                            h.createElement(
-                                'defs',
-                                null,
-                                h.createElement(
-                                    'clipPath',
-                                    {
-                                        id: 'clip0_2542_565'
-                                    },
-                                    h.createElement('rect', {
-                                        width: 70,
-                                        height: 70,
-                                        fill: 'white'
-                                    })
-                                )
-                            )
-                        ),
-                    M: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    clipPath: 'url(#clip0_2542_569)'
-                                },
-                                h.createElement('path', {
-                                    d: 'M70 35C70 15.67 54.33 0 35 0C15.67 0 0 15.67 0 35C0 54.33 15.67 70 35 70C54.33 70 70 54.33 70 35Z',
-                                    fill: '#FFEF00'
-                                }),
-                                h.createElement('path', {
-                                    d: 'M18.2983 19.3878V51.4063H24.8915V28.9395H24.9812L32.8288 51.4063H38.2538L46.1026 28.7153H46.1922V51.4063H52.7843V19.3878H42.8738L35.7874 41.4061H35.6977L28.2088 19.3878H18.2983Z',
-                                    fill: 'black'
-                                })
-                            ),
-                            h.createElement(
-                                'defs',
-                                null,
-                                h.createElement(
-                                    'clipPath',
-                                    {
-                                        id: 'clip0_2542_569'
-                                    },
-                                    h.createElement('rect', {
-                                        width: 70,
-                                        height: 70,
-                                        fill: 'white'
-                                    })
-                                )
-                            )
-                        ),
-                    13: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    clipPath: 'url(#clip0_2542_577)'
-                                },
-                                h.createElement('path', {
-                                    d: 'M70 70V0H3.76089e-05C3.76089e-05 22.6042 0.000868018 47.3958 0 70H70Z',
-                                    fill: '#F03936'
-                                }),
-                                h.createElement('path', {
-                                    d: 'M27.649 51.4063V17.7188H22.2108C22.0183 19.0018 21.6169 20.0769 21.0077 20.9432C20.4094 21.7988 19.639 22.52 18.7458 23.0607C17.8796 23.5747 16.8843 23.9433 15.7621 24.1675C14.6705 24.36 13.5319 24.441 12.3452 24.4082V29.5575H20.8152V51.4063H27.649ZM42.1663 31.3382V36.1507C43.0008 36.1507 43.8671 36.1835 44.7651 36.2469C45.6947 36.2797 46.5457 36.4547 47.3157 36.7763C48.0735 37.0557 48.7281 37.5593 49.1926 38.22C49.7066 38.8938 49.9626 39.8716 49.9626 41.1557C49.9626 42.7919 49.4332 44.0913 48.3744 45.0538C47.3157 45.9835 46.0163 46.4494 44.4763 46.4494C43.481 46.4494 42.6158 46.2733 41.8776 45.92C41.1932 45.584 40.5867 45.1086 40.0969 44.5244C39.6032 43.8911 39.2282 43.1738 38.9901 42.4069C38.7318 41.5635 38.5862 40.6897 38.5569 39.8082H32.0601C32.0272 41.766 32.3007 43.4974 32.8782 45.0057C33.4874 46.5139 34.3383 47.7969 35.4288 48.8557C36.5193 49.8827 37.8351 50.668 39.3751 51.2138C40.9468 51.7596 42.6793 52.0319 44.5726 52.0319C46.2088 52.0319 47.7805 51.7913 49.2888 51.31C50.7971 50.8288 52.1282 50.1233 53.2832 49.1925C54.4434 48.2555 55.3805 47.0719 56.0263 45.7275C56.7318 44.3483 57.0851 42.7755 57.0851 41.0113C57.0851 39.0863 56.5557 37.4347 55.4969 36.0544C54.4382 34.6752 52.978 33.7761 51.1176 33.3594V33.2632C52.6893 32.8147 53.8607 31.9638 54.6307 30.7125C55.4324 29.4613 55.8338 28.0175 55.8338 26.3813C55.8338 24.873 55.4969 23.5419 54.8232 22.3869C54.1532 21.236 53.2519 20.2365 52.1763 19.4513C51.0947 18.6379 49.8706 18.034 48.5669 17.6707C47.2586 17.2597 45.8958 17.0487 44.5244 17.045C42.7919 17.045 41.2202 17.3338 39.8082 17.9113C38.4365 18.4309 37.1901 19.2345 36.1507 20.2694C35.1554 21.2965 34.3701 22.5313 33.7926 23.975C33.2468 25.386 32.9427 26.9588 32.8782 28.6913H39.3751C39.3422 26.9588 39.7601 25.5304 40.6263 24.4082C41.5243 23.2532 42.8401 22.6757 44.5726 22.6757C45.8238 22.6757 46.9307 23.0607 47.8932 23.8307C48.8557 24.6007 49.3369 25.7075 49.3369 27.1513C49.3369 28.1138 49.0963 28.8838 48.6151 29.4613C48.1666 30.0388 47.5727 30.4883 46.8344 30.8088C46.0968 31.1049 45.3174 31.2835 44.5244 31.3382C43.6899 31.4027 42.9046 31.4027 42.1663 31.3382Z',
-                                    fill: 'black'
-                                })
-                            ),
-                            h.createElement(
-                                'defs',
-                                null,
-                                h.createElement(
-                                    'clipPath',
-                                    {
-                                        id: 'clip0_2542_577'
-                                    },
-                                    h.createElement('rect', {
-                                        width: 70,
-                                        height: 70,
-                                        rx: 4,
-                                        fill: 'white'
-                                    })
-                                )
-                            )
-                        ),
-                    16: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    clipPath: 'url(#clip0_2542_548)'
-                                },
-                                h.createElement('path', {
-                                    d: 'M70 70V0H3.76089e-05C3.76089e-05 22.6042 0.000868018 47.3958 0 70H70Z',
-                                    fill: '#F03936'
-                                }),
-                                h.createElement('path', {
-                                    d: 'M27.649 51.4063V17.7188H22.2108C22.0183 19.0018 21.6169 20.0769 21.0077 20.9432C20.4094 21.7988 19.639 22.52 18.7458 23.0607C17.8796 23.5747 16.8843 23.9433 15.7621 24.1675C14.6705 24.36 13.5319 24.441 12.3452 24.4082V29.5575H20.8152V51.4063H27.649ZM44.9576 33.9369C45.8238 33.9369 46.5774 34.1294 47.2194 34.5144C47.8762 34.8524 48.4386 35.3486 48.8557 35.9582C49.2724 36.5357 49.5776 37.2094 49.7701 37.9794C49.9943 38.7177 50.1069 39.4877 50.1069 40.2894C50.1069 41.0594 49.9943 41.813 49.7701 42.5513C49.5576 43.2656 49.215 43.9346 48.7594 44.5244C48.311 45.1019 47.7641 45.5668 47.1232 45.92C46.514 46.2733 45.7921 46.4494 44.9576 46.4494C44.0913 46.4494 43.3213 46.2733 42.6476 45.92C41.9831 45.5746 41.3941 45.1001 40.9151 44.5244C40.4622 43.9079 40.1053 43.2265 39.8563 42.5032C39.6346 41.7531 39.5212 40.9753 39.5194 40.1932C39.5194 39.3586 39.6321 38.5733 39.8563 37.835C40.0805 37.065 40.4174 36.3913 40.8669 35.8138C41.3141 35.2379 41.8913 34.7761 42.5513 34.4663C43.2568 34.113 44.0596 33.9369 44.9576 33.9369ZM49.8663 26.3813H56.3632C56.1707 24.873 55.7693 23.5419 55.1601 22.3869C54.5827 21.2713 53.7797 20.288 52.8019 19.4994C51.8199 18.6865 50.6933 18.0661 49.4813 17.6707C48.2301 17.254 46.8826 17.045 45.4388 17.045C43.0326 17.045 40.9949 17.5744 39.3269 18.6332C37.6665 19.6839 36.2676 21.0994 35.2363 22.7719C34.1776 24.4399 33.4076 26.3168 32.9263 28.4025C32.449 30.4538 32.2068 32.5527 32.2044 34.6588C32.2044 36.808 32.3969 38.9255 32.7819 41.0113C33.1669 43.0643 33.8571 44.9094 34.8513 46.5457C35.8426 48.1786 37.2127 49.5488 38.8457 50.54C40.5137 51.5354 42.6158 52.0319 45.1501 52.0319C46.9143 52.0319 48.5188 51.7268 49.9626 51.1175C51.4063 50.4755 52.6423 49.6093 53.6682 48.5188C54.7266 47.3963 55.5454 46.07 56.0744 44.6207C56.6519 43.1124 56.9407 41.4925 56.9407 39.76C56.9407 38.4125 56.7329 37.0804 56.3151 35.7657C55.9091 34.47 55.237 33.2735 54.3419 32.2525C53.3794 31.1938 52.2091 30.3604 50.8288 29.75C49.4496 29.108 48.0376 28.7875 46.5938 28.7875C44.9576 28.7875 43.5138 29.0763 42.2626 29.6538C41.0113 30.2313 39.9208 31.1938 38.9901 32.5413L38.8938 32.445C38.9266 31.5154 39.0546 30.4555 39.2788 29.2688C39.4906 28.1218 39.8463 27.0061 40.3376 25.9482C40.8188 24.8894 41.4608 24.0068 42.2626 23.3013C43.0971 22.563 44.123 22.1944 45.3426 22.1944C46.5293 22.1944 47.5246 22.6111 48.3263 23.4457C49.1145 24.2534 49.6497 25.2737 49.8663 26.3813Z',
-                                    fill: 'black'
-                                })
-                            ),
-                            h.createElement(
-                                'defs',
-                                null,
-                                h.createElement(
-                                    'clipPath',
-                                    {
-                                        id: 'clip0_2542_548'
-                                    },
-                                    h.createElement('rect', {
-                                        width: 70,
-                                        height: 70,
-                                        rx: 4,
-                                        fill: 'white'
-                                    })
-                                )
-                            )
-                        ),
-                    18: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    clipPath: 'url(#clip0_2575_691)'
-                                },
-                                h.createElement('path', {
-                                    d: 'M70 70V0H3.76089e-05C3.76089e-05 22.6042 0.000868018 47.3958 0 70H70Z',
-                                    fill: '#F03936'
-                                }),
-                                h.createElement('path', {
-                                    d: 'M27.649 51.4063V17.7188H22.2108C22.0183 19.0018 21.6169 20.0769 21.0077 20.9432C20.4094 21.7988 19.639 22.52 18.7458 23.0607C17.8796 23.5747 16.8843 23.9433 15.7621 24.1675C14.6705 24.36 13.5319 24.441 12.3452 24.4082V29.5575H20.8152V51.4063H27.649ZM39.4713 26.8625C39.4713 26.0925 39.5993 25.4188 39.8563 24.8413C40.131 24.2813 40.5253 23.7885 41.0113 23.3975C41.4926 23.0125 42.0383 22.7238 42.6476 22.5313C43.2814 22.3081 43.9486 22.1941 44.6207 22.1944C45.6794 22.1944 46.5293 22.3552 47.1713 22.6757C47.8451 22.9961 48.358 23.3975 48.7113 23.8788C49.0963 24.36 49.3533 24.8741 49.4813 25.4188C49.6093 25.9329 49.6738 26.4141 49.6738 26.8625C49.6738 28.3063 49.1926 29.4132 48.2301 30.1832C47.2676 30.9215 46.0644 31.29 44.6207 31.29C43.2415 31.29 42.0383 30.9215 41.0113 30.1832C39.9843 29.4132 39.4713 28.3063 39.4713 26.8625ZM33.2632 26.2369C33.2632 27.9049 33.6799 29.365 34.5144 30.6163C35.349 31.8675 36.5838 32.7174 38.2201 33.1669V33.2632C36.1988 33.7444 34.6271 34.7069 33.5038 36.1507C32.4133 37.5944 31.8676 39.3915 31.8676 41.5407C31.8676 43.3694 32.2208 44.9422 32.9263 46.2569C33.6397 47.5445 34.625 48.6613 35.8138 49.5294C37.0492 50.4032 38.4364 51.0396 39.9044 51.4063C41.4578 51.8251 43.06 52.0355 44.6688 52.0319C46.2405 52.0319 47.7805 51.8241 49.2888 51.4063C50.7971 50.9579 52.1435 50.2994 53.3313 49.4332C54.514 48.5721 55.485 47.4529 56.1707 46.1607C56.909 44.8449 57.2776 43.2896 57.2776 41.4925C57.2776 39.375 56.7318 37.5944 55.6413 36.1507C54.5508 34.6741 52.9944 33.7116 50.9732 33.2632V33.1669C52.6094 32.6211 53.8279 31.7232 54.6307 30.4719C55.4652 29.2207 55.8819 27.7605 55.8819 26.0925C55.8819 25.258 55.6894 24.3283 55.3044 23.3013C54.9194 22.2425 54.2774 21.2636 53.3794 20.3657C52.5132 19.436 51.3582 18.6485 49.9144 18.0075C48.4707 17.3655 46.7065 17.045 44.6207 17.045C43.2415 17.045 41.8776 17.2375 40.5301 17.6225C39.2217 17.989 37.9849 18.5748 36.8726 19.355C35.8138 20.1251 34.9284 21.1088 34.2738 22.2425C33.6001 23.3975 33.2632 24.7286 33.2632 26.2369ZM38.7013 41.2038C38.7013 39.4713 39.2788 38.1555 40.4338 37.2575C41.5888 36.3279 43.0008 35.8619 44.6688 35.8619C45.4241 35.8536 46.1744 35.9841 46.8826 36.2469C47.5613 36.4872 48.1837 36.8639 48.7113 37.3538C49.2571 37.835 49.6738 38.4125 49.9626 39.0863C50.283 39.7283 50.4438 40.4502 50.4438 41.2519C50.4438 42.0865 50.2994 42.8564 50.0107 43.5619C49.7308 44.2548 49.3039 44.8788 48.7594 45.3907C48.2454 45.8719 47.6362 46.2569 46.9307 46.5457C46.2569 46.8027 45.5033 46.9307 44.6688 46.9307C43.8826 46.9333 43.1016 46.8032 42.3588 46.5457C41.6542 46.277 41.0025 45.886 40.4338 45.3907C39.9097 44.8617 39.4858 44.2421 39.1826 43.5619C38.8621 42.8564 38.7013 42.07 38.7013 41.2038Z',
-                                    fill: 'black'
-                                })
-                            ),
-                            h.createElement(
-                                'defs',
-                                null,
-                                h.createElement(
-                                    'clipPath',
-                                    {
-                                        id: 'clip0_2575_691'
-                                    },
-                                    h.createElement('rect', {
-                                        width: 70,
-                                        height: 70,
-                                        rx: 4,
-                                        fill: 'white'
-                                    })
-                                )
-                            )
-                        )
-                },
-                c3 = {
-                    ALL: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 90,
-                                height: 70,
-                                viewBox: '0 0 90 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M19.9349 46H15.5756L27.2556 23.4545H32.2975L36.5028 46H32.1434L29.116 28.0781H28.9399L19.9349 46ZM21.5422 37.1601H33.4314L32.881 40.4407H20.9918L21.5422 37.1601Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M39.4723 46L43.2152 23.4545H47.2994L44.1289 42.5763H54.0586L53.4862 46H39.4723Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M57.0309 46L60.7738 23.4545H64.858L61.6875 42.5763H71.6172L71.0448 46H57.0309Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    PG: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 90,
-                                height: 70,
-                                viewBox: '0 0 90 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M24.1539 46L27.8968 23.4545H36.3514C38.0834 23.4545 39.4851 23.7775 40.5566 24.4233C41.6281 25.0618 42.373 25.9461 42.7914 27.0763C43.2097 28.1992 43.2978 29.4799 43.0556 30.9183C42.8207 32.3641 42.3033 33.6484 41.5034 34.7713C40.7107 35.8942 39.6649 36.7785 38.3659 37.4244C37.0669 38.0628 35.5478 38.3821 33.8084 38.3821H28.2051L28.7665 35.0245H33.8194C34.8322 35.0245 35.6909 34.8484 36.3954 34.4961C37.1073 34.1438 37.6687 33.6594 38.0797 33.043C38.4907 32.4265 38.7622 31.7183 38.8943 30.9183C39.0191 30.1184 38.9787 29.4138 38.7732 28.8047C38.5678 28.1955 38.1678 27.7222 37.5733 27.3846C36.9862 27.0396 36.1826 26.8672 35.1625 26.8672H31.4196L28.2381 46H24.1539Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M61.7095 30.6541C61.6288 30.0597 61.482 29.5276 61.2692 29.0579C61.0563 28.5808 60.7701 28.1772 60.4105 27.8469C60.0509 27.5093 59.6142 27.2525 59.1005 27.0763C58.5868 26.9002 57.9886 26.8121 57.3061 26.8121C56.0952 26.8121 54.9466 27.1167 53.8604 27.7258C52.7743 28.335 51.8459 29.2303 51.0753 30.4119C50.3047 31.5862 49.7799 33.0173 49.5011 34.7053C49.2222 36.4079 49.2368 37.85 49.5451 39.0316C49.8533 40.2132 50.4184 41.1122 51.2404 41.7287C52.0697 42.3378 53.1119 42.6424 54.3668 42.6424C55.519 42.6424 56.5649 42.4222 57.5042 41.9819C58.4436 41.5415 59.2216 40.9177 59.8381 40.1104C60.4619 39.2958 60.8582 38.3417 61.027 37.2482L61.9297 37.3913H55.7979L56.3484 34.1989H65.4964L65.0341 36.907C64.7185 38.8445 64.0323 40.5177 62.9755 41.9268C61.926 43.3286 60.616 44.4111 59.0454 45.1744C57.4822 45.9303 55.7686 46.3082 53.9045 46.3082C51.8349 46.3082 50.0918 45.8422 48.6754 44.9102C47.2663 43.9708 46.2682 42.6387 45.6811 40.9141C45.094 39.1821 44.9986 37.1271 45.3949 34.7493C45.6884 32.9292 46.2095 31.3036 46.9581 29.8725C47.714 28.4414 48.6387 27.2268 49.7322 26.2287C50.8331 25.2232 52.055 24.46 53.3981 23.9389C54.7411 23.4105 56.1502 23.1463 57.6253 23.1463C58.8656 23.1463 59.9958 23.3298 61.016 23.6967C62.0361 24.0563 62.9094 24.5701 63.636 25.2379C64.3699 25.9058 64.9313 26.6984 65.3203 27.6158C65.7093 28.5331 65.8927 29.5459 65.8707 30.6541H61.7095Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    12: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 90,
-                                height: 70,
-                                viewBox: '0 0 90 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M31.004 23.4545L27.2611 46H23.177L26.2593 27.4286H26.1272L20.2927 30.7972L20.9092 27.0543L27.118 23.4545H31.004Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M32.9856 46L33.4809 43.0497L42.574 35.3768C43.4473 34.6209 44.1812 33.9493 44.7757 33.3622C45.3775 32.7678 45.8508 32.199 46.1958 31.6559C46.5407 31.1055 46.7646 30.5183 46.8673 29.8945C46.9847 29.1826 46.926 28.5698 46.6912 28.0561C46.4563 27.5424 46.082 27.1497 45.5683 26.8782C45.0619 26.5993 44.4491 26.4599 43.7299 26.4599C42.9886 26.4599 42.3098 26.614 41.6933 26.9222C41.0768 27.2231 40.5631 27.6561 40.1521 28.2212C39.7485 28.779 39.4842 29.4395 39.3595 30.2028H35.4735C35.7083 28.7717 36.2441 27.5277 37.0807 26.4709C37.9174 25.4141 38.9632 24.5958 40.2182 24.016C41.4731 23.4362 42.8455 23.1463 44.3353 23.1463C45.8472 23.1463 47.1242 23.4289 48.1663 23.994C49.2158 24.5591 49.9717 25.3333 50.4341 26.3168C50.9038 27.3002 51.0322 28.4231 50.8194 29.6854C50.6726 30.5294 50.368 31.3587 49.9057 32.1733C49.4506 32.9806 48.7351 33.8833 47.759 34.8814C46.7829 35.8722 45.4472 37.0721 43.7519 38.4812L39.2274 42.4332L39.1944 42.5874H49.003L48.4415 46H32.9856Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M59.5491 42.3672L62.0591 27.1314H65.5267L63.0058 42.3672H59.5491ZM54.6173 36.4776L55.2007 33.032H70.4365L69.8531 36.4776H54.6173Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    14: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 90,
-                                height: 70,
-                                viewBox: '0 0 90 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M30.8077 23.4545L27.0648 46H22.9807L26.0631 27.4286H25.931L20.0964 30.7972L20.7129 27.0543L26.9217 23.4545H30.8077Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M33.0865 41.8168L33.6149 38.5692L45.6913 23.4545H48.3993L47.6288 28.0781H45.9885L37.8422 38.283L37.8202 38.4592H51.1845L50.6231 41.8168H33.0865ZM43.1373 46L43.9959 40.815L44.2932 39.3729L46.9242 23.4545H50.7772L47.0343 46H43.1373Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M60.7454 42.3672L63.2553 27.1314H66.723L64.2021 42.3672H60.7454ZM55.8136 36.4776L56.397 33.032H71.6328L71.0494 36.4776H55.8136Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    16: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 90,
-                                height: 70,
-                                viewBox: '0 0 90 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M30.5802 23.4545L26.8373 46H22.7531L25.8355 27.4286H25.7034L19.8689 30.7972L20.4854 27.0543L26.6942 23.4545H30.5802Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M40.9832 46.3082C39.8751 46.3009 38.8256 46.1064 37.8348 45.7248C36.8514 45.3432 36.0111 44.723 35.3139 43.8643C34.6166 42.9983 34.1359 41.8498 33.8717 40.4187C33.6149 38.9876 33.6626 37.2262 34.0148 35.1346C34.3378 33.2264 34.8221 31.5348 35.468 30.0597C36.1138 28.5772 36.8991 27.3222 37.8238 26.2947C38.7485 25.2599 39.787 24.4783 40.9392 23.9499C42.0914 23.4142 43.3354 23.1463 44.6711 23.1463C46.0875 23.1463 47.3095 23.4252 48.3369 23.983C49.3644 24.5334 50.146 25.2893 50.6818 26.2507C51.2248 27.2048 51.478 28.291 51.4413 29.5092H47.5003C47.4783 28.6359 47.2067 27.946 46.6857 27.4396C46.1646 26.9332 45.4197 26.68 44.4509 26.68C42.873 26.68 41.5227 27.3626 40.3998 28.7276C39.2769 30.0853 38.499 31.9898 38.066 34.441L38.2421 34.2099C38.7118 33.564 39.2622 33.0173 39.8934 32.5696C40.5246 32.1219 41.2071 31.7807 41.941 31.5458C42.6822 31.311 43.4455 31.1935 44.2308 31.1935C45.5885 31.1935 46.7554 31.5238 47.7315 32.1843C48.7076 32.8375 49.4158 33.7328 49.8561 34.8704C50.3038 36.0079 50.4029 37.3069 50.1533 38.7674C49.9112 40.2132 49.3644 41.5085 48.5131 42.6534C47.6691 43.791 46.6013 44.6863 45.3096 45.3395C44.0179 45.9927 42.5758 46.3156 40.9832 46.3082ZM41.1264 43.0057C41.9483 43.0057 42.7226 42.8039 43.4492 42.4002C44.1831 41.9892 44.7995 41.4351 45.2986 40.7379C45.805 40.0407 46.1242 39.2628 46.2563 38.4041C46.3737 37.6335 46.315 36.94 46.0802 36.3235C45.8453 35.6997 45.4637 35.208 44.9353 34.8484C44.4069 34.4888 43.7574 34.3089 42.9868 34.3089C42.3703 34.3089 41.7722 34.43 41.1924 34.6722C40.6126 34.9144 40.0842 35.2483 39.6072 35.674C39.1375 36.0923 38.7448 36.5767 38.4293 37.1271C38.1137 37.6776 37.9045 38.2647 37.8018 38.8885C37.6844 39.6444 37.7431 40.3343 37.9779 40.9581C38.2201 41.5746 38.6091 42.07 39.1448 42.4442C39.6879 42.8185 40.3484 43.0057 41.1264 43.0057Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M59.9729 42.3672L62.4829 27.1314H65.9506L63.4296 42.3672H59.9729ZM55.0411 36.4776L55.6246 33.032H70.8604L70.2769 36.4776H55.0411Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    18: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 90,
-                                height: 70,
-                                viewBox: '0 0 90 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M9.15151 7.5068C9.39553 6.06024 10.6623 5 12.1467 5L86.9628 5C88.8391 5 90.2664 6.6646 89.9579 8.4932L80.8485 62.4932C80.6045 63.9398 79.3377 65 77.8533 65H3.03723C1.16087 65 -0.266406 63.3354 0.042066 61.5068L9.15151 7.5068Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M31.6256 23.4545L27.8827 46H23.7985L26.8809 27.4286H26.7488L20.9143 30.7972L21.5308 27.0543L27.7396 23.4545H31.6256Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M41.6654 46.3082C40.0141 46.3082 38.594 46.0257 37.4051 45.4606C36.2162 44.8955 35.3355 44.1249 34.763 43.1488C34.1979 42.1727 34.0181 41.0755 34.2236 39.8572C34.3851 38.9325 34.7373 38.0812 35.2804 37.3033C35.8235 36.518 36.4877 35.8648 37.273 35.3437C38.0656 34.8227 38.9132 34.4887 39.8159 34.342V34.2209C38.7078 33.9567 37.8821 33.3439 37.339 32.3825C36.7959 31.421 36.6345 30.3202 36.8546 29.0799C37.0601 27.9277 37.5555 26.9075 38.3408 26.0195C39.1334 25.1242 40.1278 24.4233 41.3241 23.9169C42.5204 23.4032 43.8377 23.1463 45.2762 23.1463C46.744 23.1463 48.01 23.4142 49.0741 23.9499C50.1383 24.4857 50.9272 25.2159 51.4409 26.1406C51.9547 27.0653 52.1161 28.1148 51.9253 29.2891C51.7125 30.5514 51.1584 31.6265 50.263 32.5146C49.375 33.4026 48.3402 33.9713 47.1586 34.2209V34.342C48.01 34.4961 48.7512 34.8447 49.3823 35.3878C50.0208 35.9309 50.4869 36.6061 50.7804 37.4133C51.074 38.2206 51.1364 39.105 50.9676 40.0664C50.7694 41.27 50.2373 42.3415 49.3713 43.2809C48.5053 44.2203 47.4045 44.9615 46.0688 45.5046C44.7404 46.0404 43.2726 46.3082 41.6654 46.3082ZM41.9956 43.1598C42.869 43.1598 43.6469 43.0093 44.3294 42.7084C45.0193 42.4002 45.5844 41.9782 46.0247 41.4425C46.4651 40.8994 46.744 40.2719 46.8614 39.56C46.9715 38.8481 46.8944 38.2243 46.6302 37.6886C46.366 37.1455 45.9477 36.7271 45.3752 36.4336C44.8101 36.1327 44.135 35.9822 43.3497 35.9822C42.5277 35.9822 41.7681 36.1437 41.0709 36.4666C40.3737 36.7895 39.7939 37.2372 39.3316 37.8097C38.8692 38.3821 38.5793 39.0353 38.4619 39.7692C38.3518 40.4517 38.4215 41.0498 38.6711 41.5636C38.9279 42.07 39.3389 42.4626 39.904 42.7415C40.4765 43.0204 41.1737 43.1598 41.9956 43.1598ZM43.6909 32.8888C44.4102 32.8888 45.067 32.7421 45.6615 32.4485C46.2559 32.1549 46.7513 31.7513 47.1476 31.2376C47.5439 30.7165 47.8008 30.1257 47.9182 29.4652C48.0283 28.8194 47.9769 28.2616 47.7641 27.7919C47.5586 27.3222 47.2137 26.9626 46.7293 26.7131C46.2523 26.4635 45.6651 26.3388 44.9679 26.3388C44.234 26.3388 43.5662 26.4782 42.9644 26.7571C42.3699 27.036 41.8745 27.4286 41.4782 27.935C41.0893 28.4341 40.8397 29.0175 40.7296 29.6854C40.6196 30.3312 40.6746 30.8963 40.8948 31.3807C41.1223 31.8577 41.4746 32.2283 41.9516 32.4925C42.436 32.7567 43.0158 32.8888 43.6909 32.8888Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M60.9275 42.3672L63.4375 27.1314H66.9052L64.3842 42.3672H60.9275ZM55.9957 36.4776L56.5792 33.032H71.815L71.2315 36.4776H55.9957Z',
-                                fill: '#DADADA'
-                            })
-                        )
-                },
-                c5 = {
-                    U: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 75,
-                                height: 70,
-                                viewBox: '0 0 75 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M71.4586 5C73.3124 5 74.7223 6.66457 74.4175 8.49316L65.4175 62.4932C65.1764 63.9397 63.9251 65 62.4586 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H71.4586Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M44.9023 23.4545H48.9865L46.5426 38.1839C46.2784 39.7985 45.6619 41.2186 44.6932 42.4442C43.7318 43.6699 42.5062 44.6276 41.0163 45.3175C39.5265 46 37.8679 46.3413 36.0405 46.3413C34.1984 46.3413 32.6499 46 31.3949 45.3175C30.1399 44.6276 29.2335 43.6699 28.6758 42.4442C28.1254 41.2186 27.9822 39.7985 28.2464 38.1839L30.6903 23.4545H34.7745L32.3857 37.8427C32.2315 38.7821 32.3013 39.6187 32.5948 40.3526C32.8957 41.0792 33.3874 41.6516 34.07 42.07C34.7598 42.4883 35.6222 42.6974 36.657 42.6974C37.6918 42.6974 38.6238 42.4883 39.4531 42.07C40.2824 41.6516 40.9613 41.0792 41.4897 40.3526C42.0181 39.6187 42.3594 38.7821 42.5135 37.8427L44.9023 23.4545Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    'U/A 7+': (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 134,
-                                height: 70,
-                                viewBox: '0 0 134 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M130.459 5C132.312 5 133.722 6.66457 133.418 8.49316L124.418 62.4932C124.176 63.9397 122.925 65 121.459 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H130.459Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M34.8606 22.5605H38.9448L36.5009 37.2899C36.2367 38.9045 35.6202 40.3246 34.6514 41.5502C33.69 42.7758 32.4644 43.7335 30.9746 44.4234C29.4848 45.1059 27.8262 45.4472 25.9987 45.4472C24.1566 45.4472 22.6081 45.1059 21.3531 44.4234C20.0982 43.7335 19.1918 42.7758 18.634 41.5502C18.0836 40.3246 17.9405 38.9045 18.2047 37.2899L20.6486 22.5605H24.7328L22.3439 36.9486C22.1898 37.888 22.2595 38.7247 22.5531 39.4586C22.854 40.1851 23.3457 40.7576 24.0282 41.1759C24.7181 41.5942 25.5804 41.8034 26.6152 41.8034C27.65 41.8034 28.5821 41.5942 29.4114 41.1759C30.2407 40.7576 30.9195 40.1851 31.448 39.4586C31.9764 38.7247 32.3176 37.888 32.4718 36.9486L34.8606 22.5605Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M52.8312 21.5037L41.1181 48.4966H37.6284L49.3415 21.5037H52.8312Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M52.5265 45.1059H48.1671L59.8472 22.5605H64.8891L69.0944 45.1059H64.735L61.7076 27.1841H61.5315L52.5265 45.1059ZM54.1338 36.2661H66.023L65.4725 39.5466H53.5833L54.1338 36.2661Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M80.3588 45.1059L93.0957 26.1272L93.1397 25.9731H81.9991L82.5605 22.5605H97.9174L97.334 26.0502L84.5971 45.1059H80.3588Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M105.037 41.4731L107.547 26.2373H111.015L108.494 41.4731H105.037ZM100.105 35.5836L100.689 32.1379H115.925L115.341 35.5836H100.105Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    'U/A 13+': (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 151,
-                                height: 70,
-                                viewBox: '0 0 151 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M147.459 5C149.312 5 150.722 6.66457 150.418 8.49316L141.418 62.4932C141.176 63.9397 139.925 65 138.459 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H147.459Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M34.9143 22.5605H38.9985L36.5546 37.2899C36.2904 38.9045 35.6739 40.3246 34.7051 41.5502C33.7437 42.7758 32.5181 43.7335 31.0283 44.4234C29.5385 45.1059 27.8799 45.4472 26.0524 45.4472C24.2104 45.4472 22.6618 45.1059 21.4069 44.4234C20.1519 43.7335 19.2455 42.7758 18.6877 41.5502C18.1373 40.3246 17.9942 38.9045 18.2584 37.2899L20.7023 22.5605H24.7865L22.3976 36.9486C22.2435 37.888 22.3132 38.7247 22.6068 39.4586C22.9077 40.1851 23.3994 40.7576 24.0819 41.1759C24.7718 41.5942 25.6341 41.8034 26.6689 41.8034C27.7037 41.8034 28.6358 41.5942 29.4651 41.1759C30.2944 40.7576 30.9733 40.1851 31.5017 39.4586C32.0301 38.7247 32.3713 37.888 32.5255 36.9486L34.9143 22.5605Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M52.8849 21.5037L41.1719 48.4966H37.6822L49.3952 21.5037H52.8849Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M52.5802 45.1059H48.2209L59.9009 22.5605H64.9428L69.1481 45.1059H64.7887L61.7613 27.1841H61.5852L52.5802 45.1059ZM54.1875 36.2661H66.0767L65.5263 39.5466H53.6371L54.1875 36.2661Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M92.4999 22.5605L88.757 45.1059H84.6728L87.7552 26.5346H87.6231L81.7886 29.9032L82.4051 26.1603L88.6139 22.5605H92.4999Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M102.727 45.4142C101.112 45.4142 99.7178 45.1426 98.5436 44.5995C97.3767 44.0565 96.5107 43.3042 95.9456 42.3428C95.3805 41.374 95.1933 40.2512 95.3841 38.9742H99.4573C99.3839 39.5833 99.4793 40.1154 99.7435 40.5704C100.015 41.0181 100.422 41.3667 100.965 41.6162C101.509 41.8658 102.151 41.9905 102.892 41.9905C103.714 41.9905 104.477 41.8401 105.182 41.5392C105.886 41.2383 106.473 40.8163 106.943 40.2732C107.413 39.7301 107.703 39.1063 107.813 38.4017C107.915 37.7412 107.831 37.1688 107.56 36.6844C107.288 36.2 106.844 35.8258 106.228 35.5615C105.618 35.2973 104.844 35.1652 103.905 35.1652H101.824L102.342 32.0168H104.235C105.02 32.0168 105.739 31.87 106.393 31.5765C107.053 31.2829 107.604 30.8719 108.044 30.3435C108.484 29.8151 108.759 29.2023 108.87 28.5051C108.972 27.9106 108.928 27.3969 108.737 26.9639C108.554 26.5236 108.235 26.1823 107.78 25.9401C107.332 25.6906 106.756 25.5658 106.051 25.5658C105.347 25.5658 104.661 25.6906 103.993 25.9401C103.332 26.1896 102.771 26.5456 102.308 27.0079C101.846 27.4629 101.56 28.006 101.45 28.6372H97.5418C97.7693 27.3822 98.3014 26.2777 99.138 25.3236C99.982 24.3622 101.02 23.61 102.253 23.0669C103.494 22.5238 104.826 22.2522 106.25 22.2522C107.791 22.2522 109.075 22.5531 110.103 23.1549C111.137 23.7567 111.886 24.5494 112.348 25.5328C112.818 26.5162 112.957 27.5804 112.767 28.7253C112.561 30.0022 112.014 31.037 111.126 31.8297C110.246 32.6149 109.159 33.1397 107.868 33.4039V33.547C109.336 33.7672 110.433 34.3873 111.159 35.4074C111.886 36.4202 112.132 37.6422 111.897 39.0733C111.691 40.3356 111.167 41.4438 110.323 42.3978C109.479 43.3446 108.4 44.0858 107.086 44.6216C105.78 45.15 104.327 45.4142 102.727 45.4142Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M121.983 41.4731L124.493 26.2373H127.961L125.44 41.4731H121.983ZM117.052 35.5836L117.635 32.1379H132.871L132.287 35.5836H117.052Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    'U/A 16+': (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 151,
-                                height: 70,
-                                viewBox: '0 0 151 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M147.459 5C149.312 5 150.722 6.66457 150.418 8.49316L141.418 62.4932C141.176 63.9397 139.925 65 138.459 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H147.459Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M34.9597 22.5605H39.0439L36.6 37.2899C36.3358 38.9045 35.7193 40.3246 34.7506 41.5502C33.7891 42.7758 32.5635 43.7335 31.0737 44.4234C29.5839 45.1059 27.9253 45.4472 26.0979 45.4472C24.2558 45.4472 22.7072 45.1059 21.4523 44.4234C20.1973 43.7335 19.2909 42.7758 18.7332 41.5502C18.1827 40.3246 18.0396 38.9045 18.3038 37.2899L20.7477 22.5605H24.8319L22.443 36.9486C22.2889 37.888 22.3586 38.7247 22.6522 39.4586C22.9531 40.1851 23.4448 40.7576 24.1273 41.1759C24.8172 41.5942 25.6795 41.8034 26.7143 41.8034C27.7491 41.8034 28.6812 41.5942 29.5105 41.1759C30.3398 40.7576 31.0187 40.1851 31.5471 39.4586C32.0755 38.7247 32.4167 37.888 32.5709 36.9486L34.9597 22.5605Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M52.9303 21.5037L41.2173 48.4966H37.7276L49.4406 21.5037H52.9303Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M52.6256 45.1059H48.2663L59.9463 22.5605H64.9882L69.1935 45.1059H64.8341L61.8068 27.1841H61.6306L52.6256 45.1059ZM54.2329 36.2661H66.1221L65.5717 39.5466H53.6825L54.2329 36.2661Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M92.5453 22.5605L88.8024 45.1059H84.7182L87.8006 26.5346H87.6685L81.834 29.9032L82.4505 26.1603L88.6593 22.5605H92.5453Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M102.948 45.4142C101.84 45.4068 100.791 45.2124 99.7999 44.8307C98.8165 44.4491 97.9762 43.8289 97.279 42.9703C96.5818 42.1043 96.1011 40.9557 95.8369 39.5246C95.58 38.0935 95.6277 36.3321 95.98 34.2405C96.3029 32.3324 96.7872 30.6407 97.4331 29.1656C98.0789 27.6831 98.8642 26.4281 99.7889 25.4007C100.714 24.3659 101.752 23.5843 102.904 23.0559C104.057 22.5201 105.301 22.2522 106.636 22.2522C108.053 22.2522 109.275 22.5311 110.302 23.0889C111.33 23.6393 112.111 24.3952 112.647 25.3566C113.19 26.3107 113.443 27.3969 113.406 28.6152H109.465C109.443 27.7418 109.172 27.052 108.651 26.5456C108.13 26.0392 107.385 25.786 106.416 25.786C104.838 25.786 103.488 26.4685 102.365 27.8336C101.242 29.1913 100.464 31.0958 100.031 33.547L100.207 33.3158C100.677 32.67 101.227 32.1232 101.859 31.6755C102.49 31.2279 103.172 30.8866 103.906 30.6517C104.647 30.4169 105.411 30.2995 106.196 30.2995C107.554 30.2995 108.72 30.6297 109.697 31.2902C110.673 31.9434 111.381 32.8388 111.821 33.9763C112.269 35.1139 112.368 36.4129 112.118 37.8733C111.876 39.3191 111.33 40.6145 110.478 41.7593C109.634 42.8969 108.566 43.7923 107.275 44.4454C105.983 45.0986 104.541 45.4215 102.948 45.4142ZM103.091 42.1116C103.913 42.1116 104.688 41.9098 105.414 41.5061C106.148 41.0952 106.765 40.5411 107.264 39.8439C107.77 39.1467 108.089 38.3687 108.221 37.5101C108.339 36.7395 108.28 36.0459 108.045 35.4294C107.81 34.8056 107.429 34.3139 106.9 33.9543C106.372 33.5947 105.723 33.4149 104.952 33.4149C104.335 33.4149 103.737 33.536 103.158 33.7782C102.578 34.0204 102.049 34.3543 101.572 34.7799C101.103 35.1983 100.71 35.6826 100.394 36.2331C100.079 36.7835 99.8696 37.3706 99.7669 37.9944C99.6495 38.7504 99.7082 39.4402 99.943 40.064C100.185 40.6805 100.574 41.1759 101.11 41.5502C101.653 41.9245 102.314 42.1116 103.091 42.1116Z',
-                                fill: '#DADADA'
-                            }),
-                            h.createElement('path', {
-                                d: 'M121.938 41.4731L124.448 26.2373H127.916L125.395 41.4731H121.938ZM117.006 35.5836L117.59 32.1379H132.825L132.242 35.5836H117.006Z',
-                                fill: '#DADADA'
-                            })
-                        ),
-                    A: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 75,
-                                height: 70,
-                                viewBox: '0 0 75 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'M71.4586 5C73.3124 5 74.7223 6.66457 74.4175 8.49316L65.4175 62.4932C65.1764 63.9397 63.9251 65 62.4586 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H71.4586Z',
-                                fill: '#4A4E58',
-                                fillOpacity: 0.7
-                            }),
-                            h.createElement('path', {
-                                d: 'M29.9941 46H25.6347L37.3147 23.4545H42.3566L46.5619 46H42.2025L39.1752 28.0781H38.999L29.9941 46ZM31.6013 37.1602H43.4905L42.9401 40.4407H31.0509L31.6013 37.1602Z',
-                                fill: '#DADADA'
-                            })
-                        )
-                },
-                c6 = {
-                    G: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                fill: 'none',
-                                height: 70,
-                                viewBox: '0 0 71 70',
-                                width: 71,
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement('path', {
-                                d: 'm70.0249 64.1595c0 3.2104-2.6306 5.8405-5.8292 5.8405h-58.34158c-3.21101 0-5.8292177-2.6301-5.8292177-5.8405v-58.33131c0-3.21044 2.6182077-5.82819 5.8292177-5.82819h58.34158c3.211 0 5.8292 2.61775 5.8292 5.82819z',
-                                fill: '#fff'
-                            }),
-                            h.createElement('path', {
-                                d: 'm66.837 61.508c0 2.9185-2.3909 5.3095-5.2983 5.3095h-53.02754c-2.91854 0-5.29827-2.391-5.29827-5.3095v-53.0276c0-2.91854 2.37973-5.29827 5.29827-5.29827h53.02754c2.9186 0 5.2983 2.37973 5.2983 5.29827z',
-                                fill: '#0db14b'
-                            }),
-                            h.createElement(
-                                'g',
-                                {
-                                    fill: '#fff'
-                                },
-                                h.createElement('path', {
-                                    d: 'm40.6487 46.3316c-1.6277 1.6838-3.5584 2.3012-5.7248 2.3012-2.1665 0-4.0411-.797-5.4667-2.2226-2.0542-2.0542-1.9981-4.5911-1.9981-8.0933 0-3.5023-.0561-6.0391 1.9981-8.0821 1.4256-1.4256 3.1767-2.2226 5.4667-2.2226 4.7033 0 7.0942 3.0757 7.6331 6.4994h-3.985c-.4602-1.9083-1.6276-2.9635-3.6481-2.9635-1.0777 0-1.9644.4266-2.5369 1.0889-.7633.8531-.9654 1.796-.9654 5.6911s.2021 4.8717.9654 5.7248c.5725.6511 1.4592 1.0552 2.5369 1.0552 1.1898 0 2.1552-.4266 2.8175-1.1337.651-.7409.9092-1.6501.9092-2.7053v-.7633h-3.7267v-3.3002h7.6555v2.9634c0 2.9298-.5164 4.6921-1.9419 6.1739z'
-                                }),
-                                h.createElement('path', {
-                                    d: 'm34.4525 15.4512-21.4513 36.3021h44.0475l-22.0237-37.2562-.5613.9541zm.5725 1.6164c1.0439 1.7624 18.6449 31.5539 19.7225 33.3724h-39.4451c1.0776-1.8185 18.6786-31.61 19.7226-33.3724z'
-                                })
-                            )
-                        ),
-                    PG: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 71,
-                                height: 70,
-                                viewBox: '0 0 71 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'Australia Rating'
-                                },
-                                h.createElement('path', {
-                                    id: 'Outline',
-                                    d: 'M70.0249 64.1595C70.0249 67.3699 67.3943 70 64.1957 70H5.85412C2.64311 70 0.0249023 67.3699 0.0249023 64.1595V5.82819C0.0249023 2.61775 2.64311 0 5.85412 0H64.1957C67.4067 0 70.0249 2.61775 70.0249 5.82819V64.1595Z',
-                                    fill: 'white'
-                                }),
-                                h.createElement('path', {
-                                    id: 'Background',
-                                    d: 'M66.837 61.508C66.837 64.4265 64.4461 66.8175 61.5387 66.8175H8.51116C5.59262 66.8175 3.21289 64.4265 3.21289 61.508V8.4804C3.21289 5.56186 5.59262 3.18213 8.51116 3.18213H61.5387C64.4573 3.18213 66.837 5.56186 66.837 8.4804V61.508Z',
-                                    fill: '#FFF200'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'PG'
-                                    },
-                                    h.createElement('path', {
-                                        id: 'Vector',
-                                        d: 'M26.0445 38.0868H21.5208V46.9434H16.9185V23.4043H26.0445C30.905 23.4043 33.8123 26.7494 33.8123 30.7455C33.8123 34.7417 30.905 38.0868 26.0445 38.0868ZM25.82 27.5015H21.5208V33.9559H25.82C27.9079 33.9559 29.2324 32.665 29.2324 30.7455C29.2324 28.826 27.9079 27.5015 25.82 27.5015Z',
-                                        fill: '#231F20'
-                                    }),
-                                    h.createElement('path', {
-                                        id: 'Vector_2',
-                                        d: 'M50.8745 44.4738C48.9887 46.427 46.7437 47.1454 44.2292 47.1454C41.7148 47.1454 39.5371 46.2249 37.8758 44.5636C35.4961 42.1839 35.5634 39.2429 35.5634 35.1794C35.5634 31.1159 35.4961 28.1749 37.8758 25.7952C39.5259 24.1451 41.5801 23.2134 44.2292 23.2134C49.6847 23.2134 52.4573 26.783 53.0859 30.7567H48.4611C47.9335 28.5453 46.5753 27.3218 44.2292 27.3218C42.972 27.3218 41.9393 27.8157 41.2882 28.579C40.3902 29.5668 40.1545 30.6669 40.1545 35.1906C40.1545 39.7143 40.3902 40.8481 41.2882 41.8359C41.9393 42.5992 42.972 43.0594 44.2292 43.0594C45.6212 43.0594 46.7324 42.5655 47.507 41.7349C48.2591 40.8818 48.5621 39.8154 48.5621 38.6031V37.7163H44.2292V33.8773H53.1196V37.3122C53.1196 40.7246 52.5246 42.7676 50.8745 44.4963V44.4738Z',
-                                        fill: '#231F20'
-                                    }),
-                                    h.createElement('path', {
-                                        id: 'Vector_3',
-                                        d: 'M58.4628 17.208H10.8232V52.758H59.2148V17.208H58.4515H58.4628ZM57.6882 18.7346V51.2314H12.3611C12.3611 49.8058 12.3611 20.1602 12.3611 18.7346H57.6994H57.6882Z',
-                                        fill: '#231F20'
-                                    })
-                                )
-                            )
-                        ),
-                    M: (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 71,
-                                height: 70,
-                                viewBox: '0 0 71 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'Australia Rating'
-                                },
-                                h.createElement('path', {
-                                    id: 'Outline',
-                                    d: 'M70.0249 64.1595C70.0249 67.3699 67.3943 70 64.1957 70H5.85412C2.64311 70 0.0249023 67.3699 0.0249023 64.1595V5.82819C0.0249023 2.61775 2.64311 0 5.85412 0H64.1957C67.4067 0 70.0249 2.61775 70.0249 5.82819V64.1595Z',
-                                    fill: 'white'
-                                }),
-                                h.createElement('path', {
-                                    id: 'Background',
-                                    d: 'M66.837 61.508C66.837 64.4265 64.4461 66.8175 61.5387 66.8175H8.51116C5.59262 66.8175 3.21289 64.4265 3.21289 61.508V8.4804C3.21289 5.56186 5.59262 3.18213 8.51116 3.18213H61.5387C64.4573 3.18213 66.837 5.56186 66.837 8.4804V61.508Z',
-                                    fill: '#00AEEF'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'M'
-                                    },
-                                    h.createElement('path', {
-                                        id: 'Vector',
-                                        d: 'M40.7723 46.3376V33.3388L36.5067 41.7914H33.5657L29.2665 33.3388V46.3376H24.9111V24.0332H29.1991L35.025 36.089L40.8172 24.0332H45.1164V46.3376H40.761H40.7723Z',
-                                        fill: 'white'
-                                    }),
-                                    h.createElement('path', {
-                                        id: 'Vector_2',
-                                        d: 'M16.5933 35C16.5933 45.17 24.855 53.4317 35.0249 53.4317C45.1949 53.4317 53.4566 45.17 53.4566 35C53.4566 24.8301 45.1837 16.5796 35.0249 16.5796C24.8662 16.5796 16.5933 24.8413 16.5933 35ZM18.0413 35C18.0413 25.6383 25.6632 18.0164 35.0249 18.0164C44.3867 18.0164 52.0086 25.6383 52.0086 35C52.0086 44.3618 44.3867 51.9837 35.0249 51.9837C25.6632 51.9837 18.0413 44.3618 18.0413 35Z',
-                                        fill: 'white'
-                                    })
-                                )
-                            )
-                        ),
-                    'MA 15+': (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 70,
-                                height: 70,
-                                viewBox: '0 0 70 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'Australia Rating'
-                                },
-                                h.createElement('path', {
-                                    id: 'Outline',
-                                    d: 'M70 64.1595C70 67.3699 67.3694 70 64.1708 70H5.82922C2.61821 70 0 67.3699 0 64.1595V5.82819C0 2.61775 2.61821 0 5.82922 0H64.1708C67.3818 0 70 2.61775 70 5.82819V64.1595Z',
-                                    fill: 'white'
-                                }),
-                                h.createElement('path', {
-                                    id: 'Background',
-                                    d: 'M66.8121 61.508C66.8121 64.4265 64.4212 66.8175 61.5138 66.8175H8.48626C5.56772 66.8175 3.18799 64.4265 3.18799 61.508V8.4804C3.18799 5.56186 5.56772 3.18213 8.48626 3.18213H61.5138C64.4324 3.18213 66.8121 5.56186 66.8121 8.4804V61.508Z',
-                                    fill: '#ED1C24'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'MA'
-                                    },
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'Group'
-                                        },
-                                        h.createElement('path', {
-                                            id: 'Vector',
-                                            d: 'M47.6752 40.1287V30.8059L45.7092 32.5356V31.3225L47.6752 29.6265H48.7425V40.1287H47.6752Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            id: 'Vector_2',
-                                            d: 'M55.4718 39.4548C54.9888 39.9378 54.3035 40.2298 53.3823 40.2298C52.4611 40.2298 51.7309 39.9378 51.2703 39.4772C50.8097 39.0055 50.5962 38.3989 50.5288 37.6464H51.5961C51.7309 38.691 52.2701 39.2863 53.3823 39.2863C53.8991 39.2863 54.3709 39.1066 54.6854 38.8033C55.2359 38.2641 55.2584 37.4217 55.2584 36.6691C55.2584 35.3887 55.0112 34.1194 53.4834 34.1194C52.5734 34.1194 51.9555 34.535 51.7421 35.1528H50.7872V29.6377H56.1009V30.5812H51.7533V33.9172C52.169 33.4567 52.8206 33.1984 53.6407 33.1984C54.4608 33.1984 55.0449 33.4455 55.4606 33.8611C56.2245 34.6249 56.3256 35.6919 56.3256 36.6804C56.3256 37.725 56.2358 38.7134 55.4831 39.466L55.4718 39.4548Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            id: 'Vector_3',
-                                            d: 'M61.2573 36.6809V39.2759H60.2687V36.6809H57.6736V35.6922H60.2687V33.1309H61.2573V35.6922H63.8411V36.6809H61.2573Z',
-                                            fill: 'white'
-                                        })
-                                    ),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'Group_2'
-                                        },
-                                        h.createElement('path', {
-                                            id: 'Vector_4',
-                                            d: 'M22.7017 42.3412V34.2764L20.0617 39.5219H18.2418L15.5793 34.2764V42.3412H12.8718V28.5029H15.5343L19.1517 35.9837L22.7466 28.5029H25.4091V42.3412H22.7017Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            id: 'Vector_5',
-                                            d: 'M35.5983 42.3412L34.7782 39.8925H29.8576L29.0263 42.3412H26.2065L31.2394 28.5029H33.3515L38.4068 42.3412H35.5871H35.5983ZM32.3741 32.5803L30.6328 37.6124H34.0704L32.3741 32.5803Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            id: 'Vector_6',
-                                            d: 'M35.1828 21H15.2197L6.2998 35.2988L15.2197 49.6088H35.43L44.3499 35.2988L35.43 21H35.1828ZM34.9357 21.8986C35.1828 22.303 43.013 34.8607 43.2939 35.31C43.013 35.7593 35.1828 48.3171 34.9357 48.7214H15.714C15.4669 48.3171 7.63667 35.7593 7.35582 35.31C7.63667 34.8607 15.4669 22.303 15.714 21.8986H34.9357Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        ),
-                    'R 18+': (e) =>
-                        h.createElement(
-                            'svg',
-                            {
-                                width: 71,
-                                height: 70,
-                                viewBox: '0 0 71 70',
-                                fill: 'none',
-                                xmlns: 'http://www.w3.org/2000/svg',
-                                ...e
-                            },
-                            h.createElement(
-                                'g',
-                                {
-                                    id: 'Australia Rating'
-                                },
-                                h.createElement('path', {
-                                    id: 'Outline',
-                                    d: 'M70.0249 64.1595C70.0249 67.3699 67.3943 70 64.1957 70H5.85412C2.64311 70 0.0249023 67.3699 0.0249023 64.1595V5.82819C0.0249023 2.61775 2.64311 0 5.85412 0H64.1957C67.4067 0 70.0249 2.61775 70.0249 5.82819V64.1595Z',
-                                    fill: 'white'
-                                }),
-                                h.createElement('path', {
-                                    id: 'Background',
-                                    d: 'M66.837 61.508C66.837 64.4265 64.4461 66.8175 61.5387 66.8175H8.51116C5.59262 66.8175 3.21289 64.4265 3.21289 61.508V8.4804C3.21289 5.56186 5.59262 3.18213 8.51116 3.18213H61.5387C64.4573 3.18213 66.837 5.56186 66.837 8.4804V61.508Z',
-                                    fill: '#231F20'
-                                }),
-                                h.createElement(
-                                    'g',
-                                    {
-                                        id: 'R'
-                                    },
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'Group'
-                                        },
-                                        h.createElement('path', {
-                                            id: 'Vector',
-                                            d: 'M44.4091 40.978V29.9437L42.0854 31.9866V30.5498L44.4091 28.5405H45.6663V40.978H44.4091Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            id: 'Vector_2',
-                                            d: 'M51.133 41.079C49.0676 41.079 47.4624 39.6421 47.4624 37.5543C47.4624 36.1062 48.2818 35.1296 49.337 34.5347C48.3604 33.9734 47.7094 33.0754 47.7094 31.7733C47.7094 29.8314 49.1574 28.4395 51.133 28.4395C53.1087 28.4395 54.5567 29.8426 54.5567 31.7733C54.5567 33.0642 53.9281 33.9734 52.9515 34.5347C53.9954 35.1296 54.8036 36.1062 54.8036 37.5543C54.8036 39.6534 53.1985 41.079 51.133 41.079ZM51.133 35.1072C49.7748 35.1072 48.7196 36.1511 48.7196 37.5318C48.7196 38.9125 49.7636 39.9565 51.133 39.9565C52.5025 39.9565 53.5464 38.9125 53.5464 37.5318C53.5464 36.1511 52.5025 35.1072 51.133 35.1072ZM51.133 29.5507C49.8534 29.5507 48.9666 30.4937 48.9666 31.7845C48.9666 33.0754 49.8534 34.0071 51.133 34.0071C52.4127 34.0071 53.2995 33.0979 53.2995 31.7845C53.2995 30.4712 52.4127 29.5507 51.133 29.5507Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            id: 'Vector_3',
-                                            d: 'M60.8427 36.892V39.9677H59.6753V36.892H56.5996V35.7246H59.6753V32.6826H60.8427V35.7246H63.896V36.892H60.8427Z',
-                                            fill: 'white'
-                                        })
-                                    ),
-                                    h.createElement(
-                                        'g',
-                                        {
-                                            id: 'Group_2'
-                                        },
-                                        h.createElement('path', {
-                                            id: 'Vector_4',
-                                            d: 'M26.4826 44.076L23.1824 37.3409H20.8139V44.076H17.5137V27.1821H24.1365C27.5826 27.1821 29.6144 29.5282 29.6144 32.3569C29.6144 34.7367 28.1663 36.2071 26.5275 36.8021L30.2991 44.0872H26.4826V44.076ZM23.912 30.1231H20.8026V34.5795H23.912C25.36 34.5795 26.3142 33.659 26.3142 32.3569C26.3142 31.0548 25.36 30.1231 23.912 30.1231Z',
-                                            fill: 'white'
-                                        }),
-                                        h.createElement('path', {
-                                            id: 'Vector_5',
-                                            d: 'M23.2048 18.3817L6.09766 35.4888L23.5977 52.9776L41.0864 35.4888L23.5864 18L23.2048 18.3817ZM23.5977 19.5378C24.3161 20.2563 38.8302 34.7704 39.5486 35.4888C38.8302 36.2072 24.3161 50.7101 23.5977 51.4285C22.8792 50.7101 8.36514 36.196 7.64673 35.4888C8.36514 34.7704 22.8792 20.2563 23.5977 19.5378Z',
-                                            fill: 'white'
-                                        })
-                                    )
-                                )
-                            )
-                        )
-                },
-                c7 = {
-                    [nS.BR_TV]: c2,
-                    [nS.BR_MOVIE]: c2,
-                    [nS.NZ_TV]: c4,
-                    [nS.NZ_MOVIE]: c4,
-                    [nS.AU_TV]: c6,
-                    [nS.AU_MOVIE]: c6,
-                    [nS.IN_TV]: c5,
-                    [nS.IN_MOVIE]: c5,
-                    [nS.UNIVERSAL_TV]: c3,
-                    [nS.UNIVERSAL_MOVIE]: c3
-                },
-                c8 = ({ RatingIcon: e, advisoryDescriptorsText: t, isVisible: i, ariaLabel: r }) => (e ? null : null),
-                c9 = ({ isVisible: e }) => {
-                    let { ratingDisplayName: t, advisoryComponents: i, ratingSystem: r, isReady: a } = c1(),
-                        { t: n } = oL(),
-                        { accessibilityAnnouncer: s } = oO(),
-                        o = (0, h.useRef)(!1),
-                        l = (0, h.useMemo)(() => (i ? i.join(', ') : ''), [i]),
-                        u = (0, h.useMemo)(
-                            () =>
-                                t
-                                    ? l.length > 0
-                                        ? n('ratings.announcement.ratedFor', {
-                                              rating: t,
-                                              descriptors: l
-                                          })
-                                        : n('ratings.announcement.ratedOnly', {
-                                              rating: t
-                                          })
-                                    : n('ratings.announcement.noRating'),
-                            [t, l, n]
-                        )
-                    ;((0, h.useEffect)(() => {
-                        e && a && t && !o.current && (s.announce(u, 'polite'), (o.current = !0))
-                    }, [e, a, t, u, s]),
-                        (0, h.useEffect)(() => {
-                            a || (o.current = !1)
-                        }, [a]))
-                    let c =
-                        void 0 !== r && t
-                            ? (function (e, t) {
-                                  let i = c7[e]
-                                  if (i) return i[t]
-                              })(r, t)
-                            : void 0
-                    return oi.jsx(c8, {
-                        RatingIcon: c,
-                        advisoryDescriptorsText: l,
-                        isVisible: e,
-                        ariaLabel: u
-                    })
-                },
-                de = ({ isRnaActive: e }) => {
-                    let { isVisible: t } = cW(),
-                        { isAnyMenuOpen: i } = oK(),
-                        r = t || i,
-                        a = t || i
-                    return {
-                        topVisible: r,
-                        bottomVisible: a,
-                        rnaVisible: e,
-                        topGradientVisible: r || a || e
-                    }
-                },
-                dt = ({ icon: e, ariaLabel: t, onClick: i, testId: r = 'next-episode-button' }) =>
-                    oi.jsx(oo, {
-                        Icon: e,
-                        label: t,
-                        onClick: i,
-                        'data-testid': r
-                    }),
-                di = () => {
-                    let {
-                            viewModelContainer: { nextEpisodeVM: e }
-                        } = oO(),
-                        [t, i] = (0, h.useState)(!1)
-                    return (
-                        (0, h.useEffect)(() => {
-                            let t = e.isVisible$.subscribe((e) => {
-                                i(e)
-                            })
-                            return () => {
-                                t.unsubscribe()
+                            function cW() {
+                                let e = (0, h.useContext)(cK)
+                                if (!e) throw Error('useAutohider must be used within an AutohiderProvider')
+                                return e
                             }
-                        }, [e]),
-                        {
-                            isVisible: t,
-                            loadNextEpisode: (0, h.useCallback)(() => {
-                                e.loadNextEpisode()
-                            }, [e])
-                        }
-                    )
-                },
-                dr = () => {
-                    let { isVisible: e, loadNextEpisode: t } = di(),
-                        { t: i } = oL(),
-                        r = (0, h.useCallback)(() => {
-                            e && t()
-                        }, [e, t])
-                    return (
-                        ls({
-                            shortcut: uv.NextEpisode,
-                            handleShortcut: r
-                        }),
-                        e
-                            ? oi.jsx('div', {
-                                  className: 'kat:relative',
-                                  children: oi.jsx(dt, {
-                                      icon: oi.jsx(oE, {}),
-                                      ariaLabel: i('nextEpisode.ariaLabel'),
-                                      onClick: t
-                                  })
-                              })
-                            : null
-                    )
-                },
-                uSM = () => {
-                    var state = h.useState(!1),
-                        isOpen = state[0],
-                        setIsOpen = state[1]
-                    var panelState = h.useState('main'),
-                        activePanel = panelState[0],
-                        setActivePanel = panelState[1]
-                    var menuRef = h.useRef(null)
-                    var t = oL().t
-                    var settings = lt()
-                    var speed = oX()
-                    var vmc = oO().viewModelContainer.trackSelectionVM
+                            let cQ = ({ isVisible: e, children: t, className: i = '', 'data-testid': r }) => {
+                                    let a = 'kat:transition-opacity',
+                                        n = i ? `${a} ${i}` : a
+                                    return oi.jsx('div', {
+                                        className: n,
+                                        style: {
+                                            opacity: e ? 1 : 0,
+                                            transitionDuration: '200ms',
+                                            transitionTimingFunction: 'ease',
+                                            pointerEvents: e ? 'auto' : 'none'
+                                        },
+                                        'data-overlay-visible': e,
+                                        'data-testid': r,
+                                        children: t
+                                    })
+                                },
+                                cJ = (e) =>
+                                    oi.jsx(cQ, {
+                                        'data-testid': 'top-controls-autohide',
+                                        ...e
+                                    }),
+                                cX = (e) =>
+                                    oi.jsx(cQ, {
+                                        'data-testid': 'bottom-controls-autohide',
+                                        ...e
+                                    }),
+                                c0 = ({ children: e, ...t }) => {
+                                    let {
+                                            viewModelContainer: { playPauseButtonVM: i }
+                                        } = oO(),
+                                        r = (0, h.useRef)(null),
+                                        a = (0, h.useCallback)(
+                                            (e) => {
+                                                null !== r.current && r.current.contains(e.target) && !1 === e.defaultPrevented && i.togglePlayPause()
+                                            },
+                                            [i]
+                                        )
+                                    return oi.jsx('div', {
+                                        ref: r,
+                                        onClick: a,
+                                        ...t,
+                                        children: oi.jsx(oY.Provider, {
+                                            value: r,
+                                            children: e
+                                        })
+                                    })
+                                },
+                                c1 = () => {
+                                    let {
+                                            viewModelContainer: { ratingsAdvisoriesVM: e }
+                                        } = oO(),
+                                        [t, i] = (0, h.useState)(void 0),
+                                        [r, a] = (0, h.useState)(!1),
+                                        n = (0, h.useRef)(0),
+                                        s = (0, h.useRef)(void 0)
+                                    ;((0, h.useEffect)(() => {
+                                        let t = e.ratingsAdvisories$.subscribe((e) => {
+                                            i(e)
+                                        })
+                                        return () => t.unsubscribe()
+                                    }, [e]),
+                                        (0, h.useEffect)(() => {
+                                            t && !t.isReady && ((n.current = 0), a(!1))
+                                        }, [null == t ? void 0 : t.isReady]))
+                                    let o = (0, h.useCallback)(() => {
+                                        void 0 !== s.current && (clearInterval(s.current), (s.current = void 0))
+                                    }, [])
+                                    ;(0, h.useEffect)(
+                                        () => (
+                                            (null == t ? void 0 : t.isReady) !== !0 || r
+                                                ? o()
+                                                : (s.current = setInterval(() => {
+                                                      ;((n.current += 100), n.current >= 5e3 && (o(), a(!0)))
+                                                  }, 100)),
+                                            o
+                                        ),
+                                        [null == t ? void 0 : t.isReady, r, o]
+                                    )
+                                    let l = (null == t ? void 0 : t.ratingDisplayName) !== void 0 && (null == t ? void 0 : t.ratingSystem) !== void 0
+                                    return {
+                                        ratingDisplayName: null == t ? void 0 : t.ratingDisplayName,
+                                        ratingSystem: null == t ? void 0 : t.ratingSystem,
+                                        advisoryComponents: (null == t ? void 0 : t.advisoryComponents) ?? [],
+                                        isActive: l && (null == t ? void 0 : t.isReady) === !0 && !r,
+                                        isReady: (null == t ? void 0 : t.isReady) === !0
+                                    }
+                                },
+                                c2 = {
+                                    L: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=False, Rating=L'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#00A651'
+                                                    }),
+                                                    h.createElement('path', {
+                                                        id: 'L',
+                                                        fillRule: 'evenodd',
+                                                        clipRule: 'evenodd',
+                                                        d: 'M23.6706 19.3121C26.5534 19.2721 29.4559 19.3121 32.3386 19.2921C32.4187 27.7394 32.3586 36.2066 32.3586 44.6538C37.0028 44.6738 41.6472 44.6139 46.3114 44.6738C46.3715 46.6756 46.3314 48.6974 46.3314 50.6991C38.7845 50.7191 31.2375 50.6991 23.6706 50.6991C23.6506 40.2701 23.6506 29.8011 23.6706 19.3121Z',
+                                                        fill: 'white'
+                                                    })
+                                                )
+                                            )
+                                        ),
+                                    10: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=False, Rating=10'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#0095DA'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 10
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M45.1693 44.6082C45.1693 46.3298 45.0291 47.4908 44.769 48.0912C44.4887 48.6917 44.0283 48.992 43.3877 48.992C42.7071 48.992 42.2466 48.7317 41.9864 48.1913C41.7261 47.6508 41.606 46.4498 41.606 44.6082V25.3516C41.606 23.6702 41.7462 22.5092 42.0063 21.8887C42.2866 21.2681 42.747 20.9479 43.4076 20.9479C44.0682 20.9479 44.5287 21.2281 44.789 21.8086C45.0493 22.3692 45.1693 23.5501 45.1693 25.3316V44.6082ZM50.394 19.0462C49.093 17.4249 46.7508 16.6041 43.3877 16.6041C40.0245 16.6041 37.6825 17.4249 36.3613 19.0462C35.0601 20.6676 34.3995 23.6503 34.3995 27.994V41.9459C34.3995 46.2896 35.0401 49.2922 36.3613 50.9336C37.6623 52.5751 40.0045 53.3959 43.3877 53.3959C46.7308 53.3959 49.0728 52.5751 50.394 50.9137C51.7153 49.2523 52.3759 46.2697 52.3759 41.9461V27.994C52.3759 23.6503 51.7354 20.6676 50.394 19.0462Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M20.7469 20.2273C19.9061 21.1482 18.8452 21.9488 17.624 22.6494V29.0349C18.4648 28.7347 19.2255 28.3543 19.9261 27.9138C20.6268 27.4534 21.2674 26.933 21.8679 26.3126V52.7552H28.7542V17.1646H22.7087C22.2483 18.2856 21.6076 19.3066 20.7469 20.2273Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    12: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=False, Rating=12'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#FBC115'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 12
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M52.0256 26.5628V27.0832C52.0256 28.7246 51.7853 30.2659 51.3049 31.6872C50.8245 33.1083 50.0038 34.6297 48.8626 36.2711L40.8353 47.6608H52.6261V53.0655H33.5486V46.4399L41.8562 34.3295C42.8171 32.9483 43.5578 31.6471 44.0584 30.4062C44.5588 29.1651 44.8191 28.064 44.8191 27.1033V25.6621C44.8191 23.8804 44.6988 22.6994 44.4387 22.1389C44.1784 21.5584 43.718 21.2783 43.0374 21.2783C42.3968 21.2783 41.9563 21.5786 41.696 22.1791C41.4359 22.7795 41.3157 23.9405 41.3157 25.6621V27.1033H34.1091V26.5828C34.1091 22.9397 34.7697 20.4176 36.071 19.0362C37.3922 17.6351 39.7344 16.9346 43.0973 16.9346C46.4605 16.9346 48.7827 17.6152 50.0837 18.9963C51.385 20.3575 52.0256 22.8796 52.0256 26.5628Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M22.4784 17.495H28.504V53.0656H21.6177V26.6028C21.0172 27.2233 20.3766 27.7439 19.6758 28.2041C18.9753 28.6446 18.2146 29.0249 17.3738 29.3252V22.9396C18.5949 22.2391 19.6558 21.4384 20.4966 20.5175C21.3774 19.6168 22.018 18.5959 22.4784 17.495Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    14: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=False, Rating=14'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#F58220'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 14
+                                                        },
+                                                        h.createElement('path', {
+                                                            d: 'M27.8334 17.2448H21.8079C21.3674 18.3456 20.7068 19.3666 19.866 20.2873C19.0052 21.2082 17.9643 22.0088 16.7432 22.7094V29.0749C17.564 28.7747 18.3247 28.3943 19.0252 27.9539C19.726 27.4936 20.3666 26.9731 20.9671 26.3526V52.7553H27.8334V17.2448Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M48.9726 17.2449H39.2435L32.5975 38.9034V44.9687H42.2263V52.7554H48.9726V44.9687H53.2564V39.6641H48.9726V17.2449ZM37.8424 39.6641L42.4065 22.4093H42.847L42.4464 39.6641H37.8424Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    16: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=False, Rating=16'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#EC1D25'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 16
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M52.256 25.742V25.3617C52.256 22.0387 51.6154 19.7568 50.3343 18.5157C49.073 17.2746 46.771 16.6542 43.428 16.6542C40.1048 16.6542 37.8028 17.4748 36.5015 19.0962C35.2003 20.7177 34.5397 23.7003 34.5397 28.0239V41.936C34.5397 46.2796 35.2003 49.2622 36.5015 50.9036C37.8028 52.525 40.1048 53.3457 43.428 53.3457C46.731 53.3457 49.0331 52.525 50.3343 50.8836C51.6355 49.2422 52.2961 46.2596 52.2961 41.936V38.0926C52.2961 35.3101 51.8357 33.2684 50.9148 32.0073C49.9939 30.7462 48.5327 30.1058 46.5509 30.1058C45.5299 30.1058 44.609 30.306 43.8283 30.7063C43.0477 31.1066 42.3269 31.7271 41.7063 32.5479V25.3617C41.7063 23.7003 41.8465 22.5393 42.0866 21.9186C42.3469 21.2982 42.7874 20.9778 43.4078 20.9778C44.0285 20.9778 44.469 21.258 44.7091 21.7986C44.9494 22.3591 45.0694 23.5401 45.0694 25.3617V25.742H52.256ZM44.7091 36.0908C44.9494 36.6513 45.0694 37.8323 45.0694 39.6539V44.5782C45.0694 46.2997 44.9294 47.4605 44.6891 48.0612C44.4288 48.6617 44.0085 48.9619 43.3879 48.9619C42.7472 48.9619 42.307 48.6816 42.0666 48.1411C41.8265 47.5808 41.7063 46.3998 41.7063 44.5782V39.6539C41.7063 37.9725 41.8465 36.8315 42.0866 36.2108C42.3469 35.5904 42.7874 35.2702 43.4078 35.2702C44.0285 35.2702 44.469 35.5504 44.7091 36.0908Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            d: 'M28.7946 17.2347H22.7691C22.3086 18.3355 21.668 19.3565 20.8272 20.2772C19.9664 21.1981 18.9255 21.9987 17.7043 22.6993V29.0648C18.5252 28.7646 19.2858 28.3843 19.9864 27.9438C20.6872 27.4835 21.3278 26.963 21.9283 26.3425V52.7452H28.7946V17.2347Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    18: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=False, Rating=18'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: 'black'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 18
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M35.8207 31.6572C36.6615 32.8182 37.8225 33.6188 39.304 34.0391C37.7025 34.4996 36.4813 35.3404 35.6607 36.5613C34.8399 37.7824 34.4194 39.3438 34.4194 41.2453V44.5081C34.4194 47.5709 35.1002 49.7726 36.4813 51.1138C37.8627 52.455 40.1248 53.1356 43.2476 53.1356C46.3705 53.1356 48.6325 52.455 50.0339 51.0938C51.4552 49.7327 52.1557 47.5507 52.1557 44.5081V41.2453C52.1557 39.3637 51.7354 37.8024 50.8946 36.5813C50.0538 35.3404 48.8327 34.4996 47.2512 34.0391C48.7326 33.6188 49.8936 32.8382 50.7144 31.6772C51.5353 30.5162 51.9556 29.1149 51.9556 27.4936V25.4718C51.9556 22.4291 51.2949 20.2273 49.9338 18.8861C48.5926 17.545 46.3705 16.8644 43.3077 16.8644C40.2248 16.8644 37.9827 17.525 36.6216 18.8861C35.2402 20.2473 34.5597 22.4291 34.5597 25.4718V27.4936C34.5597 29.1149 34.98 30.4962 35.8207 31.6572ZM41.3659 44.4681V41.1052C41.3659 39.4238 41.5059 38.2828 41.8064 37.7023C42.0866 37.1218 42.587 36.8215 43.3077 36.8215C44.0283 36.8215 44.5087 37.1018 44.789 37.6421C45.0493 38.1827 45.1895 39.3437 45.1895 41.1052V44.4681C45.1895 46.1295 45.0493 47.2504 44.769 47.871C44.4887 48.4915 43.9883 48.7917 43.2876 48.7917C42.567 48.7917 42.0664 48.5115 41.7862 47.9711C41.5059 47.4306 41.3659 46.2496 41.3659 44.4681ZM41.5261 27.2533V25.4918C41.5261 23.7905 41.6461 22.6294 41.8865 22.0288C42.1465 21.4483 42.587 21.148 43.2276 21.148C43.8882 21.148 44.3285 21.4283 44.5888 21.9888C44.8491 22.5493 44.9691 23.7103 44.9691 25.4718V27.2333C44.9691 28.9548 44.8491 30.1158 44.6088 30.6963C44.3687 31.2769 43.9282 31.5771 43.2876 31.5771C42.627 31.5771 42.1665 31.3168 41.9064 30.7765C41.6461 30.2559 41.5261 29.0749 41.5261 27.2533Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            d: 'M28.814 17.4449H22.8686C22.4281 18.5458 21.7877 19.5467 20.9267 20.4475C20.0859 21.3482 19.0651 22.1488 17.844 22.8296V29.135C18.6646 28.8548 19.4253 28.4744 20.1061 28.0339C20.8066 27.5937 21.4473 27.0531 22.0278 26.4526V52.5351H28.814V17.4449Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    AL: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=True, Rating=L'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#00A651'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'AL'
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M36.1244 20.0371C38.8669 19.9971 40.3883 20.0371 43.1308 20.0171C43.2109 28.064 43.151 34.8499 43.151 42.8968C47.5749 42.9168 52.9398 42.8567 57.3639 42.9168C57.424 44.8385 57.3839 48.0412 57.3839 49.9629C50.1973 49.9829 43.311 49.9629 36.1244 49.9629C36.1244 40.0143 36.1045 30.0257 36.1244 20.0371Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M21.2507 39.2336L22.6321 26.923L24.0134 39.2336H21.2507ZM28.5376 20.0171H16.7265L12.6029 49.9829H20.8704L21.3308 44.4981H23.9333L24.3937 49.9829H32.6612L28.5376 20.0171Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    A10: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=True, Rating=10'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#0095DA'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'A10'
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M63.7164 28.2441V41.6958C63.7164 45.8594 63.0757 48.7417 61.7947 50.3432C60.5134 51.9444 58.2713 52.7453 55.0484 52.7453C51.7853 52.7453 49.5232 51.9444 48.2621 50.3631C47.0011 48.7819 46.3604 45.8993 46.3604 41.6958V28.2441C46.3604 24.0606 47.0011 21.178 48.2621 19.6167C49.5232 18.0354 51.7853 17.2548 55.0484 17.2548C58.2913 17.2548 60.5334 18.0354 61.8146 19.6167C63.0757 21.198 63.7164 24.0606 63.7164 28.2441ZM56.7699 25.682C56.7699 23.9605 56.6499 22.8394 56.3896 22.2791C56.1495 21.7186 55.689 21.4583 55.0484 21.4583C54.4077 21.4583 53.9675 21.7585 53.7072 22.359C53.4469 22.9597 53.3268 24.0806 53.3268 25.682V44.2579C53.3268 46.0394 53.4469 47.1804 53.7072 47.701C53.9473 48.2213 54.4077 48.4816 55.0684 48.4816C55.689 48.4816 56.1293 48.1814 56.3896 47.6009C56.6499 47.0204 56.7699 45.8993 56.7699 44.2379V25.682Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M34.6697 17.595H40.6151V52.6652H33.8289V26.6028C33.2484 27.2033 32.6077 27.7236 31.9072 28.1841C31.2064 28.6445 30.4657 29.0049 29.6451 29.285V22.9997C30.8662 22.3191 31.887 21.5183 32.7278 20.6176C33.5686 19.6969 34.2292 18.6959 34.6697 17.595Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M16.3529 40.1344L17.9743 25.802L19.5958 40.1344H16.3529ZM24.8407 17.7551H11.088L6.28357 52.6651H15.9124L16.4529 46.2796H19.4957L20.0362 52.6651H29.6451L24.8407 17.7551Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    A12: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=True, Rating=12'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#FBC115'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'A12'
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M63.6863 26.5726V27.093C63.6863 28.7344 63.446 30.2758 62.9656 31.6971C62.4852 33.1182 61.6646 34.6395 60.5233 36.281L52.496 47.6707H64.2868V53.0754H45.2094V46.4497L53.517 34.3393C54.4778 32.9582 55.2185 31.6569 55.7189 30.416C56.2195 29.1749 56.4798 28.0738 56.4798 27.1132V25.6719C56.4798 23.8903 56.3596 22.7093 56.0993 22.1488C55.8392 21.5683 55.3787 21.288 54.6982 21.288C54.0575 21.288 53.6171 21.5884 53.3568 22.1889C53.0967 22.7894 52.9764 23.9504 52.9764 25.6719V27.1132H45.7699V26.5726C45.7699 22.9294 46.4305 20.4072 47.7317 19.0261C49.0529 17.625 51.3951 16.9244 54.7581 16.9244C58.1212 16.9244 60.4434 17.605 61.7445 18.9862C63.0257 20.3873 63.6863 22.9094 63.6863 26.5726Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M34.3194 17.5048H40.3449V53.0755H33.4586V26.6327C32.8581 27.2533 32.2175 27.7737 31.5167 28.2341C30.8162 28.6744 30.0555 29.0547 29.2147 29.355V22.9695C30.4358 22.2689 31.4968 21.4683 32.3376 20.5474C33.2183 19.6267 33.8789 18.6259 34.3194 17.5048Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M10.6976 16.9443L5.71301 53.0755H15.6822L16.2428 46.4696H19.4056L19.9663 53.0755H29.9353L24.9307 16.9443H10.6976ZM17.8243 25.2715L19.5058 40.1243H16.1427L17.8243 25.2715Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    A14: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=True, Rating=14'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#F58220'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'A14'
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M54.0773 22.2991L49.5132 39.534H54.1173L54.5178 22.2791H54.0773V22.2991ZM50.9143 17.1147H60.6434V39.534H64.9273V44.8384H60.6434V52.6252H53.8971V44.8384H44.2683V38.7733L50.9143 17.1147Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M33.6786 17.1146H39.7041V52.6251H32.8378V26.2225C32.2373 26.8429 31.5967 27.3635 30.8961 27.8237C30.1954 28.2642 29.4347 28.6446 28.6139 28.9448V22.5593C29.835 21.8587 30.8759 21.0581 31.7367 20.1372C32.5775 19.2365 33.2181 18.2357 33.6786 17.1146Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M9.9568 17.4749L5.07227 52.8853H14.8411L15.3817 46.4199H18.4646L19.0051 52.8853H28.774L23.9096 17.4749H9.9568ZM16.9232 25.6421L18.5646 40.1744H15.2816L16.9232 25.6421Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    A16: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'A=True, Rating=16'
+                                                },
+                                                h.createElement('rect', {
+                                                    width: 70,
+                                                    height: 70,
+                                                    rx: 4,
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'Content'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        x: 3,
+                                                        y: 3,
+                                                        width: 64,
+                                                        height: 64,
+                                                        rx: 3.31034,
+                                                        fill: '#EC1D25'
+                                                    }),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'A16'
+                                                        },
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M57.4206 39.6539C57.4206 37.8323 57.3006 36.6513 57.0602 36.0908C56.8201 35.5504 56.3797 35.2702 55.759 35.2702C55.1386 35.2702 54.6981 35.5904 54.4378 36.2108C54.1977 36.8315 54.0575 37.9725 54.0575 39.6539V44.5782C54.0575 46.3998 54.1777 47.5808 54.4178 48.1411C54.6581 48.6817 55.0984 48.9619 55.739 48.9619C56.3597 48.9619 56.78 48.6617 57.0403 48.0612C57.2806 47.4605 57.4206 46.2997 57.4206 44.5782V39.6539ZM64.6272 25.3817V25.762H57.4406V25.3817C57.4406 23.5601 57.3205 22.3791 57.0802 21.8186C56.8401 21.2782 56.3997 20.998 55.7792 20.998C55.1585 20.998 54.7181 21.3182 54.458 21.9386C54.2177 22.5593 54.0776 23.7203 54.0776 25.3817V32.5678C54.6981 31.747 55.4188 31.1266 56.1995 30.7263C56.9802 30.3259 57.901 30.1258 58.922 30.1258C60.9038 30.1258 62.3651 30.7662 63.286 32.0273C64.2069 33.2884 64.6673 35.3301 64.6673 38.1126V41.936C64.6673 46.2596 64.0067 49.2422 62.7055 50.8836C61.4042 52.525 59.1022 53.3457 55.7992 53.3457C52.4762 53.3457 50.1739 52.525 48.8727 50.9036C47.5717 49.2622 46.9111 46.2796 46.9111 41.936V28.0239C46.9111 23.7003 47.5717 20.7177 48.8727 19.0962C50.1739 17.4748 52.4762 16.6542 55.7992 16.6542C59.1422 16.6542 61.4444 17.2746 62.7055 18.5157C63.9867 19.7568 64.6272 22.0387 64.6272 25.3817Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M35.1201 17.2347H41.1457V52.7452H34.2794V26.3425C33.6789 26.963 33.0382 27.4835 32.3375 27.9438C31.6369 28.3843 30.8762 28.7646 30.0554 29.0648V22.6993C31.2766 21.9987 32.3175 21.1981 33.1783 20.2772C34.0191 19.3565 34.6797 18.3557 35.1201 17.2347Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            fillRule: 'evenodd',
+                                                            clipRule: 'evenodd',
+                                                            d: 'M10.2173 17.595L5.33276 53.0053H15.0816L15.6222 46.5398H18.7051L19.2456 53.0053H29.0145L24.1501 17.595H10.2173ZM17.1837 25.782L18.8251 40.3145H15.5421L17.1837 25.782Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    A18: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('rect', {
+                                                width: 70,
+                                                height: 70,
+                                                rx: 4,
+                                                fill: 'white'
+                                            }),
+                                            h.createElement('rect', {
+                                                x: 3,
+                                                y: 3,
+                                                width: 64,
+                                                height: 64,
+                                                rx: 3.31034,
+                                                fill: 'black'
+                                            }),
+                                            h.createElement('path', {
+                                                fillRule: 'evenodd',
+                                                clipRule: 'evenodd',
+                                                d: 'M51.0949 34.0391C49.6135 33.6188 48.4525 32.8182 47.6117 31.6572C46.7709 30.4962 46.3506 29.1149 46.3506 27.4936V25.4718C46.3506 22.4291 47.0312 20.2473 48.4123 18.8861C49.7737 17.525 52.0158 16.8644 55.0985 16.8644C58.1614 16.8644 60.3833 17.545 61.7247 18.8861C63.0859 20.2273 63.7465 22.4291 63.7465 25.4718V27.4936C63.7465 29.1149 63.3262 30.5162 62.5054 31.6772C61.6846 32.8382 60.5236 33.6188 59.0421 34.0391C60.6236 34.4996 61.8448 35.3404 62.6856 36.5813C63.5264 37.8024 63.9466 39.3637 63.9466 41.2453V44.5081C63.9466 47.5507 63.2461 49.7327 61.8248 51.0938C60.4235 52.455 58.1614 53.1356 55.0386 53.1356C51.9157 53.1356 49.6536 52.455 48.2723 51.1138C46.8909 49.7726 46.2104 47.5709 46.2104 44.5081V41.2453C46.2104 39.3438 46.6309 37.7824 47.4515 36.5613C48.2723 35.3404 49.4934 34.4996 51.0949 34.0391ZM53.1768 41.1052V44.4681C53.1768 46.2496 53.317 47.4306 53.5971 47.9711C53.8773 48.5115 54.3779 48.7917 55.0985 48.7917C55.7992 48.7917 56.2996 48.4915 56.5799 47.871C56.8602 47.2504 57.0004 46.1295 57.0004 44.4681V41.1052C57.0004 39.3437 56.8602 38.1827 56.5999 37.6421C56.3196 37.1018 55.8392 36.8215 55.1187 36.8215C54.3979 36.8215 53.8975 37.1218 53.6173 37.7023C53.3168 38.2828 53.1768 39.4238 53.1768 41.1052ZM53.3168 25.4918V27.2533C53.3168 29.0749 53.4371 30.2559 53.6972 30.7765C53.9574 31.3168 54.4179 31.5771 55.0785 31.5771C55.7191 31.5771 56.1596 31.2769 56.3997 30.6963C56.64 30.1158 56.7601 28.9548 56.7601 27.2333V25.4718C56.7601 23.7103 56.64 22.5493 56.3797 21.9888C56.1194 21.4283 55.6792 21.148 55.0186 21.148C54.3779 21.148 53.9375 21.4483 53.6772 22.0288C53.4371 22.6294 53.3168 23.7905 53.3168 25.4918Z',
+                                                fill: 'white'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M34.8798 17.4449H40.8252V52.5351H34.039V26.4526C33.4585 27.0531 32.8178 27.5937 32.1173 28.0339C31.4365 28.4744 30.6758 28.8548 29.8552 29.135V22.8296C31.0763 22.1488 32.0971 21.3482 32.9379 20.4475C33.7989 19.5467 34.4393 18.5458 34.8798 17.4449Z',
+                                                fill: 'white'
+                                            }),
+                                            h.createElement('path', {
+                                                fillRule: 'evenodd',
+                                                clipRule: 'evenodd',
+                                                d: 'M24.8708 17.3449L29.7554 52.7353H19.9863L19.4458 46.2697H16.3631L15.8225 52.7353H6.05347L10.938 17.3449H24.8708ZM16.263 40.0444H19.5459L17.9044 25.5119L16.263 40.0444Z',
+                                                fill: 'white'
+                                            })
+                                        )
+                                },
+                                c4 = {
+                                    G: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    clipPath: 'url(#clip0_2542_572)'
+                                                },
+                                                h.createElement('path', {
+                                                    d: 'M70 35C70 15.67 54.33 0 35 0C15.67 0 0 15.67 0 35C0 54.33 15.67 70 35 70C54.33 70 70 54.33 70 35Z',
+                                                    fill: '#42C758'
+                                                }),
+                                                h.createElement('path', {
+                                                    d: 'M44.6699 47.5967L45.4224 51.4063H50.1256V33.2522H36.0162V38.7549H43.4471C43.2284 41.1064 42.4442 42.9089 41.0956 44.1635C39.7787 45.3863 37.8974 45.9977 35.4518 45.9977C33.7893 45.9977 32.3784 45.6838 31.219 45.0571C30.0895 44.4267 29.1231 43.5409 28.3971 42.4703C27.6645 41.3786 27.1237 40.1698 26.7981 38.896C26.4836 37.5389 26.3258 36.1502 26.3278 34.7572C26.3278 33.2839 26.4842 31.8566 26.7981 30.4774C27.1426 29.0982 27.6763 27.8742 28.3971 26.8089C29.1055 25.7233 30.076 24.8337 31.219 24.2222C32.3784 23.5638 33.7893 23.2346 35.4518 23.2346C37.239 23.2346 38.7593 23.7049 40.0138 24.6455C41.2684 25.5861 42.1138 26.9971 42.5535 28.8783H49.6082C49.4201 26.9653 48.9028 25.2722 48.0562 23.7989C47.2354 22.3548 46.1316 21.0911 44.811 20.0835C43.5039 19.069 42.0213 18.3037 40.4371 17.826C38.8295 17.2916 37.1459 17.0216 35.4518 17.0264C32.8815 17.0264 30.5606 17.4814 28.4912 18.3903C26.4535 19.2992 24.7287 20.5538 23.3178 22.1528C21.9068 23.7519 20.8251 25.6332 20.0726 27.7966C19.3201 29.9294 18.9438 32.2481 18.9438 34.7572C18.9438 37.2028 19.3201 39.4921 20.0726 41.6238C20.8251 43.7238 21.9068 45.5591 23.3178 47.1264C24.7287 48.6938 26.4535 49.933 28.4912 50.8419C30.5606 51.7202 32.8804 52.1588 35.4518 52.1588C37.0815 52.1588 38.697 51.8296 40.296 51.1711C41.8951 50.4821 43.3531 49.2899 44.6699 47.5967Z',
+                                                    fill: 'black'
+                                                })
+                                            ),
+                                            h.createElement(
+                                                'defs',
+                                                null,
+                                                h.createElement(
+                                                    'clipPath',
+                                                    {
+                                                        id: 'clip0_2542_572'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        width: 70,
+                                                        height: 70,
+                                                        fill: 'white'
+                                                    })
+                                                )
+                                            )
+                                        ),
+                                    PG: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    clipPath: 'url(#clip0_2542_565)'
+                                                },
+                                                h.createElement('path', {
+                                                    d: 'M70 35C70 15.67 54.33 0 35 0C15.67 0 0 15.67 0 35C0 54.33 15.67 70 35 70C54.33 70 70 54.33 70 35Z',
+                                                    fill: '#FFEF00'
+                                                }),
+                                                h.createElement('path', {
+                                                    d: 'M17.813 34.0682V26.11H22.3499C23.0193 26.11 23.6635 26.1592 24.2837 26.2588C24.9027 26.3572 25.4485 26.5563 25.9199 26.8538C26.3902 27.1272 26.7621 27.5232 27.0355 28.0438C27.333 28.5644 27.4818 29.2469 27.4818 30.0891C27.4818 30.9313 27.333 31.6138 27.0355 32.1344C26.7621 32.655 26.3902 33.0641 25.9199 33.3616C25.4496 33.635 24.9027 33.821 24.2837 33.9194C23.6635 34.0178 23.0193 34.0682 22.3499 34.0682H17.813ZM11.9746 21.5732V48.125H17.813V38.605H23.949C25.6093 38.605 27.0224 38.3699 28.1884 37.8985C29.3532 37.403 30.2949 36.7577 31.0146 35.9647C31.746 35.1924 32.2928 34.2642 32.6137 33.25C32.9571 32.2315 33.1329 31.164 33.1343 30.0891C33.1369 29.0139 32.961 27.9457 32.6137 26.9282C32.2928 25.914 31.746 24.9858 31.0146 24.2135C30.2949 23.4205 29.3532 22.7883 28.1884 22.3169C27.0224 21.8214 25.6093 21.5732 23.949 21.5732H11.9746ZM55.2226 45.1128L55.8176 48.125H59.5363V33.7707H48.3801V38.1216H54.2568C54.0818 39.981 53.4627 41.4061 52.3974 42.3982C51.3551 43.365 49.8676 43.8485 47.9349 43.8485C46.6202 43.8485 45.5046 43.6002 44.588 43.1047C43.6949 42.6063 42.9308 41.9059 42.3568 41.0594C41.7771 40.1963 41.3491 39.2404 41.0913 38.2332C40.8426 37.1601 40.7178 36.0621 40.7195 34.9607C40.7195 33.7958 40.8441 32.6671 41.0913 31.5766C41.3648 30.4861 41.7859 29.5192 42.3557 28.676C42.9158 27.8175 43.6831 27.1141 44.587 26.6307C45.5057 26.11 46.6213 25.8497 47.9338 25.8497C49.347 25.8497 50.5501 26.2216 51.541 26.9653C52.5331 27.7091 53.2035 28.8247 53.5502 30.3122H59.1284C58.9785 28.7996 58.5705 27.4608 57.9001 26.296C57.2514 25.1542 56.379 24.155 55.3352 23.3582C54.3013 22.5559 53.1286 21.9509 51.8757 21.5732C50.6046 21.1506 49.2733 20.9371 47.9338 20.941C45.9016 20.941 44.0663 21.3008 42.4301 22.0194C40.819 22.738 39.4551 23.73 38.3395 24.9944C37.2238 26.2588 36.3696 27.7463 35.7746 29.4569C35.1796 31.1424 34.8821 32.9777 34.8821 34.9607C34.8821 36.8944 35.1785 38.7046 35.7746 40.39C36.3696 42.0514 37.2238 43.5017 38.3405 44.741C39.4562 45.9802 40.819 46.9602 42.4312 47.6788C44.0663 48.3733 45.9016 48.72 47.9349 48.72C49.2507 48.7147 50.5524 48.4493 51.7652 47.9391C53.0285 47.3933 54.1824 46.4516 55.2226 45.1128Z',
+                                                    fill: 'black'
+                                                })
+                                            ),
+                                            h.createElement(
+                                                'defs',
+                                                null,
+                                                h.createElement(
+                                                    'clipPath',
+                                                    {
+                                                        id: 'clip0_2542_565'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        width: 70,
+                                                        height: 70,
+                                                        fill: 'white'
+                                                    })
+                                                )
+                                            )
+                                        ),
+                                    M: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    clipPath: 'url(#clip0_2542_569)'
+                                                },
+                                                h.createElement('path', {
+                                                    d: 'M70 35C70 15.67 54.33 0 35 0C15.67 0 0 15.67 0 35C0 54.33 15.67 70 35 70C54.33 70 70 54.33 70 35Z',
+                                                    fill: '#FFEF00'
+                                                }),
+                                                h.createElement('path', {
+                                                    d: 'M18.2983 19.3878V51.4063H24.8915V28.9395H24.9812L32.8288 51.4063H38.2538L46.1026 28.7153H46.1922V51.4063H52.7843V19.3878H42.8738L35.7874 41.4061H35.6977L28.2088 19.3878H18.2983Z',
+                                                    fill: 'black'
+                                                })
+                                            ),
+                                            h.createElement(
+                                                'defs',
+                                                null,
+                                                h.createElement(
+                                                    'clipPath',
+                                                    {
+                                                        id: 'clip0_2542_569'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        width: 70,
+                                                        height: 70,
+                                                        fill: 'white'
+                                                    })
+                                                )
+                                            )
+                                        ),
+                                    13: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    clipPath: 'url(#clip0_2542_577)'
+                                                },
+                                                h.createElement('path', {
+                                                    d: 'M70 70V0H3.76089e-05C3.76089e-05 22.6042 0.000868018 47.3958 0 70H70Z',
+                                                    fill: '#F03936'
+                                                }),
+                                                h.createElement('path', {
+                                                    d: 'M27.649 51.4063V17.7188H22.2108C22.0183 19.0018 21.6169 20.0769 21.0077 20.9432C20.4094 21.7988 19.639 22.52 18.7458 23.0607C17.8796 23.5747 16.8843 23.9433 15.7621 24.1675C14.6705 24.36 13.5319 24.441 12.3452 24.4082V29.5575H20.8152V51.4063H27.649ZM42.1663 31.3382V36.1507C43.0008 36.1507 43.8671 36.1835 44.7651 36.2469C45.6947 36.2797 46.5457 36.4547 47.3157 36.7763C48.0735 37.0557 48.7281 37.5593 49.1926 38.22C49.7066 38.8938 49.9626 39.8716 49.9626 41.1557C49.9626 42.7919 49.4332 44.0913 48.3744 45.0538C47.3157 45.9835 46.0163 46.4494 44.4763 46.4494C43.481 46.4494 42.6158 46.2733 41.8776 45.92C41.1932 45.584 40.5867 45.1086 40.0969 44.5244C39.6032 43.8911 39.2282 43.1738 38.9901 42.4069C38.7318 41.5635 38.5862 40.6897 38.5569 39.8082H32.0601C32.0272 41.766 32.3007 43.4974 32.8782 45.0057C33.4874 46.5139 34.3383 47.7969 35.4288 48.8557C36.5193 49.8827 37.8351 50.668 39.3751 51.2138C40.9468 51.7596 42.6793 52.0319 44.5726 52.0319C46.2088 52.0319 47.7805 51.7913 49.2888 51.31C50.7971 50.8288 52.1282 50.1233 53.2832 49.1925C54.4434 48.2555 55.3805 47.0719 56.0263 45.7275C56.7318 44.3483 57.0851 42.7755 57.0851 41.0113C57.0851 39.0863 56.5557 37.4347 55.4969 36.0544C54.4382 34.6752 52.978 33.7761 51.1176 33.3594V33.2632C52.6893 32.8147 53.8607 31.9638 54.6307 30.7125C55.4324 29.4613 55.8338 28.0175 55.8338 26.3813C55.8338 24.873 55.4969 23.5419 54.8232 22.3869C54.1532 21.236 53.2519 20.2365 52.1763 19.4513C51.0947 18.6379 49.8706 18.034 48.5669 17.6707C47.2586 17.2597 45.8958 17.0487 44.5244 17.045C42.7919 17.045 41.2202 17.3338 39.8082 17.9113C38.4365 18.4309 37.1901 19.2345 36.1507 20.2694C35.1554 21.2965 34.3701 22.5313 33.7926 23.975C33.2468 25.386 32.9427 26.9588 32.8782 28.6913H39.3751C39.3422 26.9588 39.7601 25.5304 40.6263 24.4082C41.5243 23.2532 42.8401 22.6757 44.5726 22.6757C45.8238 22.6757 46.9307 23.0607 47.8932 23.8307C48.8557 24.6007 49.3369 25.7075 49.3369 27.1513C49.3369 28.1138 49.0963 28.8838 48.6151 29.4613C48.1666 30.0388 47.5727 30.4883 46.8344 30.8088C46.0968 31.1049 45.3174 31.2835 44.5244 31.3382C43.6899 31.4027 42.9046 31.4027 42.1663 31.3382Z',
+                                                    fill: 'black'
+                                                })
+                                            ),
+                                            h.createElement(
+                                                'defs',
+                                                null,
+                                                h.createElement(
+                                                    'clipPath',
+                                                    {
+                                                        id: 'clip0_2542_577'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        width: 70,
+                                                        height: 70,
+                                                        rx: 4,
+                                                        fill: 'white'
+                                                    })
+                                                )
+                                            )
+                                        ),
+                                    16: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    clipPath: 'url(#clip0_2542_548)'
+                                                },
+                                                h.createElement('path', {
+                                                    d: 'M70 70V0H3.76089e-05C3.76089e-05 22.6042 0.000868018 47.3958 0 70H70Z',
+                                                    fill: '#F03936'
+                                                }),
+                                                h.createElement('path', {
+                                                    d: 'M27.649 51.4063V17.7188H22.2108C22.0183 19.0018 21.6169 20.0769 21.0077 20.9432C20.4094 21.7988 19.639 22.52 18.7458 23.0607C17.8796 23.5747 16.8843 23.9433 15.7621 24.1675C14.6705 24.36 13.5319 24.441 12.3452 24.4082V29.5575H20.8152V51.4063H27.649ZM44.9576 33.9369C45.8238 33.9369 46.5774 34.1294 47.2194 34.5144C47.8762 34.8524 48.4386 35.3486 48.8557 35.9582C49.2724 36.5357 49.5776 37.2094 49.7701 37.9794C49.9943 38.7177 50.1069 39.4877 50.1069 40.2894C50.1069 41.0594 49.9943 41.813 49.7701 42.5513C49.5576 43.2656 49.215 43.9346 48.7594 44.5244C48.311 45.1019 47.7641 45.5668 47.1232 45.92C46.514 46.2733 45.7921 46.4494 44.9576 46.4494C44.0913 46.4494 43.3213 46.2733 42.6476 45.92C41.9831 45.5746 41.3941 45.1001 40.9151 44.5244C40.4622 43.9079 40.1053 43.2265 39.8563 42.5032C39.6346 41.7531 39.5212 40.9753 39.5194 40.1932C39.5194 39.3586 39.6321 38.5733 39.8563 37.835C40.0805 37.065 40.4174 36.3913 40.8669 35.8138C41.3141 35.2379 41.8913 34.7761 42.5513 34.4663C43.2568 34.113 44.0596 33.9369 44.9576 33.9369ZM49.8663 26.3813H56.3632C56.1707 24.873 55.7693 23.5419 55.1601 22.3869C54.5827 21.2713 53.7797 20.288 52.8019 19.4994C51.8199 18.6865 50.6933 18.0661 49.4813 17.6707C48.2301 17.254 46.8826 17.045 45.4388 17.045C43.0326 17.045 40.9949 17.5744 39.3269 18.6332C37.6665 19.6839 36.2676 21.0994 35.2363 22.7719C34.1776 24.4399 33.4076 26.3168 32.9263 28.4025C32.449 30.4538 32.2068 32.5527 32.2044 34.6588C32.2044 36.808 32.3969 38.9255 32.7819 41.0113C33.1669 43.0643 33.8571 44.9094 34.8513 46.5457C35.8426 48.1786 37.2127 49.5488 38.8457 50.54C40.5137 51.5354 42.6158 52.0319 45.1501 52.0319C46.9143 52.0319 48.5188 51.7268 49.9626 51.1175C51.4063 50.4755 52.6423 49.6093 53.6682 48.5188C54.7266 47.3963 55.5454 46.07 56.0744 44.6207C56.6519 43.1124 56.9407 41.4925 56.9407 39.76C56.9407 38.4125 56.7329 37.0804 56.3151 35.7657C55.9091 34.47 55.237 33.2735 54.3419 32.2525C53.3794 31.1938 52.2091 30.3604 50.8288 29.75C49.4496 29.108 48.0376 28.7875 46.5938 28.7875C44.9576 28.7875 43.5138 29.0763 42.2626 29.6538C41.0113 30.2313 39.9208 31.1938 38.9901 32.5413L38.8938 32.445C38.9266 31.5154 39.0546 30.4555 39.2788 29.2688C39.4906 28.1218 39.8463 27.0061 40.3376 25.9482C40.8188 24.8894 41.4608 24.0068 42.2626 23.3013C43.0971 22.563 44.123 22.1944 45.3426 22.1944C46.5293 22.1944 47.5246 22.6111 48.3263 23.4457C49.1145 24.2534 49.6497 25.2737 49.8663 26.3813Z',
+                                                    fill: 'black'
+                                                })
+                                            ),
+                                            h.createElement(
+                                                'defs',
+                                                null,
+                                                h.createElement(
+                                                    'clipPath',
+                                                    {
+                                                        id: 'clip0_2542_548'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        width: 70,
+                                                        height: 70,
+                                                        rx: 4,
+                                                        fill: 'white'
+                                                    })
+                                                )
+                                            )
+                                        ),
+                                    18: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    clipPath: 'url(#clip0_2575_691)'
+                                                },
+                                                h.createElement('path', {
+                                                    d: 'M70 70V0H3.76089e-05C3.76089e-05 22.6042 0.000868018 47.3958 0 70H70Z',
+                                                    fill: '#F03936'
+                                                }),
+                                                h.createElement('path', {
+                                                    d: 'M27.649 51.4063V17.7188H22.2108C22.0183 19.0018 21.6169 20.0769 21.0077 20.9432C20.4094 21.7988 19.639 22.52 18.7458 23.0607C17.8796 23.5747 16.8843 23.9433 15.7621 24.1675C14.6705 24.36 13.5319 24.441 12.3452 24.4082V29.5575H20.8152V51.4063H27.649ZM39.4713 26.8625C39.4713 26.0925 39.5993 25.4188 39.8563 24.8413C40.131 24.2813 40.5253 23.7885 41.0113 23.3975C41.4926 23.0125 42.0383 22.7238 42.6476 22.5313C43.2814 22.3081 43.9486 22.1941 44.6207 22.1944C45.6794 22.1944 46.5293 22.3552 47.1713 22.6757C47.8451 22.9961 48.358 23.3975 48.7113 23.8788C49.0963 24.36 49.3533 24.8741 49.4813 25.4188C49.6093 25.9329 49.6738 26.4141 49.6738 26.8625C49.6738 28.3063 49.1926 29.4132 48.2301 30.1832C47.2676 30.9215 46.0644 31.29 44.6207 31.29C43.2415 31.29 42.0383 30.9215 41.0113 30.1832C39.9843 29.4132 39.4713 28.3063 39.4713 26.8625ZM33.2632 26.2369C33.2632 27.9049 33.6799 29.365 34.5144 30.6163C35.349 31.8675 36.5838 32.7174 38.2201 33.1669V33.2632C36.1988 33.7444 34.6271 34.7069 33.5038 36.1507C32.4133 37.5944 31.8676 39.3915 31.8676 41.5407C31.8676 43.3694 32.2208 44.9422 32.9263 46.2569C33.6397 47.5445 34.625 48.6613 35.8138 49.5294C37.0492 50.4032 38.4364 51.0396 39.9044 51.4063C41.4578 51.8251 43.06 52.0355 44.6688 52.0319C46.2405 52.0319 47.7805 51.8241 49.2888 51.4063C50.7971 50.9579 52.1435 50.2994 53.3313 49.4332C54.514 48.5721 55.485 47.4529 56.1707 46.1607C56.909 44.8449 57.2776 43.2896 57.2776 41.4925C57.2776 39.375 56.7318 37.5944 55.6413 36.1507C54.5508 34.6741 52.9944 33.7116 50.9732 33.2632V33.1669C52.6094 32.6211 53.8279 31.7232 54.6307 30.4719C55.4652 29.2207 55.8819 27.7605 55.8819 26.0925C55.8819 25.258 55.6894 24.3283 55.3044 23.3013C54.9194 22.2425 54.2774 21.2636 53.3794 20.3657C52.5132 19.436 51.3582 18.6485 49.9144 18.0075C48.4707 17.3655 46.7065 17.045 44.6207 17.045C43.2415 17.045 41.8776 17.2375 40.5301 17.6225C39.2217 17.989 37.9849 18.5748 36.8726 19.355C35.8138 20.1251 34.9284 21.1088 34.2738 22.2425C33.6001 23.3975 33.2632 24.7286 33.2632 26.2369ZM38.7013 41.2038C38.7013 39.4713 39.2788 38.1555 40.4338 37.2575C41.5888 36.3279 43.0008 35.8619 44.6688 35.8619C45.4241 35.8536 46.1744 35.9841 46.8826 36.2469C47.5613 36.4872 48.1837 36.8639 48.7113 37.3538C49.2571 37.835 49.6738 38.4125 49.9626 39.0863C50.283 39.7283 50.4438 40.4502 50.4438 41.2519C50.4438 42.0865 50.2994 42.8564 50.0107 43.5619C49.7308 44.2548 49.3039 44.8788 48.7594 45.3907C48.2454 45.8719 47.6362 46.2569 46.9307 46.5457C46.2569 46.8027 45.5033 46.9307 44.6688 46.9307C43.8826 46.9333 43.1016 46.8032 42.3588 46.5457C41.6542 46.277 41.0025 45.886 40.4338 45.3907C39.9097 44.8617 39.4858 44.2421 39.1826 43.5619C38.8621 42.8564 38.7013 42.07 38.7013 41.2038Z',
+                                                    fill: 'black'
+                                                })
+                                            ),
+                                            h.createElement(
+                                                'defs',
+                                                null,
+                                                h.createElement(
+                                                    'clipPath',
+                                                    {
+                                                        id: 'clip0_2575_691'
+                                                    },
+                                                    h.createElement('rect', {
+                                                        width: 70,
+                                                        height: 70,
+                                                        rx: 4,
+                                                        fill: 'white'
+                                                    })
+                                                )
+                                            )
+                                        )
+                                },
+                                c3 = {
+                                    ALL: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 90,
+                                                height: 70,
+                                                viewBox: '0 0 90 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M19.9349 46H15.5756L27.2556 23.4545H32.2975L36.5028 46H32.1434L29.116 28.0781H28.9399L19.9349 46ZM21.5422 37.1601H33.4314L32.881 40.4407H20.9918L21.5422 37.1601Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M39.4723 46L43.2152 23.4545H47.2994L44.1289 42.5763H54.0586L53.4862 46H39.4723Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M57.0309 46L60.7738 23.4545H64.858L61.6875 42.5763H71.6172L71.0448 46H57.0309Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    PG: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 90,
+                                                height: 70,
+                                                viewBox: '0 0 90 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M24.1539 46L27.8968 23.4545H36.3514C38.0834 23.4545 39.4851 23.7775 40.5566 24.4233C41.6281 25.0618 42.373 25.9461 42.7914 27.0763C43.2097 28.1992 43.2978 29.4799 43.0556 30.9183C42.8207 32.3641 42.3033 33.6484 41.5034 34.7713C40.7107 35.8942 39.6649 36.7785 38.3659 37.4244C37.0669 38.0628 35.5478 38.3821 33.8084 38.3821H28.2051L28.7665 35.0245H33.8194C34.8322 35.0245 35.6909 34.8484 36.3954 34.4961C37.1073 34.1438 37.6687 33.6594 38.0797 33.043C38.4907 32.4265 38.7622 31.7183 38.8943 30.9183C39.0191 30.1184 38.9787 29.4138 38.7732 28.8047C38.5678 28.1955 38.1678 27.7222 37.5733 27.3846C36.9862 27.0396 36.1826 26.8672 35.1625 26.8672H31.4196L28.2381 46H24.1539Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M61.7095 30.6541C61.6288 30.0597 61.482 29.5276 61.2692 29.0579C61.0563 28.5808 60.7701 28.1772 60.4105 27.8469C60.0509 27.5093 59.6142 27.2525 59.1005 27.0763C58.5868 26.9002 57.9886 26.8121 57.3061 26.8121C56.0952 26.8121 54.9466 27.1167 53.8604 27.7258C52.7743 28.335 51.8459 29.2303 51.0753 30.4119C50.3047 31.5862 49.7799 33.0173 49.5011 34.7053C49.2222 36.4079 49.2368 37.85 49.5451 39.0316C49.8533 40.2132 50.4184 41.1122 51.2404 41.7287C52.0697 42.3378 53.1119 42.6424 54.3668 42.6424C55.519 42.6424 56.5649 42.4222 57.5042 41.9819C58.4436 41.5415 59.2216 40.9177 59.8381 40.1104C60.4619 39.2958 60.8582 38.3417 61.027 37.2482L61.9297 37.3913H55.7979L56.3484 34.1989H65.4964L65.0341 36.907C64.7185 38.8445 64.0323 40.5177 62.9755 41.9268C61.926 43.3286 60.616 44.4111 59.0454 45.1744C57.4822 45.9303 55.7686 46.3082 53.9045 46.3082C51.8349 46.3082 50.0918 45.8422 48.6754 44.9102C47.2663 43.9708 46.2682 42.6387 45.6811 40.9141C45.094 39.1821 44.9986 37.1271 45.3949 34.7493C45.6884 32.9292 46.2095 31.3036 46.9581 29.8725C47.714 28.4414 48.6387 27.2268 49.7322 26.2287C50.8331 25.2232 52.055 24.46 53.3981 23.9389C54.7411 23.4105 56.1502 23.1463 57.6253 23.1463C58.8656 23.1463 59.9958 23.3298 61.016 23.6967C62.0361 24.0563 62.9094 24.5701 63.636 25.2379C64.3699 25.9058 64.9313 26.6984 65.3203 27.6158C65.7093 28.5331 65.8927 29.5459 65.8707 30.6541H61.7095Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    12: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 90,
+                                                height: 70,
+                                                viewBox: '0 0 90 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M31.004 23.4545L27.2611 46H23.177L26.2593 27.4286H26.1272L20.2927 30.7972L20.9092 27.0543L27.118 23.4545H31.004Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M32.9856 46L33.4809 43.0497L42.574 35.3768C43.4473 34.6209 44.1812 33.9493 44.7757 33.3622C45.3775 32.7678 45.8508 32.199 46.1958 31.6559C46.5407 31.1055 46.7646 30.5183 46.8673 29.8945C46.9847 29.1826 46.926 28.5698 46.6912 28.0561C46.4563 27.5424 46.082 27.1497 45.5683 26.8782C45.0619 26.5993 44.4491 26.4599 43.7299 26.4599C42.9886 26.4599 42.3098 26.614 41.6933 26.9222C41.0768 27.2231 40.5631 27.6561 40.1521 28.2212C39.7485 28.779 39.4842 29.4395 39.3595 30.2028H35.4735C35.7083 28.7717 36.2441 27.5277 37.0807 26.4709C37.9174 25.4141 38.9632 24.5958 40.2182 24.016C41.4731 23.4362 42.8455 23.1463 44.3353 23.1463C45.8472 23.1463 47.1242 23.4289 48.1663 23.994C49.2158 24.5591 49.9717 25.3333 50.4341 26.3168C50.9038 27.3002 51.0322 28.4231 50.8194 29.6854C50.6726 30.5294 50.368 31.3587 49.9057 32.1733C49.4506 32.9806 48.7351 33.8833 47.759 34.8814C46.7829 35.8722 45.4472 37.0721 43.7519 38.4812L39.2274 42.4332L39.1944 42.5874H49.003L48.4415 46H32.9856Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M59.5491 42.3672L62.0591 27.1314H65.5267L63.0058 42.3672H59.5491ZM54.6173 36.4776L55.2007 33.032H70.4365L69.8531 36.4776H54.6173Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    14: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 90,
+                                                height: 70,
+                                                viewBox: '0 0 90 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M30.8077 23.4545L27.0648 46H22.9807L26.0631 27.4286H25.931L20.0964 30.7972L20.7129 27.0543L26.9217 23.4545H30.8077Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M33.0865 41.8168L33.6149 38.5692L45.6913 23.4545H48.3993L47.6288 28.0781H45.9885L37.8422 38.283L37.8202 38.4592H51.1845L50.6231 41.8168H33.0865ZM43.1373 46L43.9959 40.815L44.2932 39.3729L46.9242 23.4545H50.7772L47.0343 46H43.1373Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M60.7454 42.3672L63.2553 27.1314H66.723L64.2021 42.3672H60.7454ZM55.8136 36.4776L56.397 33.032H71.6328L71.0494 36.4776H55.8136Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    16: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 90,
+                                                height: 70,
+                                                viewBox: '0 0 90 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M9.5822 7.5068C9.82329 6.06024 11.0749 5 12.5414 5L86.4586 5C88.3124 5 89.7226 6.6646 89.4178 8.4932L80.4178 62.4932C80.1767 63.9398 78.9251 65 77.4586 65H3.54138C1.68757 65 0.277434 63.3354 0.5822 61.5068L9.5822 7.5068Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M30.5802 23.4545L26.8373 46H22.7531L25.8355 27.4286H25.7034L19.8689 30.7972L20.4854 27.0543L26.6942 23.4545H30.5802Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M40.9832 46.3082C39.8751 46.3009 38.8256 46.1064 37.8348 45.7248C36.8514 45.3432 36.0111 44.723 35.3139 43.8643C34.6166 42.9983 34.1359 41.8498 33.8717 40.4187C33.6149 38.9876 33.6626 37.2262 34.0148 35.1346C34.3378 33.2264 34.8221 31.5348 35.468 30.0597C36.1138 28.5772 36.8991 27.3222 37.8238 26.2947C38.7485 25.2599 39.787 24.4783 40.9392 23.9499C42.0914 23.4142 43.3354 23.1463 44.6711 23.1463C46.0875 23.1463 47.3095 23.4252 48.3369 23.983C49.3644 24.5334 50.146 25.2893 50.6818 26.2507C51.2248 27.2048 51.478 28.291 51.4413 29.5092H47.5003C47.4783 28.6359 47.2067 27.946 46.6857 27.4396C46.1646 26.9332 45.4197 26.68 44.4509 26.68C42.873 26.68 41.5227 27.3626 40.3998 28.7276C39.2769 30.0853 38.499 31.9898 38.066 34.441L38.2421 34.2099C38.7118 33.564 39.2622 33.0173 39.8934 32.5696C40.5246 32.1219 41.2071 31.7807 41.941 31.5458C42.6822 31.311 43.4455 31.1935 44.2308 31.1935C45.5885 31.1935 46.7554 31.5238 47.7315 32.1843C48.7076 32.8375 49.4158 33.7328 49.8561 34.8704C50.3038 36.0079 50.4029 37.3069 50.1533 38.7674C49.9112 40.2132 49.3644 41.5085 48.5131 42.6534C47.6691 43.791 46.6013 44.6863 45.3096 45.3395C44.0179 45.9927 42.5758 46.3156 40.9832 46.3082ZM41.1264 43.0057C41.9483 43.0057 42.7226 42.8039 43.4492 42.4002C44.1831 41.9892 44.7995 41.4351 45.2986 40.7379C45.805 40.0407 46.1242 39.2628 46.2563 38.4041C46.3737 37.6335 46.315 36.94 46.0802 36.3235C45.8453 35.6997 45.4637 35.208 44.9353 34.8484C44.4069 34.4888 43.7574 34.3089 42.9868 34.3089C42.3703 34.3089 41.7722 34.43 41.1924 34.6722C40.6126 34.9144 40.0842 35.2483 39.6072 35.674C39.1375 36.0923 38.7448 36.5767 38.4293 37.1271C38.1137 37.6776 37.9045 38.2647 37.8018 38.8885C37.6844 39.6444 37.7431 40.3343 37.9779 40.9581C38.2201 41.5746 38.6091 42.07 39.1448 42.4442C39.6879 42.8185 40.3484 43.0057 41.1264 43.0057Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M59.9729 42.3672L62.4829 27.1314H65.9506L63.4296 42.3672H59.9729ZM55.0411 36.4776L55.6246 33.032H70.8604L70.2769 36.4776H55.0411Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    18: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 90,
+                                                height: 70,
+                                                viewBox: '0 0 90 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M9.15151 7.5068C9.39553 6.06024 10.6623 5 12.1467 5L86.9628 5C88.8391 5 90.2664 6.6646 89.9579 8.4932L80.8485 62.4932C80.6045 63.9398 79.3377 65 77.8533 65H3.03723C1.16087 65 -0.266406 63.3354 0.042066 61.5068L9.15151 7.5068Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M31.6256 23.4545L27.8827 46H23.7985L26.8809 27.4286H26.7488L20.9143 30.7972L21.5308 27.0543L27.7396 23.4545H31.6256Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M41.6654 46.3082C40.0141 46.3082 38.594 46.0257 37.4051 45.4606C36.2162 44.8955 35.3355 44.1249 34.763 43.1488C34.1979 42.1727 34.0181 41.0755 34.2236 39.8572C34.3851 38.9325 34.7373 38.0812 35.2804 37.3033C35.8235 36.518 36.4877 35.8648 37.273 35.3437C38.0656 34.8227 38.9132 34.4887 39.8159 34.342V34.2209C38.7078 33.9567 37.8821 33.3439 37.339 32.3825C36.7959 31.421 36.6345 30.3202 36.8546 29.0799C37.0601 27.9277 37.5555 26.9075 38.3408 26.0195C39.1334 25.1242 40.1278 24.4233 41.3241 23.9169C42.5204 23.4032 43.8377 23.1463 45.2762 23.1463C46.744 23.1463 48.01 23.4142 49.0741 23.9499C50.1383 24.4857 50.9272 25.2159 51.4409 26.1406C51.9547 27.0653 52.1161 28.1148 51.9253 29.2891C51.7125 30.5514 51.1584 31.6265 50.263 32.5146C49.375 33.4026 48.3402 33.9713 47.1586 34.2209V34.342C48.01 34.4961 48.7512 34.8447 49.3823 35.3878C50.0208 35.9309 50.4869 36.6061 50.7804 37.4133C51.074 38.2206 51.1364 39.105 50.9676 40.0664C50.7694 41.27 50.2373 42.3415 49.3713 43.2809C48.5053 44.2203 47.4045 44.9615 46.0688 45.5046C44.7404 46.0404 43.2726 46.3082 41.6654 46.3082ZM41.9956 43.1598C42.869 43.1598 43.6469 43.0093 44.3294 42.7084C45.0193 42.4002 45.5844 41.9782 46.0247 41.4425C46.4651 40.8994 46.744 40.2719 46.8614 39.56C46.9715 38.8481 46.8944 38.2243 46.6302 37.6886C46.366 37.1455 45.9477 36.7271 45.3752 36.4336C44.8101 36.1327 44.135 35.9822 43.3497 35.9822C42.5277 35.9822 41.7681 36.1437 41.0709 36.4666C40.3737 36.7895 39.7939 37.2372 39.3316 37.8097C38.8692 38.3821 38.5793 39.0353 38.4619 39.7692C38.3518 40.4517 38.4215 41.0498 38.6711 41.5636C38.9279 42.07 39.3389 42.4626 39.904 42.7415C40.4765 43.0204 41.1737 43.1598 41.9956 43.1598ZM43.6909 32.8888C44.4102 32.8888 45.067 32.7421 45.6615 32.4485C46.2559 32.1549 46.7513 31.7513 47.1476 31.2376C47.5439 30.7165 47.8008 30.1257 47.9182 29.4652C48.0283 28.8194 47.9769 28.2616 47.7641 27.7919C47.5586 27.3222 47.2137 26.9626 46.7293 26.7131C46.2523 26.4635 45.6651 26.3388 44.9679 26.3388C44.234 26.3388 43.5662 26.4782 42.9644 26.7571C42.3699 27.036 41.8745 27.4286 41.4782 27.935C41.0893 28.4341 40.8397 29.0175 40.7296 29.6854C40.6196 30.3312 40.6746 30.8963 40.8948 31.3807C41.1223 31.8577 41.4746 32.2283 41.9516 32.4925C42.436 32.7567 43.0158 32.8888 43.6909 32.8888Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M60.9275 42.3672L63.4375 27.1314H66.9052L64.3842 42.3672H60.9275ZM55.9957 36.4776L56.5792 33.032H71.815L71.2315 36.4776H55.9957Z',
+                                                fill: '#DADADA'
+                                            })
+                                        )
+                                },
+                                c5 = {
+                                    U: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 75,
+                                                height: 70,
+                                                viewBox: '0 0 75 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M71.4586 5C73.3124 5 74.7223 6.66457 74.4175 8.49316L65.4175 62.4932C65.1764 63.9397 63.9251 65 62.4586 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H71.4586Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M44.9023 23.4545H48.9865L46.5426 38.1839C46.2784 39.7985 45.6619 41.2186 44.6932 42.4442C43.7318 43.6699 42.5062 44.6276 41.0163 45.3175C39.5265 46 37.8679 46.3413 36.0405 46.3413C34.1984 46.3413 32.6499 46 31.3949 45.3175C30.1399 44.6276 29.2335 43.6699 28.6758 42.4442C28.1254 41.2186 27.9822 39.7985 28.2464 38.1839L30.6903 23.4545H34.7745L32.3857 37.8427C32.2315 38.7821 32.3013 39.6187 32.5948 40.3526C32.8957 41.0792 33.3874 41.6516 34.07 42.07C34.7598 42.4883 35.6222 42.6974 36.657 42.6974C37.6918 42.6974 38.6238 42.4883 39.4531 42.07C40.2824 41.6516 40.9613 41.0792 41.4897 40.3526C42.0181 39.6187 42.3594 38.7821 42.5135 37.8427L44.9023 23.4545Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    'U/A 7+': (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 134,
+                                                height: 70,
+                                                viewBox: '0 0 134 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M130.459 5C132.312 5 133.722 6.66457 133.418 8.49316L124.418 62.4932C124.176 63.9397 122.925 65 121.459 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H130.459Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M34.8606 22.5605H38.9448L36.5009 37.2899C36.2367 38.9045 35.6202 40.3246 34.6514 41.5502C33.69 42.7758 32.4644 43.7335 30.9746 44.4234C29.4848 45.1059 27.8262 45.4472 25.9987 45.4472C24.1566 45.4472 22.6081 45.1059 21.3531 44.4234C20.0982 43.7335 19.1918 42.7758 18.634 41.5502C18.0836 40.3246 17.9405 38.9045 18.2047 37.2899L20.6486 22.5605H24.7328L22.3439 36.9486C22.1898 37.888 22.2595 38.7247 22.5531 39.4586C22.854 40.1851 23.3457 40.7576 24.0282 41.1759C24.7181 41.5942 25.5804 41.8034 26.6152 41.8034C27.65 41.8034 28.5821 41.5942 29.4114 41.1759C30.2407 40.7576 30.9195 40.1851 31.448 39.4586C31.9764 38.7247 32.3176 37.888 32.4718 36.9486L34.8606 22.5605Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M52.8312 21.5037L41.1181 48.4966H37.6284L49.3415 21.5037H52.8312Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M52.5265 45.1059H48.1671L59.8472 22.5605H64.8891L69.0944 45.1059H64.735L61.7076 27.1841H61.5315L52.5265 45.1059ZM54.1338 36.2661H66.023L65.4725 39.5466H53.5833L54.1338 36.2661Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M80.3588 45.1059L93.0957 26.1272L93.1397 25.9731H81.9991L82.5605 22.5605H97.9174L97.334 26.0502L84.5971 45.1059H80.3588Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M105.037 41.4731L107.547 26.2373H111.015L108.494 41.4731H105.037ZM100.105 35.5836L100.689 32.1379H115.925L115.341 35.5836H100.105Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    'U/A 13+': (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 151,
+                                                height: 70,
+                                                viewBox: '0 0 151 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M147.459 5C149.312 5 150.722 6.66457 150.418 8.49316L141.418 62.4932C141.176 63.9397 139.925 65 138.459 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H147.459Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M34.9143 22.5605H38.9985L36.5546 37.2899C36.2904 38.9045 35.6739 40.3246 34.7051 41.5502C33.7437 42.7758 32.5181 43.7335 31.0283 44.4234C29.5385 45.1059 27.8799 45.4472 26.0524 45.4472C24.2104 45.4472 22.6618 45.1059 21.4069 44.4234C20.1519 43.7335 19.2455 42.7758 18.6877 41.5502C18.1373 40.3246 17.9942 38.9045 18.2584 37.2899L20.7023 22.5605H24.7865L22.3976 36.9486C22.2435 37.888 22.3132 38.7247 22.6068 39.4586C22.9077 40.1851 23.3994 40.7576 24.0819 41.1759C24.7718 41.5942 25.6341 41.8034 26.6689 41.8034C27.7037 41.8034 28.6358 41.5942 29.4651 41.1759C30.2944 40.7576 30.9733 40.1851 31.5017 39.4586C32.0301 38.7247 32.3713 37.888 32.5255 36.9486L34.9143 22.5605Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M52.8849 21.5037L41.1719 48.4966H37.6822L49.3952 21.5037H52.8849Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M52.5802 45.1059H48.2209L59.9009 22.5605H64.9428L69.1481 45.1059H64.7887L61.7613 27.1841H61.5852L52.5802 45.1059ZM54.1875 36.2661H66.0767L65.5263 39.5466H53.6371L54.1875 36.2661Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M92.4999 22.5605L88.757 45.1059H84.6728L87.7552 26.5346H87.6231L81.7886 29.9032L82.4051 26.1603L88.6139 22.5605H92.4999Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M102.727 45.4142C101.112 45.4142 99.7178 45.1426 98.5436 44.5995C97.3767 44.0565 96.5107 43.3042 95.9456 42.3428C95.3805 41.374 95.1933 40.2512 95.3841 38.9742H99.4573C99.3839 39.5833 99.4793 40.1154 99.7435 40.5704C100.015 41.0181 100.422 41.3667 100.965 41.6162C101.509 41.8658 102.151 41.9905 102.892 41.9905C103.714 41.9905 104.477 41.8401 105.182 41.5392C105.886 41.2383 106.473 40.8163 106.943 40.2732C107.413 39.7301 107.703 39.1063 107.813 38.4017C107.915 37.7412 107.831 37.1688 107.56 36.6844C107.288 36.2 106.844 35.8258 106.228 35.5615C105.618 35.2973 104.844 35.1652 103.905 35.1652H101.824L102.342 32.0168H104.235C105.02 32.0168 105.739 31.87 106.393 31.5765C107.053 31.2829 107.604 30.8719 108.044 30.3435C108.484 29.8151 108.759 29.2023 108.87 28.5051C108.972 27.9106 108.928 27.3969 108.737 26.9639C108.554 26.5236 108.235 26.1823 107.78 25.9401C107.332 25.6906 106.756 25.5658 106.051 25.5658C105.347 25.5658 104.661 25.6906 103.993 25.9401C103.332 26.1896 102.771 26.5456 102.308 27.0079C101.846 27.4629 101.56 28.006 101.45 28.6372H97.5418C97.7693 27.3822 98.3014 26.2777 99.138 25.3236C99.982 24.3622 101.02 23.61 102.253 23.0669C103.494 22.5238 104.826 22.2522 106.25 22.2522C107.791 22.2522 109.075 22.5531 110.103 23.1549C111.137 23.7567 111.886 24.5494 112.348 25.5328C112.818 26.5162 112.957 27.5804 112.767 28.7253C112.561 30.0022 112.014 31.037 111.126 31.8297C110.246 32.6149 109.159 33.1397 107.868 33.4039V33.547C109.336 33.7672 110.433 34.3873 111.159 35.4074C111.886 36.4202 112.132 37.6422 111.897 39.0733C111.691 40.3356 111.167 41.4438 110.323 42.3978C109.479 43.3446 108.4 44.0858 107.086 44.6216C105.78 45.15 104.327 45.4142 102.727 45.4142Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M121.983 41.4731L124.493 26.2373H127.961L125.44 41.4731H121.983ZM117.052 35.5836L117.635 32.1379H132.871L132.287 35.5836H117.052Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    'U/A 16+': (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 151,
+                                                height: 70,
+                                                viewBox: '0 0 151 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M147.459 5C149.312 5 150.722 6.66457 150.418 8.49316L141.418 62.4932C141.176 63.9397 139.925 65 138.459 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H147.459Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M34.9597 22.5605H39.0439L36.6 37.2899C36.3358 38.9045 35.7193 40.3246 34.7506 41.5502C33.7891 42.7758 32.5635 43.7335 31.0737 44.4234C29.5839 45.1059 27.9253 45.4472 26.0979 45.4472C24.2558 45.4472 22.7072 45.1059 21.4523 44.4234C20.1973 43.7335 19.2909 42.7758 18.7332 41.5502C18.1827 40.3246 18.0396 38.9045 18.3038 37.2899L20.7477 22.5605H24.8319L22.443 36.9486C22.2889 37.888 22.3586 38.7247 22.6522 39.4586C22.9531 40.1851 23.4448 40.7576 24.1273 41.1759C24.8172 41.5942 25.6795 41.8034 26.7143 41.8034C27.7491 41.8034 28.6812 41.5942 29.5105 41.1759C30.3398 40.7576 31.0187 40.1851 31.5471 39.4586C32.0755 38.7247 32.4167 37.888 32.5709 36.9486L34.9597 22.5605Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M52.9303 21.5037L41.2173 48.4966H37.7276L49.4406 21.5037H52.9303Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M52.6256 45.1059H48.2663L59.9463 22.5605H64.9882L69.1935 45.1059H64.8341L61.8068 27.1841H61.6306L52.6256 45.1059ZM54.2329 36.2661H66.1221L65.5717 39.5466H53.6825L54.2329 36.2661Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M92.5453 22.5605L88.8024 45.1059H84.7182L87.8006 26.5346H87.6685L81.834 29.9032L82.4505 26.1603L88.6593 22.5605H92.5453Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M102.948 45.4142C101.84 45.4068 100.791 45.2124 99.7999 44.8307C98.8165 44.4491 97.9762 43.8289 97.279 42.9703C96.5818 42.1043 96.1011 40.9557 95.8369 39.5246C95.58 38.0935 95.6277 36.3321 95.98 34.2405C96.3029 32.3324 96.7872 30.6407 97.4331 29.1656C98.0789 27.6831 98.8642 26.4281 99.7889 25.4007C100.714 24.3659 101.752 23.5843 102.904 23.0559C104.057 22.5201 105.301 22.2522 106.636 22.2522C108.053 22.2522 109.275 22.5311 110.302 23.0889C111.33 23.6393 112.111 24.3952 112.647 25.3566C113.19 26.3107 113.443 27.3969 113.406 28.6152H109.465C109.443 27.7418 109.172 27.052 108.651 26.5456C108.13 26.0392 107.385 25.786 106.416 25.786C104.838 25.786 103.488 26.4685 102.365 27.8336C101.242 29.1913 100.464 31.0958 100.031 33.547L100.207 33.3158C100.677 32.67 101.227 32.1232 101.859 31.6755C102.49 31.2279 103.172 30.8866 103.906 30.6517C104.647 30.4169 105.411 30.2995 106.196 30.2995C107.554 30.2995 108.72 30.6297 109.697 31.2902C110.673 31.9434 111.381 32.8388 111.821 33.9763C112.269 35.1139 112.368 36.4129 112.118 37.8733C111.876 39.3191 111.33 40.6145 110.478 41.7593C109.634 42.8969 108.566 43.7923 107.275 44.4454C105.983 45.0986 104.541 45.4215 102.948 45.4142ZM103.091 42.1116C103.913 42.1116 104.688 41.9098 105.414 41.5061C106.148 41.0952 106.765 40.5411 107.264 39.8439C107.77 39.1467 108.089 38.3687 108.221 37.5101C108.339 36.7395 108.28 36.0459 108.045 35.4294C107.81 34.8056 107.429 34.3139 106.9 33.9543C106.372 33.5947 105.723 33.4149 104.952 33.4149C104.335 33.4149 103.737 33.536 103.158 33.7782C102.578 34.0204 102.049 34.3543 101.572 34.7799C101.103 35.1983 100.71 35.6826 100.394 36.2331C100.079 36.7835 99.8696 37.3706 99.7669 37.9944C99.6495 38.7504 99.7082 39.4402 99.943 40.064C100.185 40.6805 100.574 41.1759 101.11 41.5502C101.653 41.9245 102.314 42.1116 103.091 42.1116Z',
+                                                fill: '#DADADA'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M121.938 41.4731L124.448 26.2373H127.916L125.395 41.4731H121.938ZM117.006 35.5836L117.59 32.1379H132.825L132.242 35.5836H117.006Z',
+                                                fill: '#DADADA'
+                                            })
+                                        ),
+                                    A: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 75,
+                                                height: 70,
+                                                viewBox: '0 0 75 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'M71.4586 5C73.3124 5 74.7223 6.66457 74.4175 8.49316L65.4175 62.4932C65.1764 63.9397 63.9251 65 62.4586 65H3.54157C1.68775 65 0.277815 63.3354 0.582581 61.5068L9.58258 7.50684C9.82369 6.06029 11.0751 5 12.5416 5H71.4586Z',
+                                                fill: '#4A4E58',
+                                                fillOpacity: 0.7
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'M29.9941 46H25.6347L37.3147 23.4545H42.3566L46.5619 46H42.2025L39.1752 28.0781H38.999L29.9941 46ZM31.6013 37.1602H43.4905L42.9401 40.4407H31.0509L31.6013 37.1602Z',
+                                                fill: '#DADADA'
+                                            })
+                                        )
+                                },
+                                c6 = {
+                                    G: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                fill: 'none',
+                                                height: 70,
+                                                viewBox: '0 0 71 70',
+                                                width: 71,
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement('path', {
+                                                d: 'm70.0249 64.1595c0 3.2104-2.6306 5.8405-5.8292 5.8405h-58.34158c-3.21101 0-5.8292177-2.6301-5.8292177-5.8405v-58.33131c0-3.21044 2.6182077-5.82819 5.8292177-5.82819h58.34158c3.211 0 5.8292 2.61775 5.8292 5.82819z',
+                                                fill: '#fff'
+                                            }),
+                                            h.createElement('path', {
+                                                d: 'm66.837 61.508c0 2.9185-2.3909 5.3095-5.2983 5.3095h-53.02754c-2.91854 0-5.29827-2.391-5.29827-5.3095v-53.0276c0-2.91854 2.37973-5.29827 5.29827-5.29827h53.02754c2.9186 0 5.2983 2.37973 5.2983 5.29827z',
+                                                fill: '#0db14b'
+                                            }),
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    fill: '#fff'
+                                                },
+                                                h.createElement('path', {
+                                                    d: 'm40.6487 46.3316c-1.6277 1.6838-3.5584 2.3012-5.7248 2.3012-2.1665 0-4.0411-.797-5.4667-2.2226-2.0542-2.0542-1.9981-4.5911-1.9981-8.0933 0-3.5023-.0561-6.0391 1.9981-8.0821 1.4256-1.4256 3.1767-2.2226 5.4667-2.2226 4.7033 0 7.0942 3.0757 7.6331 6.4994h-3.985c-.4602-1.9083-1.6276-2.9635-3.6481-2.9635-1.0777 0-1.9644.4266-2.5369 1.0889-.7633.8531-.9654 1.796-.9654 5.6911s.2021 4.8717.9654 5.7248c.5725.6511 1.4592 1.0552 2.5369 1.0552 1.1898 0 2.1552-.4266 2.8175-1.1337.651-.7409.9092-1.6501.9092-2.7053v-.7633h-3.7267v-3.3002h7.6555v2.9634c0 2.9298-.5164 4.6921-1.9419 6.1739z'
+                                                }),
+                                                h.createElement('path', {
+                                                    d: 'm34.4525 15.4512-21.4513 36.3021h44.0475l-22.0237-37.2562-.5613.9541zm.5725 1.6164c1.0439 1.7624 18.6449 31.5539 19.7225 33.3724h-39.4451c1.0776-1.8185 18.6786-31.61 19.7226-33.3724z'
+                                                })
+                                            )
+                                        ),
+                                    PG: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 71,
+                                                height: 70,
+                                                viewBox: '0 0 71 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'Australia Rating'
+                                                },
+                                                h.createElement('path', {
+                                                    id: 'Outline',
+                                                    d: 'M70.0249 64.1595C70.0249 67.3699 67.3943 70 64.1957 70H5.85412C2.64311 70 0.0249023 67.3699 0.0249023 64.1595V5.82819C0.0249023 2.61775 2.64311 0 5.85412 0H64.1957C67.4067 0 70.0249 2.61775 70.0249 5.82819V64.1595Z',
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement('path', {
+                                                    id: 'Background',
+                                                    d: 'M66.837 61.508C66.837 64.4265 64.4461 66.8175 61.5387 66.8175H8.51116C5.59262 66.8175 3.21289 64.4265 3.21289 61.508V8.4804C3.21289 5.56186 5.59262 3.18213 8.51116 3.18213H61.5387C64.4573 3.18213 66.837 5.56186 66.837 8.4804V61.508Z',
+                                                    fill: '#FFF200'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'PG'
+                                                    },
+                                                    h.createElement('path', {
+                                                        id: 'Vector',
+                                                        d: 'M26.0445 38.0868H21.5208V46.9434H16.9185V23.4043H26.0445C30.905 23.4043 33.8123 26.7494 33.8123 30.7455C33.8123 34.7417 30.905 38.0868 26.0445 38.0868ZM25.82 27.5015H21.5208V33.9559H25.82C27.9079 33.9559 29.2324 32.665 29.2324 30.7455C29.2324 28.826 27.9079 27.5015 25.82 27.5015Z',
+                                                        fill: '#231F20'
+                                                    }),
+                                                    h.createElement('path', {
+                                                        id: 'Vector_2',
+                                                        d: 'M50.8745 44.4738C48.9887 46.427 46.7437 47.1454 44.2292 47.1454C41.7148 47.1454 39.5371 46.2249 37.8758 44.5636C35.4961 42.1839 35.5634 39.2429 35.5634 35.1794C35.5634 31.1159 35.4961 28.1749 37.8758 25.7952C39.5259 24.1451 41.5801 23.2134 44.2292 23.2134C49.6847 23.2134 52.4573 26.783 53.0859 30.7567H48.4611C47.9335 28.5453 46.5753 27.3218 44.2292 27.3218C42.972 27.3218 41.9393 27.8157 41.2882 28.579C40.3902 29.5668 40.1545 30.6669 40.1545 35.1906C40.1545 39.7143 40.3902 40.8481 41.2882 41.8359C41.9393 42.5992 42.972 43.0594 44.2292 43.0594C45.6212 43.0594 46.7324 42.5655 47.507 41.7349C48.2591 40.8818 48.5621 39.8154 48.5621 38.6031V37.7163H44.2292V33.8773H53.1196V37.3122C53.1196 40.7246 52.5246 42.7676 50.8745 44.4963V44.4738Z',
+                                                        fill: '#231F20'
+                                                    }),
+                                                    h.createElement('path', {
+                                                        id: 'Vector_3',
+                                                        d: 'M58.4628 17.208H10.8232V52.758H59.2148V17.208H58.4515H58.4628ZM57.6882 18.7346V51.2314H12.3611C12.3611 49.8058 12.3611 20.1602 12.3611 18.7346H57.6994H57.6882Z',
+                                                        fill: '#231F20'
+                                                    })
+                                                )
+                                            )
+                                        ),
+                                    M: (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 71,
+                                                height: 70,
+                                                viewBox: '0 0 71 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'Australia Rating'
+                                                },
+                                                h.createElement('path', {
+                                                    id: 'Outline',
+                                                    d: 'M70.0249 64.1595C70.0249 67.3699 67.3943 70 64.1957 70H5.85412C2.64311 70 0.0249023 67.3699 0.0249023 64.1595V5.82819C0.0249023 2.61775 2.64311 0 5.85412 0H64.1957C67.4067 0 70.0249 2.61775 70.0249 5.82819V64.1595Z',
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement('path', {
+                                                    id: 'Background',
+                                                    d: 'M66.837 61.508C66.837 64.4265 64.4461 66.8175 61.5387 66.8175H8.51116C5.59262 66.8175 3.21289 64.4265 3.21289 61.508V8.4804C3.21289 5.56186 5.59262 3.18213 8.51116 3.18213H61.5387C64.4573 3.18213 66.837 5.56186 66.837 8.4804V61.508Z',
+                                                    fill: '#00AEEF'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'M'
+                                                    },
+                                                    h.createElement('path', {
+                                                        id: 'Vector',
+                                                        d: 'M40.7723 46.3376V33.3388L36.5067 41.7914H33.5657L29.2665 33.3388V46.3376H24.9111V24.0332H29.1991L35.025 36.089L40.8172 24.0332H45.1164V46.3376H40.761H40.7723Z',
+                                                        fill: 'white'
+                                                    }),
+                                                    h.createElement('path', {
+                                                        id: 'Vector_2',
+                                                        d: 'M16.5933 35C16.5933 45.17 24.855 53.4317 35.0249 53.4317C45.1949 53.4317 53.4566 45.17 53.4566 35C53.4566 24.8301 45.1837 16.5796 35.0249 16.5796C24.8662 16.5796 16.5933 24.8413 16.5933 35ZM18.0413 35C18.0413 25.6383 25.6632 18.0164 35.0249 18.0164C44.3867 18.0164 52.0086 25.6383 52.0086 35C52.0086 44.3618 44.3867 51.9837 35.0249 51.9837C25.6632 51.9837 18.0413 44.3618 18.0413 35Z',
+                                                        fill: 'white'
+                                                    })
+                                                )
+                                            )
+                                        ),
+                                    'MA 15+': (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 70,
+                                                height: 70,
+                                                viewBox: '0 0 70 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'Australia Rating'
+                                                },
+                                                h.createElement('path', {
+                                                    id: 'Outline',
+                                                    d: 'M70 64.1595C70 67.3699 67.3694 70 64.1708 70H5.82922C2.61821 70 0 67.3699 0 64.1595V5.82819C0 2.61775 2.61821 0 5.82922 0H64.1708C67.3818 0 70 2.61775 70 5.82819V64.1595Z',
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement('path', {
+                                                    id: 'Background',
+                                                    d: 'M66.8121 61.508C66.8121 64.4265 64.4212 66.8175 61.5138 66.8175H8.48626C5.56772 66.8175 3.18799 64.4265 3.18799 61.508V8.4804C3.18799 5.56186 5.56772 3.18213 8.48626 3.18213H61.5138C64.4324 3.18213 66.8121 5.56186 66.8121 8.4804V61.508Z',
+                                                    fill: '#ED1C24'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'MA'
+                                                    },
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'Group'
+                                                        },
+                                                        h.createElement('path', {
+                                                            id: 'Vector',
+                                                            d: 'M47.6752 40.1287V30.8059L45.7092 32.5356V31.3225L47.6752 29.6265H48.7425V40.1287H47.6752Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            id: 'Vector_2',
+                                                            d: 'M55.4718 39.4548C54.9888 39.9378 54.3035 40.2298 53.3823 40.2298C52.4611 40.2298 51.7309 39.9378 51.2703 39.4772C50.8097 39.0055 50.5962 38.3989 50.5288 37.6464H51.5961C51.7309 38.691 52.2701 39.2863 53.3823 39.2863C53.8991 39.2863 54.3709 39.1066 54.6854 38.8033C55.2359 38.2641 55.2584 37.4217 55.2584 36.6691C55.2584 35.3887 55.0112 34.1194 53.4834 34.1194C52.5734 34.1194 51.9555 34.535 51.7421 35.1528H50.7872V29.6377H56.1009V30.5812H51.7533V33.9172C52.169 33.4567 52.8206 33.1984 53.6407 33.1984C54.4608 33.1984 55.0449 33.4455 55.4606 33.8611C56.2245 34.6249 56.3256 35.6919 56.3256 36.6804C56.3256 37.725 56.2358 38.7134 55.4831 39.466L55.4718 39.4548Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            id: 'Vector_3',
+                                                            d: 'M61.2573 36.6809V39.2759H60.2687V36.6809H57.6736V35.6922H60.2687V33.1309H61.2573V35.6922H63.8411V36.6809H61.2573Z',
+                                                            fill: 'white'
+                                                        })
+                                                    ),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'Group_2'
+                                                        },
+                                                        h.createElement('path', {
+                                                            id: 'Vector_4',
+                                                            d: 'M22.7017 42.3412V34.2764L20.0617 39.5219H18.2418L15.5793 34.2764V42.3412H12.8718V28.5029H15.5343L19.1517 35.9837L22.7466 28.5029H25.4091V42.3412H22.7017Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            id: 'Vector_5',
+                                                            d: 'M35.5983 42.3412L34.7782 39.8925H29.8576L29.0263 42.3412H26.2065L31.2394 28.5029H33.3515L38.4068 42.3412H35.5871H35.5983ZM32.3741 32.5803L30.6328 37.6124H34.0704L32.3741 32.5803Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            id: 'Vector_6',
+                                                            d: 'M35.1828 21H15.2197L6.2998 35.2988L15.2197 49.6088H35.43L44.3499 35.2988L35.43 21H35.1828ZM34.9357 21.8986C35.1828 22.303 43.013 34.8607 43.2939 35.31C43.013 35.7593 35.1828 48.3171 34.9357 48.7214H15.714C15.4669 48.3171 7.63667 35.7593 7.35582 35.31C7.63667 34.8607 15.4669 22.303 15.714 21.8986H34.9357Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                    'R 18+': (e) =>
+                                        h.createElement(
+                                            'svg',
+                                            {
+                                                width: 71,
+                                                height: 70,
+                                                viewBox: '0 0 71 70',
+                                                fill: 'none',
+                                                xmlns: 'http://www.w3.org/2000/svg',
+                                                ...e
+                                            },
+                                            h.createElement(
+                                                'g',
+                                                {
+                                                    id: 'Australia Rating'
+                                                },
+                                                h.createElement('path', {
+                                                    id: 'Outline',
+                                                    d: 'M70.0249 64.1595C70.0249 67.3699 67.3943 70 64.1957 70H5.85412C2.64311 70 0.0249023 67.3699 0.0249023 64.1595V5.82819C0.0249023 2.61775 2.64311 0 5.85412 0H64.1957C67.4067 0 70.0249 2.61775 70.0249 5.82819V64.1595Z',
+                                                    fill: 'white'
+                                                }),
+                                                h.createElement('path', {
+                                                    id: 'Background',
+                                                    d: 'M66.837 61.508C66.837 64.4265 64.4461 66.8175 61.5387 66.8175H8.51116C5.59262 66.8175 3.21289 64.4265 3.21289 61.508V8.4804C3.21289 5.56186 5.59262 3.18213 8.51116 3.18213H61.5387C64.4573 3.18213 66.837 5.56186 66.837 8.4804V61.508Z',
+                                                    fill: '#231F20'
+                                                }),
+                                                h.createElement(
+                                                    'g',
+                                                    {
+                                                        id: 'R'
+                                                    },
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'Group'
+                                                        },
+                                                        h.createElement('path', {
+                                                            id: 'Vector',
+                                                            d: 'M44.4091 40.978V29.9437L42.0854 31.9866V30.5498L44.4091 28.5405H45.6663V40.978H44.4091Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            id: 'Vector_2',
+                                                            d: 'M51.133 41.079C49.0676 41.079 47.4624 39.6421 47.4624 37.5543C47.4624 36.1062 48.2818 35.1296 49.337 34.5347C48.3604 33.9734 47.7094 33.0754 47.7094 31.7733C47.7094 29.8314 49.1574 28.4395 51.133 28.4395C53.1087 28.4395 54.5567 29.8426 54.5567 31.7733C54.5567 33.0642 53.9281 33.9734 52.9515 34.5347C53.9954 35.1296 54.8036 36.1062 54.8036 37.5543C54.8036 39.6534 53.1985 41.079 51.133 41.079ZM51.133 35.1072C49.7748 35.1072 48.7196 36.1511 48.7196 37.5318C48.7196 38.9125 49.7636 39.9565 51.133 39.9565C52.5025 39.9565 53.5464 38.9125 53.5464 37.5318C53.5464 36.1511 52.5025 35.1072 51.133 35.1072ZM51.133 29.5507C49.8534 29.5507 48.9666 30.4937 48.9666 31.7845C48.9666 33.0754 49.8534 34.0071 51.133 34.0071C52.4127 34.0071 53.2995 33.0979 53.2995 31.7845C53.2995 30.4712 52.4127 29.5507 51.133 29.5507Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            id: 'Vector_3',
+                                                            d: 'M60.8427 36.892V39.9677H59.6753V36.892H56.5996V35.7246H59.6753V32.6826H60.8427V35.7246H63.896V36.892H60.8427Z',
+                                                            fill: 'white'
+                                                        })
+                                                    ),
+                                                    h.createElement(
+                                                        'g',
+                                                        {
+                                                            id: 'Group_2'
+                                                        },
+                                                        h.createElement('path', {
+                                                            id: 'Vector_4',
+                                                            d: 'M26.4826 44.076L23.1824 37.3409H20.8139V44.076H17.5137V27.1821H24.1365C27.5826 27.1821 29.6144 29.5282 29.6144 32.3569C29.6144 34.7367 28.1663 36.2071 26.5275 36.8021L30.2991 44.0872H26.4826V44.076ZM23.912 30.1231H20.8026V34.5795H23.912C25.36 34.5795 26.3142 33.659 26.3142 32.3569C26.3142 31.0548 25.36 30.1231 23.912 30.1231Z',
+                                                            fill: 'white'
+                                                        }),
+                                                        h.createElement('path', {
+                                                            id: 'Vector_5',
+                                                            d: 'M23.2048 18.3817L6.09766 35.4888L23.5977 52.9776L41.0864 35.4888L23.5864 18L23.2048 18.3817ZM23.5977 19.5378C24.3161 20.2563 38.8302 34.7704 39.5486 35.4888C38.8302 36.2072 24.3161 50.7101 23.5977 51.4285C22.8792 50.7101 8.36514 36.196 7.64673 35.4888C8.36514 34.7704 22.8792 20.2563 23.5977 19.5378Z',
+                                                            fill: 'white'
+                                                        })
+                                                    )
+                                                )
+                                            )
+                                        )
+                                },
+                                c7 = {
+                                    [nS.BR_TV]: c2,
+                                    [nS.BR_MOVIE]: c2,
+                                    [nS.NZ_TV]: c4,
+                                    [nS.NZ_MOVIE]: c4,
+                                    [nS.AU_TV]: c6,
+                                    [nS.AU_MOVIE]: c6,
+                                    [nS.IN_TV]: c5,
+                                    [nS.IN_MOVIE]: c5,
+                                    [nS.UNIVERSAL_TV]: c3,
+                                    [nS.UNIVERSAL_MOVIE]: c3
+                                },
+                                c8 = ({ RatingIcon: e, advisoryDescriptorsText: t, isVisible: i, ariaLabel: r }) => (e ? null : null),
+                                c9 = ({ isVisible: e }) => {
+                                    let { ratingDisplayName: t, advisoryComponents: i, ratingSystem: r, isReady: a } = c1(),
+                                        { t: n } = oL(),
+                                        { accessibilityAnnouncer: s } = oO(),
+                                        o = (0, h.useRef)(!1),
+                                        l = (0, h.useMemo)(() => (i ? i.join(', ') : ''), [i]),
+                                        u = (0, h.useMemo)(
+                                            () =>
+                                                t
+                                                    ? l.length > 0
+                                                        ? n('ratings.announcement.ratedFor', {
+                                                              rating: t,
+                                                              descriptors: l
+                                                          })
+                                                        : n('ratings.announcement.ratedOnly', {
+                                                              rating: t
+                                                          })
+                                                    : n('ratings.announcement.noRating'),
+                                            [t, l, n]
+                                        )
+                                    ;((0, h.useEffect)(() => {
+                                        e && a && t && !o.current && (s.announce(u, 'polite'), (o.current = !0))
+                                    }, [e, a, t, u, s]),
+                                        (0, h.useEffect)(() => {
+                                            a || (o.current = !1)
+                                        }, [a]))
+                                    let c =
+                                        void 0 !== r && t
+                                            ? (function (e, t) {
+                                                  let i = c7[e]
+                                                  if (i) return i[t]
+                                              })(r, t)
+                                            : void 0
+                                    return oi.jsx(c8, {
+                                        RatingIcon: c,
+                                        advisoryDescriptorsText: l,
+                                        isVisible: e,
+                                        ariaLabel: u
+                                    })
+                                },
+                                de = ({ isRnaActive: e }) => {
+                                    let { isVisible: t } = cW(),
+                                        { isAnyMenuOpen: i } = oK(),
+                                        r = t || i,
+                                        a = t || i
+                                    return {
+                                        topVisible: r,
+                                        bottomVisible: a,
+                                        rnaVisible: e,
+                                        topGradientVisible: r || a || e
+                                    }
+                                },
+                                dt = ({ icon: e, ariaLabel: t, onClick: i, testId: r = 'next-episode-button' }) =>
+                                    oi.jsx(oo, {
+                                        Icon: e,
+                                        label: t,
+                                        onClick: i,
+                                        'data-testid': r
+                                    }),
+                                di = () => {
+                                    let {
+                                            viewModelContainer: { nextEpisodeVM: e }
+                                        } = oO(),
+                                        [t, i] = (0, h.useState)(!1)
+                                    return (
+                                        (0, h.useEffect)(() => {
+                                            let t = e.isVisible$.subscribe((e) => {
+                                                i(e)
+                                            })
+                                            return () => {
+                                                t.unsubscribe()
+                                            }
+                                        }, [e]),
+                                        {
+                                            isVisible: t,
+                                            loadNextEpisode: (0, h.useCallback)(() => {
+                                                e.loadNextEpisode()
+                                            }, [e])
+                                        }
+                                    )
+                                },
+                                dr = () => {
+                                    let { isVisible: e, loadNextEpisode: t } = di(),
+                                        { t: i } = oL(),
+                                        r = (0, h.useCallback)(() => {
+                                            e && t()
+                                        }, [e, t])
+                                    return (
+                                        ls({
+                                            shortcut: uv.NextEpisode,
+                                            handleShortcut: r
+                                        }),
+                                        e
+                                            ? oi.jsx('div', {
+                                                  className: 'kat:relative',
+                                                  children: oi.jsx(dt, {
+                                                      icon: oi.jsx(oE, {}),
+                                                      ariaLabel: i('nextEpisode.ariaLabel'),
+                                                      onClick: t
+                                                  })
+                                              })
+                                            : null
+                                    )
+                                },
+                                uSM = () => {
+                                    var state = h.useState(!1),
+                                        isOpen = state[0],
+                                        setIsOpen = state[1]
+                                    var panelState = h.useState('main'),
+                                        activePanel = panelState[0],
+                                        setActivePanel = panelState[1]
+                                    var menuRef = h.useRef(null)
+                                    var t = oL().t
+                                    var settings = lt()
+                                    var speed = oX()
+                                    var vmc = oO().viewModelContainer.trackSelectionVM
 
                                     var auState = h.useState([]),
                                         audioTracks = auState[0],
