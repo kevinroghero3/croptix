@@ -241,18 +241,18 @@ class MarkAsWatchedNotWatched {
           {
             name: 'markOnlyThisOne',
             type: 'action',
-            action: () => API.playheads({ id, playheadMs: 0 }).then(this.refresh),
+            action: () => API.deleteFromHistory(id).then(this.refresh), // MODIFICATO: usa deleteFromHistory
           },
           {
             name: 'markAllNext',
             if: () => last_episode_sequence_number !== episode_sequence_number,
             type: 'action',
             action: () =>
-              API.playheads(
-                ...episodes
+              API.deleteFromHistory(
+                episodes
                   .filter(({ sequence_number }) => sequence_number >= episode_sequence_number)
-                  .map(({ id }) => ({ id, playheadMs: 0 })),
-              ).then(this.refresh),
+                  .map(({ id }) => id)
+              ).then(this.refresh), // MODIFICATO: usa deleteFromHistory con array di ID
           },
         ],
       },

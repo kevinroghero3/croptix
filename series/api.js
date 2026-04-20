@@ -140,6 +140,40 @@ const API = new (class {
       );
     });
   }
+  
+  // Metodo per cancellare episodi dalla cronologia
+  deleteFromHistory(contentIds) {
+    return this.TOKEN.then(({ account_id }) => {
+      const contentIdsParam = Array.isArray(contentIds) ? contentIds.join(',') : contentIds;
+      return this.#delete(`/content/v2/${account_id}/watch-history/${contentIdsParam}`);
+    });
+  }
+
+  // Metodo per ottenere la cronologia di visualizzazione
+  getWatchHistory(pageSize = 50, page = 1) {
+    return this.TOKEN.then(({ account_id }) => {
+      return this.#getResponse(`/content/v2/${account_id}/watch-history`, {
+        page_size: pageSize,
+        page: page
+      });
+    });
+  }
+
+  // Metodo DELETE generico
+  #delete(href) {
+    return this.#fetch(
+      href,
+      {},
+      {
+        method: 'DELETE',
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error(`DELETE failed: ${response.status}`);
+      }
+      return response;
+    });
+  }
 
   #fetch(href, searchParams = {}, requestInit = {}) {
     return this.TOKEN.then(({ Authorization, apiDomain }) =>
