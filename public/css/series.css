@@ -32,39 +32,39 @@ div[class^='playable-card__footer'].ic_action div[class^='dropdown-content'] {
   display: block;
 }
 
-/* Stili Cropix (quando designEnabled è true E html ha classe cropix) */
-html.cropix .ic_action_menu {
-  background-color: var(--cropix-bg-solid) !important;
-  backdrop-filter: var(--cropix-blur);
-  border-radius: var(--cropix-radius);
-  box-shadow: var(--cropix-shadow) !important;
+/* Stili Croptix (quando designEnabled è true E html ha classe croptix) */
+html.croptix .ic_action_menu {
+  background-color: var(--croptix-bg-solid) !important;
+  backdrop-filter: var(--croptix-blur);
+  border-radius: var(--croptix-radius);
+  box-shadow: var(--croptix-shadow) !important;
   padding: 0;
   top: 10px;
 }
 
-html.cropix .ic_action_menu > div:hover {
-  border-radius: var(--cropix-radius);
-  background-color: var(--cropix-hover) !important;
-  backdrop-filter: var(--cropix-blur);
-  box-shadow: var(--cropix-shadow) !important;
+html.croptix .ic_action_menu > div:hover {
+  border-radius: var(--croptix-radius);
+  background-color: var(--croptix-hover) !important;
+  backdrop-filter: var(--croptix-blur);
+  box-shadow: var(--croptix-shadow) !important;
   color: #fff;
 }
 
-html.cropix .ic_action_menu .ic_action_menu {
-  background-color: var(--cropix-bg-solid) !important;
-  border-radius: var(--cropix-radius);
-  box-shadow: var(--cropix-shadow) !important;
+html.croptix .ic_action_menu .ic_action_menu {
+  background-color: var(--croptix-bg-solid) !important;
+  border-radius: var(--croptix-radius);
+  box-shadow: var(--croptix-shadow) !important;
   top: 0;
   margin-left: 1px;
 }
 
-html.cropix .ic_action_menu:not(.left) .ic_action_menu_parent::after,
-html.cropix .ic_action_menu.left .ic_action_menu_parent::before {
+html.croptix .ic_action_menu:not(.left) .ic_action_menu_parent::after,
+html.croptix .ic_action_menu.left .ic_action_menu_parent::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 226 226' fill='%23FFFFFF'%3E%3Cpath d='M75.33333,37.66667v150.66667l75.33333,-75.33333z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 /* Nascondi dropdown originali quando designEnabled è attivo */
-html.cropix div[class^='playable-card__footer'].ic_action div[class^='dropdown-content'] {
+html.croptix div[class^='playable-card__footer'].ic_action div[class^='dropdown-content'] {
   display: none;
 }
 
