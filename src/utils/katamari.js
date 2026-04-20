@@ -17893,7 +17893,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                                     })
                                 },
                                 cK = (0, h.createContext)(void 0),
-                                cZ = 6e3,
+                                cZ = 3e3,
                                 cY = 0.1,
                                 cz = ({ children: e, eventTarget: t, enabled: i = !0, idleTimeoutMs: r = cZ, mouseIdlePercentage: a = cY }) => {
                                     let [n, s] = (0, h.useState)(!0),
