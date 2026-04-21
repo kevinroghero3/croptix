@@ -219,17 +219,17 @@ class MarkAsWatchedNotWatched {
           {
             name: 'markOnlyThisOne',
             type: 'action',
-            action: () => API.playheads({ id, playheadMs: duration_ms }).then(this.refresh),
+            action: () => API.markAsWatched(id).then(this.refresh), // MODIFICATO: usa markAsWatched
           },
           {
             name: 'markAllPrevious',
             if: () => episode_sequence_number > first_episode_sequence_number,
             type: 'action',
             action: () =>
-              API.playheads(
-                ...episodes
+              API.markAsWatched(
+                episodes
                   .filter(({ sequence_number }) => sequence_number <= episode_sequence_number)
-                  .map(({ id, duration_ms }) => ({ id, playheadMs: duration_ms })),
+                  .map(({ id }) => id) // MODIFICATO: usa markAsWatched con array di ID
               ).then(this.refresh),
           },
         ],
@@ -241,7 +241,7 @@ class MarkAsWatchedNotWatched {
           {
             name: 'markOnlyThisOne',
             type: 'action',
-            action: () => API.deleteFromHistory(id).then(this.refresh), // MODIFICATO: usa deleteFromHistory
+            action: () => API.deleteFromHistory(id).then(this.refresh(false)), // MODIFICATO: usa deleteFromHistory
           },
           {
             name: 'markAllNext',
@@ -252,18 +252,18 @@ class MarkAsWatchedNotWatched {
                 episodes
                   .filter(({ sequence_number }) => sequence_number >= episode_sequence_number)
                   .map(({ id }) => id)
-              ).then(this.refresh), // MODIFICATO: usa deleteFromHistory con array di ID
+              ).then(this.refresh(false)), // MODIFICATO: usa deleteFromHistory con array di ID
           },
         ],
       },
     ];
   }
 
-  refresh() {
+  refresh(dft = true) {
     clearTimeout(this.refreshTimeout);
     this.refreshTimeout = setTimeout(() => {
       const searchA = document.querySelector('a[href$="/search"]');
-      if (searchA) {
+      if (dft && searchA) {
         searchA.click();
         history.back();
       } else {

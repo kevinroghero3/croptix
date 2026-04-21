@@ -141,6 +141,14 @@ const API = new (class {
     });
   }
   
+  // Metodo per segnare episodi come visti
+  markAsWatched(contentIds) {
+    return this.TOKEN.then(({ account_id }) => {
+      const contentIdsParam = Array.isArray(contentIds) ? contentIds.join(',') : contentIds;
+      return this.#post(`/content/v2/discover/${account_id}/mark_as_watched/${contentIdsParam}`, null);
+    });
+  }
+  
   // Metodo per cancellare episodi dalla cronologia
   deleteFromHistory(contentIds) {
     return this.TOKEN.then(({ account_id }) => {
@@ -198,13 +206,16 @@ const API = new (class {
   }
 
   #post(href, body) {
+    const options = {
+      method: 'POST',
+    };
+    if (body) {
+      options.body = body;
+    }
     return this.#fetch(
       href,
       {},
-      {
-        method: 'POST',
-        body,
-      },
+	  options,
     );
   }
 })();
