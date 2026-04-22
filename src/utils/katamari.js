@@ -11858,7 +11858,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                                         if ('up' === r) {
                                             let e = {
                                                 bottom: `${window.innerHeight - t.top}px`,
-                                                right: `${window.innerWidth - t.right}px`,
+                                                right: `60px`,
                                                 top: 'auto'
                                             }
                                             i && ((e.maxHeight = `${t.top - i.top - 8}px`), (e.maxWidth = `${i.right - i.left - 16}px`))
@@ -11902,7 +11902,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                                         _ = 'u' > typeof document && 'rtl' === document.documentElement.dir ? 'rtl' : void 0
                                     return oi.jsx('div', {
                                         ref: o,
-                                        className: `kat:inline-flex kat:flex-col kat:z-[1001] kat:bg-neutral-700 kat:rounded-sm kat:shadow-lg kat:outline-none kat:w-max kat:overflow-hidden focus-visible:kat:outline-2 focus-visible:kat:outline-offset-2 focus-visible:kat:outline-white/50 ${v}`,
+                                        className: `kat:inline-flex kat:flex-col kat:absolute kat:z-[1001] kat:bg-neutral-700 kat:rounded-lg kat:shadow-lg kat:outline-none kat:w-max kat:overflow-hidden focus-visible:kat:outline-2 focus-visible:kat:outline-offset-2 focus-visible:kat:outline-white/50 ${v}`,
                                         style: { ...c, position: 'fixed', userSelect: 'none' },
                                         role: 'menu',
                                         tabIndex: -1,
