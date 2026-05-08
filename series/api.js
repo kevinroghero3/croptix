@@ -111,16 +111,17 @@ const API = new (class {
 
   up_next_series(series_id) {
     return this.#get(`/content/v2/discover/up_next/${series_id}`).then(
-      ([
-         {
-           panel: {
-             episode_metadata: { season_id },
-           },
-         },
-       ]) => {
+      (data) => {
+        // Controlla se data esiste e ha almeno un elemento
+        if (!data || data.length === 0) {
+          return { season_id: null }; 
+        }
+        const [{ panel: { episode_metadata: { season_id } } }] = data;
         return { season_id };
-      },
-    );
+      }
+    ).catch(() => {
+      return { season_id: null }; // Gestisce errori di rete o dati mancanti
+    });
   }
 
   playheads(...data) {

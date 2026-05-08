@@ -133,17 +133,33 @@ class MarkAsWatchedNotWatched {
 
   getCurrentSeasonEpisodes() {
     const currentSeasonTitle = document.querySelector('.seasons-select h4, .seasons-select span[class^=select-trigger__title]');
-    return currentSeasonTitle
-      ? this.seasons.then((seasons) => {
-        let found = seasons.find(({ title }) => currentSeasonTitle.innerText.endsWith(title));
-        if (found) {
-          return this.episodes[found.id];
-        }
-        return [];
-      })
-      : this.upNextSeries.then(({ season_id }) => {
+    
+    if (!currentSeasonTitle) {
+      return this.upNextSeries.then(({ season_id }) => {
         return this.episodes[season_id];
       });
+    }
+
+    const UI_Title = currentSeasonTitle.innerText.toLowerCase().trim();
+
+    return this.seasons.then((seasons) => {
+      // 1. Cerca prima una corrispondenza ESATTA
+      let found = seasons.find(({ title }) => title.toLowerCase().trim() === UI_Title);
+
+      // 2. Se non la trova, cerca la corrispondenza più lunga (es: "OVA Season 1" vince su "Season 1")
+      if (!found) {
+        const sortedSeasons = [...seasons].sort((a, b) => b.title.length - a.title.length);
+        found = sortedSeasons.find(({ title }) => {
+          const apiTitle = title.toLowerCase().trim();
+          return UI_Title.includes(apiTitle) || apiTitle.includes(UI_Title);
+        });
+      }
+
+      if (found) {
+        return this.episodes[found.id];
+      }
+      return [];
+    });
   }
 
   card(card, episodes) {
@@ -169,7 +185,8 @@ class MarkAsWatchedNotWatched {
     const a = card.querySelector('a');
     if (!a) return;
     const episode = episodes.find(({ id, versions }) => {
-      return a.href.includes(id) || versions.some(({ guid }) => a.href.includes(guid));
+      const hasVersions = versions && Array.isArray(versions) && versions.some(({ guid }) => a.href.includes(guid));
+      return a.href.includes(id) || hasVersions;
     });
     if (!episode) return;
 
