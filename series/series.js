@@ -206,19 +206,42 @@ class MarkAsWatchedNotWatched {
     footer.classList.add('ic_action');
 
     const optionsButton = footer.querySelector('[class^="dropdown-trigger"]');
-    optionsButton.addEventListener('click', () => setTimeout(() => {
-      actionMenu.setStyle('margin-top', '24px');
-      actionMenu.setStyle('right', '0');
-      if (window.innerWidth - optionsButton.getBoundingClientRect().right < 300) {
-        actionMenu.addClass('left');
-      }
-      optionsButton.parentElement.appendChild(actionMenu.getElement());
+    
+	  optionsButton.addEventListener('click', (e) => {
+      // Impedisce la chiusura immediata dovuta al click sul pulsante stesso
+      e.stopPropagation();
 
-      document.documentElement.addEventListener('click', function eventListener() {
-        document.documentElement.removeEventListener('click', eventListener);
-        actionMenu.remove();
-      });
-    }))
+      const parent = optionsButton.parentElement;
+      const isAlreadyOpen = parent.querySelector('.custom-action-menu');
+
+      // 1. Chiudi TUTTI i menu aperti in altre card prima di fare altro
+      document.querySelectorAll('.custom-action-menu').forEach(menu => menu.remove());
+
+      // 2. Se quello su cui abbiamo cliccato NON era aperto, lo apriamo
+      if (!isAlreadyOpen) {
+        setTimeout(() => {
+          actionMenu.setStyle('margin-top', '24px');
+          actionMenu.setStyle('right', '0');
+          
+          // Aggiungiamo una classe specifica per poterlo trovare e rimuovere
+          const menuElement = actionMenu.getElement();
+          menuElement.classList.add('custom-action-menu');
+
+          if (window.innerWidth - optionsButton.getBoundingClientRect().right < 300) {
+            actionMenu.addClass('left');
+          }
+          
+          parent.appendChild(menuElement);
+
+          // 3. Listener globale: se clicchi ovunque fuori, chiudi il menu
+          const closeAll = () => {
+            document.querySelectorAll('.custom-action-menu').forEach(m => m.remove());
+            document.removeEventListener('click', closeAll);
+          };
+          document.addEventListener('click', closeAll);
+        }, 0);
+      }
+    });
   }
 
   createMarkAsWatchedNotWatchedEntries(episode, episodes) {
