@@ -19729,6 +19729,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                                     var seState = h.useState(localStorage.getItem('skip_events') !== 'false'),
                                         skipEventsEnabled = seState[0],
                                         setSkipEventsEnabled = seState[1]
+                                    var recState = h.useState(localStorage.getItem("show_recommendations") !== "false"),
+                                        showRecommendationsEnabled = recState[0],
+                                        setShowRecommendationsEnabled = recState[1];
                                     var toggleSkipEvents = h.useCallback(
                                         function () {
                                             var active = !skipEventsEnabled
@@ -19737,6 +19740,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                                             window.dispatchEvent(new Event('skip_events_listener'))
                                         },
                                         [skipEventsEnabled]
+                                    )
+                                    var toggleRecommendations = h.useCallback(
+                                        function() {
+                                            var active = !showRecommendationsEnabled;
+                                            setShowRecommendationsEnabled(active);
+                                            localStorage.setItem("show_recommendations", active.toString());
+                                            window.dispatchEvent(new Event("recommendations_listener"));
+                                        },
+                                        [showRecommendationsEnabled]
                                     )
                                     var menuRef = h.useRef(null)
                                     var t = oL().t
@@ -19845,6 +19857,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                                                 children: [
                                                     oi.jsx(o6, { label: t('autoplayNext'), checked: settings.isAutoplayNextEnabled ?? !1, onChange: settings.toggleAutoplayNext }),
                                                     oi.jsx(o6, { label: 'Skip Events', checked: skipEventsEnabled, onChange: toggleSkipEvents }),
+                                                    oi.jsx(o6, { label: "Show Recommendations", checked: showRecommendationsEnabled, onChange: toggleRecommendations }),
                                                     oi.jsx(MainItem, {
                                                         label: t('audio'),
                                                         value: formatTrack(activeAudio),
@@ -20879,8 +20892,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                                                         var t
                                                         let i = e.videoModel,
                                                             r = null == (t = null == i ? void 0 : i.assetMetadata) ? void 0 : t.nextEpisodeGuid,
-                                                            a = v.read(aX.autoplayNext, !0)
-                                                        return r && a ? f.LOAD_NEXT_VIDEO : f.DONE_WATCHING
+                                                            a = v.read(aX.autoplayNext, !0),
+                                                            sr = localStorage.getItem("show_recommendations")
+                                                        if (r && a) { return f.LOAD_NEXT_VIDEO }
+                                                        return sr == "true" ? f.DONE_WATCHING : f.NO_ACTION
                                                     })
                                                 )
                                             )
