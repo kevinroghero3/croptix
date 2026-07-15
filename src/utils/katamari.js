@@ -5474,6 +5474,7 @@
                                         } = im(),
                                         [v, m] = (0, h.useState)('main'),
                                         [y, _] = (0, h.useState)(localStorage.getItem('skip_events') !== 'false'),
+                                        [Z, u] = (0, h.useState)(localStorage.getItem('show_recommendations') !== 'false'),
                                         [N, j] = (0, h.useState)(localStorage.getItem('croptix.autoSkipIntroOutro') === 'true'),
                                         [b, k] = (0, h.useState)([]),
                                         [C, w] = (0, h.useState)(void 0),
@@ -5500,6 +5501,10 @@
                                             let t = !y
                                             ;(_(t), localStorage.setItem('skip_events', t.toString()), window.dispatchEvent(new Event('skip_events_listener')))
                                         }, [y]),
+                                        H = (0, h.useCallback)(() => {
+                                            let t = !Z
+                                            ;(u(t), localStorage.setItem('show_recommendations', t.toString()), window.dispatchEvent(new Event('recommendations_listener')))
+                                        }, [Z]),
                                         O = (0, h.useCallback)(() => {
                                             let t = !N
                                             ;(j(t),
@@ -6007,7 +6012,7 @@
                                     )
                                 },
                                 i9 = (0, h.createContext)(void 0),
-                                ae = 6e3,
+                                ae = 3e3,
                                 at = 0.1,
                                 ai = ({ children: t, eventTarget: i, enabled: a = !0, idleTimeoutMs: r = ae, mouseIdlePercentage: s = at }) => {
                                     let [n, o] = (0, h.useState)(!0),
@@ -14927,8 +14932,20 @@
                                                     a.streamEnd$.pipe(
                                                         N(a.nextEpisodeGuidUpdated$),
                                                         (0, l.ht)(([, { nextEpisodeGuid: t }]) => {
-                                                            let i = h.read(l.Ht.autoplayNext, !0)
-                                                            return t && i ? l.Bt.LOAD_NEXT_VIDEO : l.Bt.DONE_WATCHING
+                                                            let i = h.read(l.Ht.autoplayNext, !0),
+                                                                sr = localStorage.getItem("show_recommendations")
+                                                            if (t && i) { return l.Bt.LOAD_NEXT_VIDEO }
+                                                            if (sr == "true") {return l.Bt.DONE_WATCHING }
+                                                            if (this._viewModels && this._viewModels.fullScreenVM) {
+                                                                let isFullscreen = false;
+                                                                this._viewModels.fullScreenVM.isFullScreen$.subscribe(value => {
+                                                                    isFullscreen = value;
+                                                                }).unsubscribe()
+                                                                if (isFullscreen) {
+                                                                    this._viewModels.fullScreenVM.exitFullScreen()
+                                                                }
+                                                            }
+                                                            return l.Bt.NO_ACTION
                                                         })
                                                     )
                                                 )
