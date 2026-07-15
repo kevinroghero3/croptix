@@ -207,54 +207,79 @@ class MarkAsWatchedNotWatched {
 
     const optionsButton = footer.querySelector('[class^="dropdown-trigger"]');
     
-	  optionsButton.addEventListener('click', (e) => {
-      // Impedisce la chiusura immediata dovuta al click sul pulsante stesso
-      e.stopPropagation();
+	  // --- Sincronizzazione con il dropdown NATIVO di Crunchyroll -------------
+    // Scoperta chiave: quando il menu "..." NATIVO e' aperto, Crunchyroll tiene
+    // la playable-card in stato hover. In precedenza bloccavamo il click
+    // (stopPropagation), quindi il dropdown nativo non si apriva mai e la card
+    // non restava in hover. Ora NON lo blocchiamo piu': lasciamo che il dropdown
+    // nativo si apra (il suo contenuto resta nascosto via CSS) e mostriamo il
+    // nostro menu solo mentre quello nativo e' aperto. Cosi' ereditiamo
+    // gratuitamente l'hover, la chiusura al click esterno e il posizionamento.
+    const menuHost = optionsButton ? optionsButton.parentElement : footer;
+    const cardEl = card;
 
-      const parent = optionsButton.parentElement;
-      const isAlreadyOpen = parent.querySelector('.custom-action-menu');
+    const menuElement = actionMenu.getElement();
+    menuElement.classList.add('custom-action-menu');
 
-      // Helper: chiude tutti i menu aperti e riporta le card al loro z-index normale
-      const closeAllMenus = () => {
-        document.querySelectorAll('.custom-action-menu').forEach(menu => menu.remove());
-        document.querySelectorAll('.card.ic_menu_open').forEach(c => c.classList.remove('ic_menu_open'));
-      };
+    const showMenu = () => {
+      if (menuHost.querySelector('.custom-action-menu')) return;
+      actionMenu.setStyle('margin-top', '24px');
+      actionMenu.setStyle('right', '0');
+      if (optionsButton && window.innerWidth - optionsButton.getBoundingClientRect().right < 300) {
+        actionMenu.addClass('left');
+      }
+      // Porta in primo piano la card, altrimenti il menu finisce dietro alla
+      // card sottostante e non e' cliccabile.
+      cardEl.classList.add('ic_menu_open');
+      menuHost.appendChild(menuElement);
+    };
 
-      // 1. Chiudi TUTTI i menu aperti in altre card prima di fare altro
-      closeAllMenus();
+    const hideMenu = () => {
+      menuElement.remove();
+      cardEl.classList.remove('ic_menu_open');
+    };
 
-      // 2. Se quello su cui abbiamo cliccato NON era aperto, lo apriamo
-      if (!isAlreadyOpen) {
-        setTimeout(() => {
-          actionMenu.setStyle('margin-top', '24px');
-          actionMenu.setStyle('right', '0');
-          
-          // Aggiungiamo una classe specifica per poterlo trovare e rimuovere
-          const menuElement = actionMenu.getElement();
-          menuElement.classList.add('custom-action-menu');
+    // Il dropdown nativo monta un elemento `dropdown-content` dentro il footer
+    // quando e' aperto (nascosto via CSS). Ne osserviamo la comparsa/scomparsa
+    // per sincronizzare il nostro menu con lo stato nativo.
+    const isNativeOpen = () => !!footer.querySelector('[class^="dropdown-content"]');
+    // Quando si clicca un'azione (es. "Segna come visto/non visto") vogliamo
+    // chiudere subito il menu. Teniamo il nostro menu nascosto (suppressed)
+    // finche' il dropdown nativo non viene effettivamente richiuso, cosi' non
+    // viene rimostrato dall'observer nel frattempo.
+    let suppressed = false;
+    const syncMenu = () => {
+      if (!isNativeOpen()) {
+        suppressed = false;
+        hideMenu();
+        return;
+      }
+      if (suppressed) {
+        hideMenu();
+        return;
+      }
+      showMenu();
+    };
+    const observer = new MutationObserver(syncMenu);
+    observer.observe(footer, { childList: true, subtree: true });
 
-          if (window.innerWidth - optionsButton.getBoundingClientRect().right < 300) {
-            actionMenu.addClass('left');
-          }
-
-          // Porta in primo piano la card che contiene il menu, altrimenti il menu
-          // finisce dietro al riquadro dell'episodio sottostante e non e' cliccabile
-          const cardEl = optionsButton.closest('.card');
-          if (cardEl) cardEl.classList.add('ic_menu_open');
-
-          parent.appendChild(menuElement);
-
-          // 3. Listener globale: se clicchi ovunque fuori, chiudi il menu
-          const closeAll = () => {
-            closeAllMenus();
-            document.removeEventListener('click', closeAll);
-          };
-          document.addEventListener('click', closeAll);
-        }, 0);
+    // Chiusura del menu al click su una voce-azione (non sui sottomenu, che si
+    // aprono in hover). Rimuoviamo il nostro menu e richiudiamo il dropdown
+    // nativo, cosi' la card rilascia anche l'hover.
+    menuElement.addEventListener('click', (e) => {
+      const actionEl = e.target instanceof Element ? e.target.closest('.ic_action_menu_action') : null;
+      if (!actionEl) return;
+      suppressed = true;
+      hideMenu();
+      if (optionsButton) {
+        try {
+          optionsButton.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        } catch (_) {}
       }
     });
-  }
 
+    syncMenu();
+  }
   createMarkAsWatchedNotWatchedEntries(episode, episodes) {
     const { id, sequence_number: episode_sequence_number, duration_ms } = episode;
     const {
@@ -292,7 +317,10 @@ class MarkAsWatchedNotWatched {
           {
             name: 'markOnlyThisOne',
             type: 'action',
-            action: () => API.deleteFromHistory(id).then(this.refresh(false)), // MODIFICATO: usa deleteFromHistory
+            // Cancella sia l'id base sia i guid di tutte le versioni: se la puntata
+            // e' stata guardata normalmente, la cronologia e' salvata sotto il guid
+            // della versione riprodotta, non sotto l'id base.
+            action: () => API.deleteFromHistory(this.getEpisodeContentIds(episode)).then(() => this.refresh(false)),
           },
           {
             name: 'markAllNext',
@@ -302,12 +330,26 @@ class MarkAsWatchedNotWatched {
               API.deleteFromHistory(
                 episodes
                   .filter(({ sequence_number }) => sequence_number >= episode_sequence_number)
-                  .map(({ id }) => id)
-              ).then(this.refresh(false)), // MODIFICATO: usa deleteFromHistory con array di ID
+                  .flatMap((ep) => this.getEpisodeContentIds(ep))
+              ).then(() => this.refresh(false)),
           },
         ],
       },
     ];
+  }
+
+  // Raccoglie tutti i possibili content id di un episodio: l'id base piu' i guid
+  // di ogni versione (doppiaggio/lingua). Serve per cancellare dalla cronologia
+  // qualunque sia la versione effettivamente registrata.
+  getEpisodeContentIds(episode) {
+    const ids = [];
+    if (episode && episode.id) ids.push(episode.id);
+    if (episode && Array.isArray(episode.versions)) {
+      episode.versions.forEach(({ guid }) => {
+        if (guid && !ids.includes(guid)) ids.push(guid);
+      });
+    }
+    return ids;
   }
 
   refresh(dft = true) {
