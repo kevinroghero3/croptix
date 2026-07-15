@@ -5474,7 +5474,7 @@
                                         } = im(),
                                         [v, m] = (0, h.useState)('main'),
                                         [y, _] = (0, h.useState)(localStorage.getItem('skip_events') !== 'false'),
-                                        [Z, u] = (0, h.useState)(localStorage.getItem('show_recommendations') !== 'false'),
+                                        [Z, U] = (0, h.useState)(localStorage.getItem('show_recommendations') !== 'false'),
                                         [N, j] = (0, h.useState)(localStorage.getItem('croptix.autoSkipIntroOutro') === 'true'),
                                         [b, k] = (0, h.useState)([]),
                                         [C, w] = (0, h.useState)(void 0),
@@ -5503,7 +5503,7 @@
                                         }, [y]),
                                         H = (0, h.useCallback)(() => {
                                             let t = !Z
-                                            ;(u(t), localStorage.setItem('show_recommendations', t.toString()), window.dispatchEvent(new Event('recommendations_listener')))
+                                            ;(U(t), localStorage.setItem('show_recommendations', t.toString()), window.dispatchEvent(new Event('recommendations_listener')))
                                         }, [Z]),
                                         O = (0, h.useCallback)(() => {
                                             let t = !N
