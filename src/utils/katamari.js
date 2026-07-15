@@ -479,6 +479,7 @@
                                     enabled: 'On',
                                     disabled: 'Off',
                                     skipEvents: 'Skip Events',
+                                    showRecommendations: 'Show Recommendations',
                                     autoSkipIntroOutro: 'Auto Skip Intro/Outro',
                                     'trackSelectionMenu.audioTrack.audioDescription': '{{trackName}} [AD]',
                                     'trackSelectionMenu.textTrack.closedCaption': '{{trackName}} [CC]',
@@ -4130,7 +4131,7 @@
                                     }
                                     _warnQuality(t, i) {
                                         try {
-                                            console.warn(`[CrOptix][Quality] ${t}`, i ?? '')
+                                            //console.warn(`[CrOptix][Quality] ${t}`, i ?? '')
                                         } catch (t) {}
                                     }
                                     _errorQuality(t, i) {
@@ -5657,6 +5658,7 @@
                                                             M,
                                                             (0, d.jsx)(iq, { label: r('autoplayNext'), checked: s ?? !1, onChange: n }),
                                                             (0, d.jsx)(iq, { label: r('skipEvents'), checked: y, onChange: L }),
+                                                            (0, d.jsx)(iq, { label: r('showRecommendations'), checked: Z, onChange: H }),
                                                             (0, d.jsx)(iq, { label: r('autoSkipIntroOutro'), checked: N, onChange: O })
                                                         ]
                                                     })
@@ -6104,16 +6106,21 @@
                                         o = (0, h.useCallback)(() => {
                                             t && a()
                                         }, [t, a])
+                                    let [se, setSe] = (0, h.useState)(localStorage.getItem('skip_events') !== 'false')
                                     i1({ shortcut: tK.SkipEvent, handleShortcut: o })
                                     let l = (0, h.useMemo)(() => (t?.type ? s(`skip.${t.type}`) : ''), [t?.type, s])
                                     return (
                                         (0, h.useEffect)(() => {
                                             l && (n.current = l)
                                         }, [l]),
+                                        (0, h.useEffect)(() => {
+                                            let e = () => setSe(localStorage.getItem('skip_events') !== 'false')
+                                            return (window.addEventListener('skip_events_listener', e), () => window.removeEventListener('skip_events_listener', e))
+                                        }, []),
                                         (0, d.jsx)(i7, {
                                             label: l || n.current,
                                             icon: (0, d.jsx)(iu, {}),
-                                            isVisible: r,
+                                            isVisible: r && se,
                                             onSkip: a,
                                             className: 'kat:self-end kat:mr-40 kat:pointer-events-auto'
                                         })
