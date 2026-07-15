@@ -4,6 +4,8 @@ let locale;
   // Classi da istanziare per ogni tipo di pagina
   const classes = [
     [new RegExp(`^(\\/[a-z-]+)?\\/series\\/`), Series],
+    // Home / pagina principale (root, opzionale locale, opzionale /discover)
+    [/^(\/[a-z]{2}(-[a-z]{2,3})?)?(\/discover)?\/?$/, Home],
   ];
   
   // Mappa dei locales

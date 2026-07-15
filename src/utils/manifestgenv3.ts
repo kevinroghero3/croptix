@@ -65,6 +65,7 @@ async function generateManifest() {
                 'series/api.js',
                 'series/action-menu.js',
                 'series/series.js',
+                'series/home.js',
                 'series/navigator.js'
             ],
             css: ['css/series.css'],
