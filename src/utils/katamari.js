@@ -1,4 +1,65 @@
 ;(() => {
+    // Resolve a webpack module without relying only on hardcoded module ids.
+    // Crunchyroll rebuilds its bundles regularly, so ids like 2265 / 57437 can
+    // disappear. When that happens `__webpack_require__(id)` reads
+    // `modules[id].call` on `undefined` and throws
+    // "TypeError: Cannot read properties of undefined (reading 'call')".
+    function croptix_resolve_module(a, preferred_id, label, matcher, source_hints) {
+        const test = (mod) => {
+            try {
+                return mod && matcher(mod) ? mod : null
+            } catch {
+                return null
+            }
+        }
+
+        const require_id = (id) => {
+            try {
+                if (a.m && !Object.prototype.hasOwnProperty.call(a.m, id)) return null
+                return test(a(id))
+            } catch {
+                return null
+            }
+        }
+
+        // 1. Fast path: the original id still exists.
+        const preferred = require_id(preferred_id)
+        if (preferred) return preferred
+
+        // 2. Look through modules that are already instantiated (no side effects).
+        try {
+            for (const id in a.c) {
+                const found = test(a.c[id] && a.c[id].exports)
+                if (found) {
+                    console.warn(`[CrOptix] Remapped "${label}": ${preferred_id} -> ${id} (cache)`)
+                    return found
+                }
+            }
+        } catch {}
+
+        // 3. Last resort: scan registered factories, prefiltered by export names
+        //    so we don't evaluate unrelated modules.
+        try {
+            for (const id in a.m) {
+                if (String(id) === String(preferred_id)) continue
+                if (source_hints && source_hints.length) {
+                    let src = ''
+                    try {
+                        src = String(a.m[id])
+                    } catch {}
+                    if (!source_hints.some((hint) => src.includes(hint))) continue
+                }
+                const found = require_id(id)
+                if (found) {
+                    console.warn(`[CrOptix] Remapped "${label}": ${preferred_id} -> ${id} (registry)`)
+                    return found
+                }
+            }
+        } catch {}
+
+        throw Error(`[CrOptix] could not resolve module "${label}" (expected id ${preferred_id})`)
+    }
+
     function patch_webpack_chunk(chunk_data) {
         try {
             const modules = chunk_data[1]
@@ -39,8 +100,21 @@
                         continue
                     }
 
-                    modules[module_id] = (function (SHAKA_E, SHAKA_B, BIT_E, BIT_B) {
+                    modules[module_id] = (function (SHAKA_E, SHAKA_B, BIT_E, BIT_B, ORIGINAL_FN) {
                         return function (t, i, a) {
+                            let l, d, u, c, h
+                            try {
+                                l = croptix_resolve_module(a, 77219, 'katamari-shared', (m) => m.Ft && m.xt && m.bt && m.tt && m.at && m.z)
+                                d = croptix_resolve_module(a, 57437, 'react/jsx-runtime', (m) => m.jsx || m.jsxs, ['jsx'])
+                                u = croptix_resolve_module(a, 54887, 'react-dom', (m) => m.createPortal || m.render, ['createPortal'])
+                                c = croptix_resolve_module(a, 34040, 'react-dom/client', (m) => m.createRoot, ['createRoot'])
+                                h = croptix_resolve_module(a, 2265, 'react', (m) => m.useState && m.useEffect && m.createElement, ['useState'])
+                            } catch (err) {
+                                // Never break Crunchyroll: fall back to the untouched module.
+                                console.warn('[CrOptix] Katamari patch disabled, using original player module:', (err && err.message) || err)
+                                return ORIGINAL_FN(t, i, a)
+                            }
+
                             let r
                             a.d(i, {
                                 n: function () {
@@ -56,11 +130,6 @@
                             var s,
                                 n,
                                 o,
-                                l = a(77219),
-                                d = a(57437),
-                                u = a(54887),
-                                c = a(34040),
-                                h = a(2265),
                                 p = Object.create,
                                 f = Object.defineProperty,
                                 g = Object.getOwnPropertyDescriptor,
@@ -16663,7 +16732,7 @@
                                     }
                                 }
                         }
-                    })(shakaE, shakaB, bitE, bitB)
+                    })(shakaE, shakaB, bitE, bitB, fn)
                 }
             }
         } catch (err) {
