@@ -56,7 +56,7 @@
                             var s,
                                 n,
                                 o,
-                                l = a(77219),
+                                l = a(85651),
                                 d = a(57437),
                                 u = a(54887),
                                 c = a(34040),
@@ -8793,32 +8793,10 @@
                                         t
                                     )
                                 },
-                                aReportUnstyledSubs = async (t, i, a) => {
-                                    try {
-                                        let r = i?.assetMetadata,
-                                            s = {
-                                                series_id: r?.metadata?.series_id ?? void 0,
-                                                series_name: r?.metadata?.series_title ?? void 0,
-                                                episode_id: i?.id ?? void 0,
-                                                subtitle_locale: a?.language ?? void 0,
-                                                episode_url: window.location.href,
-                                                subtitle_url: t
-                                            }
-                                        await fetch('https://gateway4m.com/api/subtitles/report', {
-                                            method: 'POST',
-                                            headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify(s),
-                                            mode: 'cors'
-                                        })
-                                    } catch (t) {
-                                        console.error('[CrOptix] Failed to send subtitle report:', t)
-                                    }
-                                },
-                                aFixSubs = async (t, i, a) => {
+                                aFixSubs = async (t) => {
                                     let r = await fetch(t),
                                         s = await r.text()
                                     return (
-                                        s.includes('www.closedcaptionconverter.com') && a?.language === 'de-DE' && aReportUnstyledSubs(t, i, a),
                                         s.includes('DilleniaUPC') &&
                                             (s = s
                                                 .replace(
