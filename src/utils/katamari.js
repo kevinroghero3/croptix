@@ -27,6 +27,7 @@
                 }
 
                 if (fn_str.includes('@crunchyroll/katamari-desktop-player')) {
+                    const importIds = [...fn_str.matchAll(/[a-zA-Z0-9_$]+\s*=\s*[a-zA-Z0-9_$]+\s*\(\s*(\d+)\s*\)/g)].slice(0, 5).map((match) => Number(match[1]))
                     const [shakaE, shakaB] =
                         engineImportRegex('ShakaMediaEngine') ||
                         ex(/\?\s*await\s*[a-zA-Z0-9_$]+\.e\((\d+)\)\.then\([a-zA-Z0-9_$]+\.bind\([a-zA-Z0-9_$]+,\s*(\d+)\)\)\.then\(\(\{\s*ShakaMediaEngine/)
@@ -38,8 +39,12 @@
                         console.warn('[CrOptix] Katamari Patch skipped: media engine chunk ids not found')
                         continue
                     }
+                    if (importIds.length !== 5) {
+                        console.warn('[CrOptix] Katamari Patch skipped: static import ids not found')
+                        continue
+                    }
 
-                    modules[module_id] = (function (SHAKA_E, SHAKA_B, BIT_E, BIT_B) {
+                    modules[module_id] = (function (SHAKA_E, SHAKA_B, BIT_E, BIT_B, IMPORT_IDS) {
                         return function (t, i, a) {
                             let r
                             a.d(i, {
@@ -56,11 +61,11 @@
                             var s,
                                 n,
                                 o,
-                                l = a(85651),
-                                d = a(57437),
-                                u = a(54887),
-                                c = a(34040),
-                                h = a(2265),
+                                l = a(IMPORT_IDS[0]),
+                                d = a(IMPORT_IDS[1]),
+                                u = a(IMPORT_IDS[2]),
+                                c = a(IMPORT_IDS[3]),
+                                h = a(IMPORT_IDS[4]),
                                 p = Object.create,
                                 f = Object.defineProperty,
                                 g = Object.getOwnPropertyDescriptor,
@@ -471,6 +476,12 @@
                                     'skip.preview': 'Skip Preview',
                                     'skip.promo': 'Skip Promo',
                                     'skip.bumper': 'Skip Bumper',
+                                    'chapter.intro': 'Opening',
+                                    'chapter.recap': 'Recap',
+                                    'chapter.credits': 'Ending / Credits',
+                                    'chapter.preview': 'Preview',
+                                    'chapter.promo': 'Promo',
+                                    'chapter.bumper': 'Bumper',
                                     'ratings.announcement.ratedFor': 'Rated {{rating}} for {{descriptors}}',
                                     'ratings.announcement.ratedOnly': 'Rated {{rating}}',
                                     'ratings.announcement.noRating': 'No rating information available',
@@ -490,8 +501,12 @@
                                     'quality.moderate.description': 'Use less data by streaming at a standard quality.',
                                     'quality.dataSaver': 'Data Saver',
                                     'quality.dataSaver.description': 'Uses the least amount of data. Good for slower connections and data limits.',
-                                    'jump.forward.ariaLabel': 'Jump forward 10 seconds',
-                                    'jump.backward.ariaLabel': 'Jump backward 10 seconds',
+                                    'jump.forward.ariaLabel': 'Jump forward {{seconds}} seconds',
+                                    'jump.backward.ariaLabel': 'Jump backward {{seconds}} seconds',
+                                    skipButtons: 'Skip Buttons',
+                                    timeDisplay: 'Time Display',
+                                    totalTime: 'Total',
+                                    remainingTime: 'Remaining',
                                     'buffering.ariaLabel': 'Loading',
                                     'nextEpisode.ariaLabel': 'Next Episode',
                                     'controls.announcement.autohide':
@@ -3562,26 +3577,20 @@
                                     let a = 0,
                                         r = null,
                                         s = null,
-                                        n = null,
                                         o = t.playheadUpdate$.subscribe((t) => {
-                                            ;((a = t.playheadData.timelineTime), null !== r && null === s && Math.abs(a - r) > 2 && (r = null))
+                                            a = t.playheadData.timelineTime
                                         })
                                     return {
                                         seek: (t) => {
                                             ;((r = Math.max(0, (null === r ? a : r) + t)),
                                                 s && clearTimeout(s),
-                                                n && clearTimeout(n),
+                                                i.seek(r),
                                                 (s = setTimeout(() => {
-                                                    ;(null !== r &&
-                                                        (i.seek(r),
-                                                        (n = setTimeout(() => {
-                                                            r = null
-                                                        }, 1e3))),
-                                                        (s = null))
-                                                }, 200)))
+                                                    ;((r = null), (s = null))
+                                                }, 1e3)))
                                         },
                                         dispose: () => {
-                                            ;((s &&= (clearTimeout(s), null)), (n &&= (clearTimeout(n), null)), o.unsubscribe())
+                                            ;((s &&= (clearTimeout(s), null)), o.unsubscribe())
                                         }
                                     }
                                 },
@@ -4082,6 +4091,11 @@
                                         if (!t || this._boundShakaPlayer === t) return
                                         this._unbindShakaQualityEvents?.()
                                         this._boundShakaPlayer = t
+                                        try {
+                                            t.configure({ streaming: { bufferingGoal: 30 } })
+                                        } catch (t) {
+                                            this._errorQuality('Failed to set Shaka buffering goal.', t)
+                                        }
                                         let i = this._readResolutionBucket(),
                                             a = /^height:\d+$/.test(String(i)),
                                             r = (i) => {
@@ -4383,12 +4397,29 @@
                                     }
                                 },
                                 tU = class {
-                                    constructor(t, i) {
+                                    constructor(t, i, a) {
                                         ;((this._currentDuration = 0),
+                                            (this._stitchedElements = []),
+                                            (this._rootView = a),
                                             (this.setPosition = (t) => {
                                                 t >= 0 && t <= this._currentDuration && this._playerHandle.seek(t)
                                             }),
                                             (this.getThumbnailUri = (t) => this._playerHandle.getThumbnailUrl(t)),
+                                            (this.getBufferedEnd = () => {
+                                                try {
+                                                    let t = this._rootView?.querySelector('video')
+                                                    if (!t || !Number.isFinite(t.currentTime)) return 0
+                                                    let i = t.currentTime
+                                                    for (let a = 0; a < t.buffered.length; a++)
+                                                        if (t.currentTime >= t.buffered.start(a) - 0.1 && t.currentTime <= t.buffered.end(a)) {
+                                                            i = t.buffered.end(a)
+                                                            break
+                                                        }
+                                                    return Math.max(0, (0, l.c)(i, this._stitchedElements))
+                                                } catch (t) {
+                                                    return 0
+                                                }
+                                            }),
                                             (this._playerHandle = i),
                                             (this.currentPlayhead$ = t.playheadUpdate$.pipe(
                                                 (0, l.ht)((t) => t.playheadData.timelineTime),
@@ -4396,25 +4427,50 @@
                                             )),
                                             (this.duration$ = t.videoModelUpdated$.pipe(
                                                 (0, l.ht)((t) => {
-                                                    let i = t.videoModel.manifest.stitchedElements.filter((t) => t.timeline).reduce((t, i) => t + (i.end - i.start), 0)
+                                                    this._stitchedElements = t.videoModel.manifest.stitchedElements || []
+                                                    let i = this._stitchedElements.filter((t) => t.timeline).reduce((t, i) => t + (i.end - i.start), 0)
                                                     return isNaN(i) || !isFinite(i) || i <= 0 ? t.videoModel.assetMetadata.contentDuration : i
                                                 }),
                                                 (0, l.ft)(0),
                                                 (0, l.dt)((t) => {
                                                     this._currentDuration = t
                                                 })
+                                            )),
+                                            (this.chapterSegments$ = t.videoModelUpdated$.pipe(
+                                                (0, l.ht)((t) => {
+                                                    let i = t.videoModel.manifest,
+                                                        a = i.stitchedElements || []
+                                                    return (i.annotations || [])
+                                                        .map((t) => {
+                                                            let i = (0, l.c)(t.start, a),
+                                                                r = (0, l.c)(t.end, a),
+                                                                s = String(t.type || 'main').toLowerCase()
+                                                            return Number.isFinite(i) && Number.isFinite(r) && r > i
+                                                                ? {
+                                                                      id: t.id || `${s}-${i}-${r}`,
+                                                                      type: s,
+                                                                      localizedLabel: t.localizedLabel,
+                                                                      start: Math.max(0, i),
+                                                                      end: Math.max(0, r)
+                                                                  }
+                                                                : void 0
+                                                        })
+                                                        .filter(Boolean)
+                                                        .sort((t, i) => t.start - i.start)
+                                                }),
+                                                (0, l.ft)([])
                                             )))
                                     }
                                 },
                                 tF = class {
-                                    constructor(t, i, a) {
+                                    constructor(t, i, a, r) {
                                         ;((this.playPauseButtonVM = new tE(i, t)),
                                             (this.jumpButtonsVM = new tS(i, t)),
                                             (this.volumeVM = new tj(i, t)),
                                             (this.trackSelectionVM = new tT(i, t, a)),
                                             (this.timestampDisplayVM = new tN(i)),
                                             (this.playbackSpeedMenuVM = new tg(i, t)),
-                                            (this.timelineScrubberVM = new tU(i, t)),
+                                            (this.timelineScrubberVM = new tU(i, t, r)),
                                             (this.skipEventVM = new tO(i, t)),
                                             (this.ratingsAdvisoriesVM = new tk(i)),
                                             (this.errorOverlayVM = new tu(i, t)),
@@ -4839,14 +4895,25 @@
                                             fill: 'currentColor'
                                         })
                                     }),
-                                t7 = ({ isForward: t, size: i = 44, className: a = '', ...r }) =>
-                                    (0, d.jsx)(t ? t5 : t6, {
-                                        width: i,
-                                        height: i,
+                                t7 = ({ isForward: t, seconds: i, size: a = 24, className: r = '', arrowRef: s, ...n }) =>
+                                    (0, d.jsxs)('span', {
+                                        className: 'kat:relative kat:flex kat:items-center kat:justify-center',
+                                        style: { width: a, height: a },
                                         'aria-hidden': 'true',
-                                        className: a,
                                         'data-testid': t ? 'jump-forward-icon' : 'jump-backward-icon',
-                                        ...r
+                                        ...n,
+                                        children: [
+                                            (0, d.jsx)('span', {
+                                                ref: s,
+                                                className: 'kat:absolute kat:inset-0 kat:flex',
+                                                children: (0, d.jsx)(t ? t5 : t6, { width: a, height: a, className: r })
+                                            }),
+                                            (0, d.jsx)('span', {
+                                                className: 'kat:relative kat:pointer-events-none kat:select-none',
+                                                style: { fontSize: '7px', fontWeight: 700, lineHeight: 1 },
+                                                children: i
+                                            })
+                                        ]
                                     }),
                                 t8 = (t) =>
                                     (0, d.jsxs)('svg', {
@@ -5346,12 +5413,13 @@
                                                 : (0, d.jsx)(iF, { className: (0, tG.default)('kat:w-20 kat:h-20', { 'kat:text-neutral-50': !i, 'kat:text-neutral-500': i }) })
                                         })
                                     }),
-                                iB = ({ label: t, checked: i, disabled: a = !1, ariaLabel: r, onChange: s }) =>
+                                iB = ({ label: t, checked: i, disabled: a = !1, ariaLabel: r, onChange: s, autoFocus: n = !1 }) =>
                                     (0, d.jsxs)('div', {
                                         role: 'menuitemcheckbox',
                                         'aria-checked': i,
                                         'aria-disabled': a,
                                         'aria-label': r ?? t,
+                                        autoFocus: n,
                                         onClick: (t) => {
                                             a || t.target.closest('[role="switch"]') || s(!i)
                                         },
@@ -5365,7 +5433,7 @@
                                             (0, d.jsx)(i$, { tabIndex: -1, checked: i, disabled: a, ariaLabel: r ?? t, onChange: s })
                                         ]
                                     }),
-                                iq = ({ label: t, checked: i, onChange: a }) => (0, d.jsx)(iB, { label: t, checked: i, onChange: a }),
+                                iq = ({ label: t, checked: i, onChange: a, autoFocus: r = !1 }) => (0, d.jsx)(iB, { label: t, checked: i, onChange: a, autoFocus: r }),
                                 iK = ({ options: t, selectedBucket: i, onSelect: a }) =>
                                     (0, d.jsx)(d.Fragment, {
                                         children: (0, h.useMemo)(
@@ -5465,11 +5533,51 @@
                                         }
                                     )
                                 },
+                                iSkipButtons = () => {
+                                    let readSetting = () => {
+                                            let t = Number(localStorage.getItem('croptix.skipButtonsSeconds') ?? 10)
+                                            return 0 === t || 5 === t || 10 === t ? t : 10
+                                        },
+                                        [t, i] = (0, h.useState)(readSetting)
+                                    return (
+                                        (0, h.useEffect)(() => {
+                                            let t = () => i(readSetting())
+                                            return (window.addEventListener('croptix_skip_buttons_changed', t), () => window.removeEventListener('croptix_skip_buttons_changed', t))
+                                        }, []),
+                                        {
+                                            skipButtonSeconds: t,
+                                            setSkipButtonSeconds: (0, h.useCallback)((t) => {
+                                                ;(localStorage.setItem('croptix.skipButtonsSeconds', String(t)), window.dispatchEvent(new Event('croptix_skip_buttons_changed')))
+                                            }, [])
+                                        }
+                                    )
+                                },
+                                iTimeDisplay = () => {
+                                    let readSetting = () => {
+                                            let t = localStorage.getItem('croptix.timeDisplay')
+                                            return 'remaining' === t ? t : 'total'
+                                        },
+                                        [t, i] = (0, h.useState)(readSetting)
+                                    return (
+                                        (0, h.useEffect)(() => {
+                                            let t = () => i(readSetting())
+                                            return (window.addEventListener('croptix_time_display_changed', t), () => window.removeEventListener('croptix_time_display_changed', t))
+                                        }, []),
+                                        {
+                                            timeDisplay: t,
+                                            setTimeDisplay: (0, h.useCallback)((t) => {
+                                                ;(localStorage.setItem('croptix.timeDisplay', t), window.dispatchEvent(new Event('croptix_time_display_changed')))
+                                            }, [])
+                                        }
+                                    )
+                                },
                                 iJ = () => {
                                     let { isActive: t, toggle: i, close: a } = iI(),
                                         { t: r } = iy(),
                                         { isAutoplayNextEnabled: s, toggleAutoplayNext: n, selectedQualityBucket: o, resolutionQualities: q, setPlaybackQualityBucket: u } = iW(),
                                         { availableRates: c, selectedRate: p, selectPlaybackSpeed: f } = iO(),
+                                        { skipButtonSeconds, setSkipButtonSeconds } = iSkipButtons(),
+                                        { timeDisplay, setTimeDisplay } = iTimeDisplay(),
                                         {
                                             viewModelContainer: { trackSelectionVM: g }
                                         } = im(),
@@ -5542,9 +5650,12 @@
                                             className:
                                                 'kat:flex kat:items-center kat:gap-4 kat:cursor-pointer kat:ps-20 kat:pe-20 kat:pt-13 kat:pb-13 kat:hover:bg-neutral-600 kat:border-b kat:border-neutral-600',
                                             onClick: () => {
-                                                m('main')
+                                                m('skipButtons' === v || 'timeDisplay' === v ? 'playback' : 'main')
                                             },
-                                            children: (0, d.jsx)('span', { className: 'kat:text-sm kat:font-bold kat:text-white', children: '< ' + r('settings') })
+                                            children: (0, d.jsx)('span', {
+                                                className: 'kat:text-sm kat:font-bold kat:text-white',
+                                                children: '< ' + r('skipButtons' === v || 'timeDisplay' === v ? 'playbackOptions' : 'settings')
+                                            })
                                         }),
                                         F = q,
                                         B = () => {
@@ -5650,6 +5761,54 @@
                                                             })
                                                         ]
                                                     })
+                                                case 'skipButtons':
+                                                    return (0, d.jsxs)('div', {
+                                                        className: 'kat:flex kat:flex-col',
+                                                        style: { width: '320px' },
+                                                        children: [
+                                                            M,
+                                                            (0, d.jsx)('div', {
+                                                                className: 'kat:py-5',
+                                                                children: [0, 5, 10].map((t) =>
+                                                                    (0, d.jsx)(
+                                                                        ix,
+                                                                        {
+                                                                            label: 0 === t ? r('disabled') : `${t} seconds`,
+                                                                            selected: skipButtonSeconds === t,
+                                                                            onSelect: () => {
+                                                                                ;(setSkipButtonSeconds(t), m('playback'))
+                                                                            }
+                                                                        },
+                                                                        t
+                                                                    )
+                                                                )
+                                                            })
+                                                        ]
+                                                    })
+                                                case 'timeDisplay':
+                                                    return (0, d.jsxs)('div', {
+                                                        className: 'kat:flex kat:flex-col',
+                                                        style: { width: '320px' },
+                                                        children: [
+                                                            M,
+                                                            (0, d.jsx)('div', {
+                                                                className: 'kat:py-5',
+                                                                children: ['total', 'remaining'].map((t) =>
+                                                                    (0, d.jsx)(
+                                                                        ix,
+                                                                        {
+                                                                            label: r('remaining' === t ? 'remainingTime' : 'totalTime'),
+                                                                            selected: timeDisplay === t,
+                                                                            onSelect: () => {
+                                                                                ;(setTimeDisplay(t), m('playback'))
+                                                                            }
+                                                                        },
+                                                                        t
+                                                                    )
+                                                                )
+                                                            })
+                                                        ]
+                                                    })
                                                 case 'playback':
                                                     return (0, d.jsxs)('div', {
                                                         className: 'kat:flex kat:flex-col kat:py-5',
@@ -5659,7 +5818,17 @@
                                                             (0, d.jsx)(iq, { label: r('autoplayNext'), checked: s ?? !1, onChange: n }),
                                                             (0, d.jsx)(iq, { label: r('skipEvents'), checked: y, onChange: L }),
                                                             (0, d.jsx)(iq, { label: r('showRecommendations'), checked: Z, onChange: H }),
-                                                            (0, d.jsx)(iq, { label: r('autoSkipIntroOutro'), checked: N, onChange: O })
+                                                            (0, d.jsx)(iq, { label: r('autoSkipIntroOutro'), checked: N, onChange: O }),
+                                                            (0, d.jsx)(D, {
+                                                                label: r('skipButtons'),
+                                                                value: 0 === skipButtonSeconds ? r('disabled') : `${skipButtonSeconds} seconds`,
+                                                                onClick: () => m('skipButtons')
+                                                            }),
+                                                            (0, d.jsx)(D, {
+                                                                label: r('timeDisplay'),
+                                                                value: r('remaining' === timeDisplay ? 'remainingTime' : 'totalTime'),
+                                                                onClick: () => m('timeDisplay')
+                                                            })
                                                         ]
                                                     })
                                                 default:
@@ -5795,19 +5964,22 @@
                                     [tK.FrameForward]: ['>', '.'],
                                     [tK.FrameBackward]: ['<', ',']
                                 },
+                                iHeldArrowSeekIntervalMs = 250,
                                 i1 = ({ shortcut: t, handleShortcut: i, target: a = 'both' }) => {
                                     let { keyboardShortcutTarget: r } = im(),
                                         s = ig(),
                                         n = i0[t],
+                                        isArrowSeekShortcut = t === tK.JumpForward || t === tK.JumpBackward,
+                                        lastArrowSeekAt = (0, h.useRef)(0),
                                         o = (0, h.useCallback)(
                                             (t) => {
-                                                !0 === t.defaultPrevented ||
-                                                    !0 === t.metaKey ||
-                                                    !0 === t.ctrlKey ||
-                                                    !0 === t.altKey ||
-                                                    (n.includes(t.key) && (i(), t.preventDefault(), t.stopPropagation(), t.stopImmediatePropagation?.()))
+                                                if (!0 === t.defaultPrevented || !0 === t.metaKey || !0 === t.ctrlKey || !0 === t.altKey || !n.includes(t.key)) return
+                                                let a = performance.now()
+                                                ;(!isArrowSeekShortcut || !t.repeat || a - lastArrowSeekAt.current >= iHeldArrowSeekIntervalMs) &&
+                                                    ((lastArrowSeekAt.current = a), i(t))
+                                                ;(t.preventDefault(), t.stopPropagation(), t.stopImmediatePropagation?.())
                                             },
-                                            [n, i]
+                                            [n, i, isArrowSeekShortcut]
                                         )
                                     ;((0, h.useEffect)(() => {
                                         if ('containerOnly' === a)
@@ -6014,7 +6186,7 @@
                                     )
                                 },
                                 i9 = (0, h.createContext)(void 0),
-                                ae = 3e3,
+                                ae = 2e3,
                                 at = 0.1,
                                 ai = ({ children: t, eventTarget: i, enabled: a = !0, idleTimeoutMs: r = ae, mouseIdlePercentage: s = at }) => {
                                     let [n, o] = (0, h.useState)(!0),
@@ -6045,8 +6217,8 @@
                                             [y]
                                         ),
                                         b = (0, h.useCallback)(() => {
-                                            _()
-                                        }, [_])
+                                            _(r)
+                                        }, [_, r])
                                     ;((0, h.useEffect)(() => {
                                         if (!a) return (o(!0), v(), v)
                                         if (!i)
@@ -6131,7 +6303,7 @@
                                     let a = Math.max(t - i, 0)
                                     return t <= 0 || a <= 0 ? 0 : (a / t) * 100
                                 },
-                                ao = ({ anchorElementRef: t, duration: i, getThumbnailUri: a }) => {
+                                ao = ({ anchorElementRef: t, duration: i, getThumbnailUri: a, chapters: tA = [] }) => {
                                     let r = (0, h.useRef)(null),
                                         s = (0, h.useRef)(null),
                                         n = (0, h.useRef)(0),
@@ -6139,6 +6311,8 @@
                                         [l, u] = (0, h.useState)(!1),
                                         [c, p] = (0, h.useState)('--:--'),
                                         [f, g] = (0, h.useState)(!1),
+                                        [chapterLabel, setChapterLabel] = (0, h.useState)(''),
+                                        [chapterLabelVisible, setChapterLabelVisible] = (0, h.useState)(!1),
                                         v = (0, h.useCallback)(() => {
                                             u(!1)
                                         }, []),
@@ -6153,7 +6327,7 @@
                                             }
                                         }, []),
                                         _ = (0, h.useCallback)(() => {
-                                            ;(g(!1), null !== t.current && t.current.style.setProperty('--timeline-hover-percentage', 'initial'))
+                                            ;(g(!1), setChapterLabelVisible(!1), null !== t.current && t.current.style.setProperty('--timeline-hover-percentage', 'initial'))
                                         }, []),
                                         b = (0, h.useCallback)(
                                             (l) => {
@@ -6167,10 +6341,13 @@
                                                 t.current.style.setProperty('--timeline-hover-percentage', `${100 * f}%`)
                                                 let g = i * f
                                                 p(tL(g))
+                                                let m = tA.find((t) => g >= t.start && g < t.end)
+                                                let chapter = m?.label || ''
+                                                ;(chapter && setChapterLabel(chapter), setChapterLabelVisible(!!chapter))
                                                 let v = a ? a(g) : void 0
                                                 v && s.current && (s.current.src = v)
                                             },
-                                            [a, i, t]
+                                            [a, i, t, tA]
                                         )
                                     return (
                                         (0, h.useEffect)(() => {
@@ -6200,6 +6377,28 @@
                                                     'data-testid': 'trickplay-image'
                                                 }),
                                                 (0, d.jsx)('span', {
+                                                    style: {
+                                                        position: l ? 'absolute' : 'relative',
+                                                        top: l ? '8px' : void 0,
+                                                        left: l ? '50%' : void 0,
+                                                        maxWidth: '244px',
+                                                        padding: '5px 9px',
+                                                        overflow: 'hidden',
+                                                        borderRadius: '6px',
+                                                        background: 'rgba(8, 8, 10, 0.86)',
+                                                        color: 'rgb(249, 249, 250)',
+                                                        fontSize: '13px',
+                                                        fontWeight: 700,
+                                                        lineHeight: '18px',
+                                                        opacity: chapterLabelVisible ? 1 : 0,
+                                                        textOverflow: 'ellipsis',
+                                                        transform: l ? `translate(-50%, ${chapterLabelVisible ? '0' : '5px'})` : `translateY(${chapterLabelVisible ? '0' : '5px'})`,
+                                                        transition: 'opacity 160ms ease, transform 260ms cubic-bezier(0.16, 1.35, 0.32, 1)',
+                                                        whiteSpace: 'nowrap'
+                                                    },
+                                                    children: chapterLabel || '\u00a0'
+                                                }),
+                                                (0, d.jsx)('span', {
                                                     className: (0, tG.default)(
                                                         'kat:text-neutral-50 kat:not-italic kat:font-bold kat:tracking-[-0.42px] kat:pl-8 kat:pr-8 kat:pb-4 kat:pt-4',
                                                         l ? 'kat:absolute kat:bottom-0 kat:left-1/2 kat:-translate-x-1/2' : 'kat:relative kat:object-bottom'
@@ -6222,7 +6421,9 @@
                                             totalTime: iT = tL(0),
                                             getAriaValueText: a,
                                             getThumbnailUri: r,
+                                            getBufferedEnd: aA,
                                             seekTo: s,
+                                            chapters: tA = [],
                                             config: n = al
                                         },
                                         o
@@ -6231,33 +6432,101 @@
                                             u = (0, h.useRef)(!1),
                                             c = (0, h.useRef)(!1),
                                             p = (0, h.useRef)(void 0),
-                                            f = (0, h.useRef)(void 0)
-                                        ;((0, h.useImperativeHandle)(
-                                            o,
-                                            () => ({
-                                                updatePosition: (t) => {
-                                                    if (null !== l.current && !1 === u.current && !1 === c.current) {
-                                                        l.current.valueAsNumber = t
-                                                        let r = 0 === i ? 0 : (t / i) * 100
-                                                        l.current.style.setProperty('--timeline-progress-percent', `${r}%`)
-                                                        let s = an(r, n.gradientStartPercent)
-                                                        l.current.style.setProperty('--moz-progress-gradient-percent', `${s}%`)
-                                                        let o = Math.floor(t)
-                                                        ;((l.current.ariaValueNow = o.toFixed(0)), (l.current.ariaValueText = a(o)))
+                                            f = (0, h.useRef)(void 0),
+                                            keyboardSeekStepAt = (0, h.useRef)(0),
+                                            [timelineHovered, setTimelineHovered] = (0, h.useState)(!1)
+                                        let chapterBoundaries = Array.from(
+                                                new Set(
+                                                    tA
+                                                        .flatMap((t) => [t.start, t.end])
+                                                        .filter((t) => Number.isFinite(t) && t > 0 && t < i)
+                                                        .map((t) => Number(t.toFixed(3)))
+                                                )
+                                            ).sort((t, i) => t - i),
+                                            createChapterMask = (t, i) => {
+                                                if (!Number.isFinite(i) || i <= 0) return
+                                                let a = t.filter((t) => Number.isFinite(t) && t > 0 && t < i)
+                                                if (0 === a.length) return
+                                                let r = ['#000 0%']
+                                                return (
+                                                    a.forEach((t) => {
+                                                        let a = (t / i) * 100
+                                                        r.push(
+                                                            `#000 calc(${a}% - var(--chapter-gap))`,
+                                                            `transparent calc(${a}% - var(--chapter-gap))`,
+                                                            `transparent calc(${a}% + var(--chapter-gap))`,
+                                                            `#000 calc(${a}% + var(--chapter-gap))`
+                                                        )
+                                                    }),
+                                                    r.push('#000 100%'),
+                                                    `linear-gradient(to right, ${r.join(', ')})`
+                                                )
+                                            },
+                                            chapterMask = createChapterMask(chapterBoundaries, i),
+                                            updateProgressChapterMask = (0, h.useCallback)(
+                                                (t) => {
+                                                    if (null === l.current) return
+                                                    let i = createChapterMask(
+                                                        chapterBoundaries.filter((i) => i < t),
+                                                        t
+                                                    )
+                                                    l.current.style.setProperty('--chapter-progress-mask', i || 'linear-gradient(to right, #000 0%, #000 100%)')
+                                                },
+                                                [chapterBoundaries]
+                                            ),
+                                            updateTimelinePaint = (0, h.useCallback)(
+                                                (t) => {
+                                                    if (null === l.current) return
+                                                    let a = Number.isFinite(t) ? t : l.current.valueAsNumber,
+                                                        r = 0 === i ? 0 : Math.min(100, Math.max(0, (a / i) * 100)),
+                                                        s = Number(aA?.()) || 0,
+                                                        o = 0 === i ? 0 : Math.min(100, Math.max(0, (s / i) * 100)),
+                                                        u = Math.max(r, o)
+                                                    ;(l.current.style.setProperty('--timeline-progress-percent', `${r}%`),
+                                                        l.current.style.setProperty('--timeline-buffer-percent', `${u}%`),
+                                                        l.current.style.setProperty('--moz-progress-gradient-percent', `${an(r, n.gradientStartPercent)}%`))
+                                                },
+                                                [i, aA, n.gradientStartPercent]
+                                            )
+                                        ;((0, h.useEffect)(() => {
+                                            let t = () => updateTimelinePaint(l.current?.valueAsNumber)
+                                            t()
+                                            let r = setInterval(t, 500)
+                                            return () => clearInterval(r)
+                                        }, [updateTimelinePaint]),
+                                            (0, h.useImperativeHandle)(
+                                                o,
+                                                () => ({
+                                                    updatePosition: (t) => {
+                                                        if (null !== l.current && !1 === u.current && !1 === c.current) {
+                                                            l.current.valueAsNumber = t
+                                                            updateTimelinePaint(t)
+                                                            updateProgressChapterMask(t)
+                                                            let o = Math.floor(t)
+                                                            ;((l.current.ariaValueNow = o.toFixed(0)), (l.current.ariaValueText = a(o)))
+                                                        }
                                                     }
-                                                }
-                                            }),
-                                            [i, n.gradientStartPercent, a]
-                                        ),
+                                                }),
+                                                [a, updateProgressChapterMask, updateTimelinePaint]
+                                            ),
                                             (0, h.useEffect)(() => {
                                                 null !== l.current &&
                                                     n.gradientStartPercent >= 0 &&
                                                     n.gradientStartPercent <= 100 &&
                                                     l.current.style.setProperty('--gradient-start-percent', `${n.gradientStartPercent.toFixed(2)}%`)
-                                            }, [n]))
-                                        let g = (0, h.useCallback)((t) => {
-                                            t.target !== l.current || null === t.target || ((!0 === u.current || !0 === c.current) && (f.current = t.target.valueAsNumber))
-                                        }, [])
+                                            }, [n]),
+                                            (0, h.useEffect)(() => {
+                                                null !== l.current && updateProgressChapterMask(l.current.valueAsNumber)
+                                            }, [chapterMask, updateProgressChapterMask]))
+                                        let g = (0, h.useCallback)(
+                                            (t) => {
+                                                if (t.target !== l.current || null === t.target) return
+                                                ;((!0 !== u.current && !0 !== c.current) || (f.current = t.target.valueAsNumber),
+                                                    updateTimelinePaint(t.target.valueAsNumber),
+                                                    updateProgressChapterMask(t.target.valueAsNumber))
+                                            },
+                                            [updateProgressChapterMask, updateTimelinePaint]
+                                        )
                                         return (0, d.jsxs)('div', {
                                             className: 'timeline-container kat:flex kat:items-center kat:w-full kat:pt-20 kat:pb-20 kat:gap-10',
                                             children: [
@@ -6268,10 +6537,46 @@
                                                 (0, d.jsxs)('div', {
                                                     className: 'kat:relative kat:flex-1 kat:flex kat:items-center kat:w-full',
                                                     children: [
-                                                        (0, d.jsx)(ao, { anchorElementRef: l, duration: i, getThumbnailUri: r }),
+                                                        (0, d.jsx)('style', {
+                                                            children:
+                                                                '@property --chapter-gap { syntax: "<length>"; inherits: true; initial-value: 1.5px; }\n' +
+                                                                '.timeline-slider[data-segmented="true"] { transition: --chapter-gap 360ms cubic-bezier(0.16, 1.55, 0.32, 1); }\n' +
+                                                                '.timeline-slider[data-segmented="true"]::-webkit-slider-runnable-track { -webkit-mask-image: var(--chapter-mask); mask-image: var(--chapter-mask); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }\n' +
+                                                                '.timeline-slider[data-segmented="true"]::-moz-range-track { mask-image: var(--chapter-mask); mask-repeat: no-repeat; mask-size: 100% 100%; }\n' +
+                                                                '.timeline-slider[data-segmented="true"]::-moz-range-progress { mask-image: var(--chapter-progress-mask, linear-gradient(to right, #000 0%, #000 100%)); mask-repeat: no-repeat; mask-size: 100% 100%; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]::-webkit-slider-runnable-track { background: linear-gradient(to right, rgb(255,100,10) 0%, rgb(255,100,10) var(--timeline-progress-percent, 0%), rgb(154,155,160) var(--timeline-progress-percent, 0%), rgb(154,155,160) var(--timeline-buffer-percent, 0%), rgb(74,75,79) var(--timeline-buffer-percent, 0%), rgb(74,75,79) 100%) !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]::-moz-range-track { background: linear-gradient(to right, rgb(154,155,160) 0%, rgb(154,155,160) var(--timeline-buffer-percent, 0%), rgb(74,75,79) var(--timeline-buffer-percent, 0%), rgb(74,75,79) 100%) !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]::-moz-range-progress { background: rgb(255,100,10) !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]::-webkit-slider-thumb { -webkit-appearance: none !important; appearance: none !important; width: 14px !important; height: 14px !important; border: 0 !important; border-radius: 50% !important; background: rgb(255, 100, 10) !important; box-shadow: 0 0 0 2px rgba(0,0,0,0.22), 0 2px 7px rgba(0,0,0,0.38) !important; opacity: 1 !important; cursor: pointer; transform: scale(1); transform-origin: center; transition: transform 220ms cubic-bezier(0.2, 1.45, 0.35, 1), box-shadow 180ms ease !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]::-moz-range-thumb { width: 14px !important; height: 14px !important; border: 0 !important; border-radius: 50% !important; background: rgb(255, 100, 10) !important; box-shadow: 0 0 0 2px rgba(0,0,0,0.22), 0 2px 7px rgba(0,0,0,0.38) !important; opacity: 1 !important; cursor: pointer; transform: scale(1); transform-origin: center; transition: transform 220ms cubic-bezier(0.2, 1.45, 0.35, 1), box-shadow 180ms ease !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]:hover::-webkit-slider-thumb { transform: scale(1.22); box-shadow: 0 0 0 3px rgba(255,100,10,0.18), 0 3px 10px rgba(0,0,0,0.45) !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]:hover::-moz-range-thumb { transform: scale(1.22); box-shadow: 0 0 0 3px rgba(255,100,10,0.18), 0 3px 10px rgba(0,0,0,0.45) !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]:active::-webkit-slider-thumb { transform: scale(1.42); box-shadow: 0 0 0 4px rgba(255,100,10,0.2), 0 4px 13px rgba(0,0,0,0.5) !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]:active::-moz-range-thumb { transform: scale(1.42); box-shadow: 0 0 0 4px rgba(255,100,10,0.2), 0 4px 13px rgba(0,0,0,0.5) !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px rgb(8,8,10), 0 0 0 5px rgb(249,249,250) !important; }\n' +
+                                                                '.timeline-slider[data-scrubber="true"]:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 3px rgb(8,8,10), 0 0 0 5px rgb(249,249,250) !important; }\n' +
+                                                                '@media (prefers-reduced-motion: reduce) { .timeline-slider[data-segmented="true"] { transition: none !important; } .timeline-slider[data-scrubber="true"]::-webkit-slider-thumb { transition: none !important; } .timeline-slider[data-scrubber="true"]::-moz-range-thumb { transition: none !important; } }'
+                                                        }),
+                                                        (0, d.jsx)(ao, {
+                                                            anchorElementRef: l,
+                                                            duration: i,
+                                                            getThumbnailUri: r,
+                                                            chapters: tA
+                                                        }),
                                                         (0, d.jsx)('input', {
                                                             ref: l,
                                                             className: 'timeline-slider kat:flex kat:w-full kat:appearance-none kat:pt-20 kat:pb-20',
+                                                            'data-segmented': chapterMask ? 'true' : void 0,
+                                                            'data-scrubber': 'true',
+                                                            style: {
+                                                                '--slider-thumb-base-size': '14px',
+                                                                ...(chapterMask
+                                                                    ? {
+                                                                          '--chapter-mask': chapterMask,
+                                                                          '--chapter-gap': timelineHovered ? '3px' : '1.5px'
+                                                                      }
+                                                                    : {})
+                                                            },
                                                             type: 'range',
                                                             'aria-label': t,
                                                             min: '0',
@@ -6280,6 +6585,12 @@
                                                             'aria-valuemax': i,
                                                             step: 0.25,
                                                             onChange: g,
+                                                            onMouseEnter: () => {
+                                                                setTimelineHovered(!0)
+                                                            },
+                                                            onMouseLeave: () => {
+                                                                setTimelineHovered(!1)
+                                                            },
                                                             onMouseDown: () => {
                                                                 u.current = !0
                                                             },
@@ -6301,17 +6612,32 @@
                                                                     (p.current = setTimeout(() => {
                                                                         ;((c.current = !1), s && void 0 !== f.current && (s(f.current), (f.current = void 0)))
                                                                     }, n.keyboardDebounceTimeoutMs)))
-                                                                let i = !1
+                                                                let i = !1,
+                                                                    a = performance.now(),
+                                                                    r = !t.repeat || a - keyboardSeekStepAt.current >= iHeldArrowSeekIntervalMs
                                                                 switch (t.key) {
                                                                     case 'ArrowLeft':
                                                                     case 'ArrowDown':
-                                                                        ;(l.current.stepDown(), (f.current = l.current.valueAsNumber), (i = !0))
+                                                                        ;((i = !0),
+                                                                            r &&
+                                                                                ((keyboardSeekStepAt.current = a),
+                                                                                (l.current.valueAsNumber = Math.max(0, l.current.valueAsNumber - 5)),
+                                                                                (f.current = l.current.valueAsNumber)))
                                                                         break
                                                                     case 'ArrowRight':
                                                                     case 'ArrowUp':
-                                                                        ;(l.current.stepUp(), (f.current = l.current.valueAsNumber), (i = !0))
+                                                                        ;((i = !0),
+                                                                            r &&
+                                                                                ((keyboardSeekStepAt.current = a),
+                                                                                (l.current.valueAsNumber = Math.min(Number(l.current.max), l.current.valueAsNumber + 5)),
+                                                                                (f.current = l.current.valueAsNumber)))
                                                                 }
-                                                                i && t.preventDefault()
+                                                                i &&
+                                                                    (t.preventDefault(),
+                                                                    r &&
+                                                                        (updateTimelinePaint(l.current.valueAsNumber),
+                                                                        updateProgressChapterMask(l.current.valueAsNumber),
+                                                                        s && void 0 !== f.current && (s(f.current), (f.current = void 0))))
                                                             }
                                                         })
                                                     ]
@@ -6330,8 +6656,10 @@
                                             viewModelContainer: { timelineScrubberVM: t }
                                         } = im(),
                                         [i, a] = (0, h.useState)(0),
-                                        [v, m] = (0, h.useState)(tL(0)),
+                                        [v, m] = (0, h.useState)(0),
                                         [r, s] = (0, h.useState)(tL(0)),
+                                        [chapterSegments, setChapterSegments] = (0, h.useState)([]),
+                                        { timeDisplay } = iTimeDisplay(),
                                         { t: n } = iy(),
                                         o = (0, h.useRef)(null),
                                         l = (0, h.useCallback)(
@@ -6345,7 +6673,7 @@
                                         return (
                                             i.push(
                                                 t.currentPlayhead$.subscribe((t) => {
-                                                    m(tL(t))
+                                                    m(t)
                                                     o.current?.updatePosition(t)
                                                 })
                                             ),
@@ -6354,20 +6682,31 @@
                                                     ;(a(t), s(tL(t)))
                                                 })
                                             ),
+                                            i.push(t.chapterSegments$.subscribe(setChapterSegments)),
                                             () => {
                                                 i.forEach((t) => t.unsubscribe())
                                             }
                                         )
                                     }, [t])
-                                    let u = (0, h.useCallback)((t) => n('timeline.ariaValueText', { elapsed: tL(t), duration: r }), [r, n])
+                                    let u = (0, h.useCallback)((t) => n('timeline.ariaValueText', { elapsed: tL(t), duration: r }), [r, n]),
+                                        chapters = (0, h.useMemo)(
+                                            () =>
+                                                chapterSegments.map((t) => ({
+                                                    ...t,
+                                                    label: t.localizedLabel || n(`chapter.${t.type}`)
+                                                })),
+                                            [chapterSegments, n]
+                                        )
                                     return (0, d.jsx)(ad, {
                                         ref: o,
                                         duration: i,
-                                        elapsedTime: v,
-                                        totalTime: r,
+                                        elapsedTime: tL(v),
+                                        totalTime: 'remaining' === timeDisplay ? `-${tL(Math.max(0, i - v))}` : r,
                                         seekTo: l,
                                         getThumbnailUri: t.getThumbnailUri,
+                                        getBufferedEnd: t.getBufferedEnd,
                                         getAriaValueText: u,
+                                        chapters,
                                         ariaLabel: n('timeline.ariaLabel')
                                     })
                                 },
@@ -6662,6 +7001,12 @@
                                             }, [t]),
                                             jumpBackward: (0, h.useCallback)(() => {
                                                 t.jumpBackward()
+                                            }, [t]),
+                                            jumpForward10: (0, h.useCallback)(() => {
+                                                t.jumpForward10()
+                                            }, [t]),
+                                            jumpBackward10: (0, h.useCallback)(() => {
+                                                t.jumpBackward10()
                                             }, [t])
                                         }
                                     )
@@ -6673,23 +7018,30 @@
                                     let r = a(t ? 'pause' : 'play')
                                     return (0, d.jsx)(aE, { icon: (0, d.jsx)(t ? ia : il, { size: 20 }), onToggle: i, ariaLabel: r })
                                 },
-                                aL = ({ isForward: t }) => {
-                                    let { jumpForward: i, jumpBackward: a } = aP(),
-                                        { t: r } = iy()
-                                    i1(t ? { shortcut: tK.JumpForward, handleShortcut: i } : { shortcut: tK.JumpBackward, handleShortcut: a })
-                                    let s = (0, h.useCallback)(() => {
-                                            t ? i() : a()
-                                        }, [t, a, i]),
-                                        n = r(t ? 'jump.forward.ariaLabel' : 'jump.backward.ariaLabel')
+                                aL = ({ isForward, seconds }) => {
+                                    let { jumpForward, jumpBackward, jumpForward10, jumpBackward10 } = aP(),
+                                        { bump: showControls } = aa(),
+                                        { t } = iy(),
+                                        arrowRef = (0, h.useRef)(null),
+                                        onJump = (0, h.useCallback)(() => {
+                                            if (5 === seconds) isForward ? jumpForward() : jumpBackward()
+                                            else isForward ? jumpForward10() : jumpBackward10()
+                                            showControls()
+                                            arrowRef.current?.animate?.([{ transform: 'rotate(0deg)' }, { transform: `rotate(${isForward ? 360 : -360}deg)` }], {
+                                                duration: 300,
+                                                easing: 'ease-out'
+                                            })
+                                        }, [isForward, seconds, jumpForward, jumpBackward, jumpForward10, jumpBackward10, showControls]),
+                                        ariaLabel = t(isForward ? 'jump.forward.ariaLabel' : 'jump.backward.ariaLabel', { seconds })
                                     return (0, d.jsx)(aS, {
-                                        icon: (0, d.jsx)(t7, { isForward: t }),
-                                        ariaLabel: n,
-                                        onJump: s,
-                                        testId: t ? 'jump-forward-button' : 'jump-backward-button'
+                                        icon: (0, d.jsx)(t7, { isForward, seconds, arrowRef }),
+                                        ariaLabel,
+                                        onJump,
+                                        testId: isForward ? 'jump-forward-button' : 'jump-backward-button'
                                     })
                                 },
-                                aI = () => (0, d.jsx)(aL, { isForward: !0 }),
-                                aR = () => (0, d.jsx)(aL, { isForward: !1 }),
+                                aI = (t) => (0, d.jsx)(aL, { isForward: !0, ...t }),
+                                aR = (t) => (0, d.jsx)(aL, { isForward: !1, ...t }),
                                 aD = () => {
                                     let {
                                             viewModelContainer: { volumeVM: t }
@@ -8641,9 +8993,8 @@
                                 a5 = ({ isRnaActive: t }) => {
                                     let { isVisible: i } = aa(),
                                         { isAnyMenuOpen: a } = iL(),
-                                        r = i || a,
-                                        s = i || a
-                                    return { topVisible: r, bottomVisible: s, rnaVisible: t, topGradientVisible: r || s || t }
+                                        r = i || a
+                                    return { topVisible: r, bottomVisible: r, rnaVisible: t, topGradientVisible: r || t }
                                 },
                                 a6 = ({ icon: t, ariaLabel: i, onClick: a, testId: r = 'next-episode-button' }) =>
                                     (0, d.jsx)(iY, { Icon: t, label: i, onClick: a, 'data-testid': r }),
@@ -9210,6 +9561,7 @@
                                     let {
                                             viewModelContainer: { timelineScrubberVM: t, jumpButtonsVM: i, playPauseButtonVM: a, trackSelectionVM: r }
                                         } = im(),
+                                        { bump: showControls } = aa(),
                                         [s, n] = (0, h.useState)(0),
                                         [o, l] = (0, h.useState)(!1),
                                         [u, c] = (0, h.useState)([]),
@@ -9223,32 +9575,32 @@
                                             ;(i.unsubscribe(), s.unsubscribe(), o.unsubscribe(), d.unsubscribe())
                                         }
                                     }, [t, a, r])
-                                    ;(i1({ shortcut: tK.JumpBackward, handleShortcut: () => i.jumpBackward() }),
-                                        i1({ shortcut: tK.JumpForward, handleShortcut: () => i.jumpForward() }),
-                                        i1({ shortcut: tK.JumpBackward10, handleShortcut: () => i.jumpBackward10() }),
-                                        i1({ shortcut: tK.JumpForward10, handleShortcut: () => i.jumpForward10() }),
+                                    ;(i1({ shortcut: tK.JumpBackward, handleShortcut: () => (i.jumpBackward(), showControls()) }),
+                                        i1({ shortcut: tK.JumpForward, handleShortcut: () => (i.jumpForward(), showControls()) }),
+                                        i1({ shortcut: tK.JumpBackward10, handleShortcut: () => (i.jumpBackward10(), showControls()) }),
+                                        i1({ shortcut: tK.JumpForward10, handleShortcut: () => (i.jumpForward10(), showControls()) }),
                                         i1({
                                             shortcut: tK.FrameBackward,
                                             handleShortcut: () => {
-                                                o && i.frameBackward()
+                                                ;(o && i.frameBackward(), showControls())
                                             }
                                         }),
                                         i1({
                                             shortcut: tK.FrameForward,
                                             handleShortcut: () => {
-                                                o && i.frameForward()
+                                                ;(o && i.frameForward(), showControls())
                                             }
                                         }),
-                                        i1({ shortcut: tK.RestartEpisode, handleShortcut: () => t.setPosition(0) }),
-                                        i1({ shortcut: tK.SeekPercent1, handleShortcut: () => t.setPosition(s * 0.1) }),
-                                        i1({ shortcut: tK.SeekPercent2, handleShortcut: () => t.setPosition(s * 0.2) }),
-                                        i1({ shortcut: tK.SeekPercent3, handleShortcut: () => t.setPosition(s * 0.3) }),
-                                        i1({ shortcut: tK.SeekPercent4, handleShortcut: () => t.setPosition(s * 0.4) }),
-                                        i1({ shortcut: tK.SeekPercent5, handleShortcut: () => t.setPosition(s * 0.5) }),
-                                        i1({ shortcut: tK.SeekPercent6, handleShortcut: () => t.setPosition(s * 0.6) }),
-                                        i1({ shortcut: tK.SeekPercent7, handleShortcut: () => t.setPosition(s * 0.7) }),
-                                        i1({ shortcut: tK.SeekPercent8, handleShortcut: () => t.setPosition(s * 0.8) }),
-                                        i1({ shortcut: tK.SeekPercent9, handleShortcut: () => t.setPosition(s * 0.9) }),
+                                        i1({ shortcut: tK.RestartEpisode, handleShortcut: () => (t.setPosition(0), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent1, handleShortcut: () => (t.setPosition(s * 0.1), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent2, handleShortcut: () => (t.setPosition(s * 0.2), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent3, handleShortcut: () => (t.setPosition(s * 0.3), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent4, handleShortcut: () => (t.setPosition(s * 0.4), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent5, handleShortcut: () => (t.setPosition(s * 0.5), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent6, handleShortcut: () => (t.setPosition(s * 0.6), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent7, handleShortcut: () => (t.setPosition(s * 0.7), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent8, handleShortcut: () => (t.setPosition(s * 0.8), showControls()) }),
+                                        i1({ shortcut: tK.SeekPercent9, handleShortcut: () => (t.setPosition(s * 0.9), showControls()) }),
                                         i1({
                                             shortcut: tK.ToggleSubs,
                                             handleShortcut: () => {
@@ -9262,6 +9614,163 @@
                                             }
                                         }))
                                 },
+                                aStatsFormatTime = (t) => {
+                                    if (!Number.isFinite(t)) return '—'
+                                    let i = Math.max(0, Math.floor(t)),
+                                        a = Math.floor(i / 3600),
+                                        r = Math.floor((i % 3600) / 60),
+                                        s = String(i % 60).padStart(2, '0')
+                                    return a ? `${a}:${String(r).padStart(2, '0')}:${s}` : `${r}:${s}`
+                                },
+                                aStatsFormatBitrate = (t) => {
+                                    let i = Number(t)
+                                    return Number.isFinite(i) && i > 0 ? (i >= 1e6 ? `${(i / 1e6).toFixed(2)} Mbps` : `${Math.round(i / 1e3)} Kbps`) : '—'
+                                },
+                                aStatsText = (t, i, aActualPlaybackRate, aActualVolume, aActualMuted) => {
+                                    let a = t?._rootView?.querySelector('video')
+                                    if (!a) return 'Stats for Nerds\n\nWaiting for video…'
+                                    let r = {},
+                                        s
+                                    try {
+                                        let t = i?._getShakaPlayer?.()
+                                        ;((r = t?.getStats?.() || {}), (s = t?.getVariantTracks?.()?.find((t) => t.active)))
+                                    } catch (t) {}
+                                    let o = {}
+                                    try {
+                                        o = a.getVideoPlaybackQuality?.() || {}
+                                    } catch (t) {}
+                                    let l = 0
+                                    try {
+                                        for (let t = 0; t < a.buffered.length; t++)
+                                            if (a.currentTime >= a.buffered.start(t) - 0.1 && a.currentTime <= a.buffered.end(t)) {
+                                                l = Math.max(0, a.buffered.end(t) - a.currentTime)
+                                                break
+                                            }
+                                    } catch (t) {}
+                                    let u = t?._rootView?.getBoundingClientRect?.() || { width: 0, height: 0 },
+                                        c = window.devicePixelRatio || 1,
+                                        h = Number(r.decodedFrames ?? o.totalVideoFrames ?? a.webkitDecodedFrameCount ?? 0),
+                                        p = Number(r.droppedFrames ?? o.droppedVideoFrames ?? a.webkitDroppedFrameCount ?? 0),
+                                        f = h > 0 ? ` (${((p / h) * 100).toFixed(2)}%)` : '',
+                                        g = String(s?.codecs || '').split(','),
+                                        v = s?.videoCodec || g[0],
+                                        m = s?.audioCodec || g[1],
+                                        y = Number(s?.frameRate || r.frameRate),
+                                        _ = a.ended ? 'Ended' : a.paused ? 'Paused' : a.readyState < 3 ? 'Buffering' : 'Playing',
+                                        playbackRate = Number.isFinite(aActualPlaybackRate) ? aActualPlaybackRate : a.playbackRate,
+                                        volumePercent = Number.isFinite(aActualVolume) ? aActualVolume : 100 * a.volume,
+                                        isMuted = 'boolean' == typeof aActualMuted ? aActualMuted : a.muted,
+                                        b = [
+                                            ['Viewport', `${Math.round(u.width)}x${Math.round(u.height)} @ ${c.toFixed(2)}x`],
+                                            ['Resolution', `${a.videoWidth || '—'}x${a.videoHeight || '—'}${Number.isFinite(y) && y > 0 ? ` @ ${y.toFixed(2)} fps` : ''}`],
+                                            ['Codecs', [v, m].filter(Boolean).join(' / ') || '—'],
+                                            ['Bitrate', aStatsFormatBitrate(s?.bandwidth || r.streamBandwidth)],
+                                            ['Bandwidth', aStatsFormatBitrate(r.estimatedBandwidth)],
+                                            ['Buffer health', `${l.toFixed(2)} s`],
+                                            ['Frames', `${p} dropped of ${h}${f}`],
+                                            ['Playback', `${aStatsFormatTime(a.currentTime)} / ${aStatsFormatTime(a.duration)} · ${playbackRate}x · ${_}`],
+                                            ['Volume', isMuted ? 'Muted' : `${Math.round(volumePercent)}%`]
+                                        ]
+                                    return ['Stats for Nerds', '', ...b.map(([t, i]) => `${t.padEnd(15)} ${i}`)].join('\n')
+                                },
+                                aStatsForNerds = ({ isVisible: t, menuLocation: i, onToggle: a, onClose: r }) => {
+                                    let {
+                                            viewModelContainer: { timelineScrubberVM: s, settingsVM: n, playbackSpeedMenuVM: playbackSpeedVM, volumeVM }
+                                        } = im(),
+                                        [o, l] = (0, h.useState)('Stats for Nerds')
+                                    ;(0, h.useEffect)(() => {
+                                        if (!t) return
+                                        let i,
+                                            a,
+                                            r,
+                                            updateStats = () => l(aStatsText(s, n, i, a, r)),
+                                            subscriptions = [
+                                                playbackSpeedVM.selectedRate$.subscribe((t) => {
+                                                    ;((i = t), updateStats())
+                                                }),
+                                                volumeVM.volumePercent$.subscribe((t) => {
+                                                    ;((a = t), updateStats())
+                                                }),
+                                                volumeVM.isMuted$.subscribe((t) => {
+                                                    ;((r = t), updateStats())
+                                                })
+                                            ],
+                                            timer = setInterval(updateStats, 750)
+                                        return (
+                                            updateStats(),
+                                            () => {
+                                                ;(clearInterval(timer), subscriptions.forEach((t) => t.unsubscribe()))
+                                            }
+                                        )
+                                    }, [t, s, n, playbackSpeedVM, volumeVM])
+                                    if (!t && !i) return null
+                                    return (0, d.jsxs)(d.Fragment, {
+                                        children: [
+                                            t &&
+                                                (0, d.jsx)('div', {
+                                                    'data-testid': 'stats-for-nerds-overlay',
+                                                    'aria-live': 'off',
+                                                    style: {
+                                                        position: 'absolute',
+                                                        top: '12px',
+                                                        left: '12px',
+                                                        zIndex: 40,
+                                                        maxWidth: 'calc(100% - 24px)',
+                                                        boxSizing: 'border-box',
+                                                        padding: '10px 12px',
+                                                        background: 'rgba(0,0,0,.82)',
+                                                        color: '#fff',
+                                                        font: '12px/1.45 Consolas,"Courier New",monospace',
+                                                        whiteSpace: 'pre-wrap',
+                                                        overflowWrap: 'anywhere',
+                                                        pointerEvents: 'none',
+                                                        textShadow: '0 1px 1px #000'
+                                                    },
+                                                    children: o
+                                                }),
+                                            i &&
+                                                (0, d.jsxs)(d.Fragment, {
+                                                    children: [
+                                                        (0, d.jsx)('div', {
+                                                            className: 'kat:absolute kat:inset-0',
+                                                            style: { zIndex: 1000 },
+                                                            onClick: (t) => {
+                                                                ;(t.preventDefault(), t.stopPropagation(), r())
+                                                            }
+                                                        }),
+                                                        (0, d.jsx)('div', {
+                                                            role: 'menu',
+                                                            'data-testid': 'stats-for-nerds-menu',
+                                                            className:
+                                                                'kat:inline-flex kat:flex-col kat:absolute kat:z-[1001] kat:bg-neutral-700 kat:rounded-lg kat:shadow-lg kat:outline-none kat:w-max kat:overflow-hidden focus-visible:kat:outline-2 focus-visible:kat:outline-offset-2 focus-visible:kat:outline-white/50',
+                                                            style: {
+                                                                left: `${i.x}px`,
+                                                                top: `${i.y}px`,
+                                                                width: '320px',
+                                                                maxWidth: 'calc(100% - 16px)',
+                                                                boxSizing: 'border-box'
+                                                            },
+                                                            onClick: (t) => {
+                                                                ;(t.preventDefault(), t.stopPropagation())
+                                                            },
+                                                            onKeyDown: (t) => {
+                                                                'Escape' === t.key && (t.preventDefault(), r())
+                                                            },
+                                                            children: (0, d.jsx)('div', {
+                                                                className: 'kat:flex kat:flex-col kat:py-5',
+                                                                children: (0, d.jsx)(iq, {
+                                                                    label: 'Stats for Nerds',
+                                                                    checked: t,
+                                                                    autoFocus: !0,
+                                                                    onChange: a
+                                                                })
+                                                            })
+                                                        })
+                                                    ]
+                                                })
+                                        ]
+                                    })
+                                },
                                 a9 = () => {
                                     aCustomShortcuts()
                                     let { accessibilityAnnouncer: t } = im(),
@@ -9270,18 +9779,32 @@
                                         { isAnyMenuOpen: s, closeAllMenus: n } = iL(),
                                         { isActive: o } = aq(),
                                         { topVisible: l, bottomVisible: u, rnaVisible: c, topGradientVisible: p } = a5({ isRnaActive: o }),
+                                        { skipButtonSeconds } = iSkipButtons(),
                                         f = (0, h.useRef)(!1),
-                                        g = (0, h.useRef)(!1)
+                                        g = (0, h.useRef)(!1),
+                                        [statsVisible, setStatsVisible] = (0, h.useState)(!1),
+                                        [statsMenu, setStatsMenu] = (0, h.useState)(null),
+                                        showStatsMenu = (0, h.useCallback)(
+                                            (t) => {
+                                                ;(t.preventDefault(), t.stopPropagation(), n(), r())
+                                                let i = t.currentTarget.getBoundingClientRect(),
+                                                    a = Math.max(8, Math.min(t.clientX - i.left, i.width - 328)),
+                                                    s = Math.max(8, Math.min(t.clientY - i.top, i.height - 66))
+                                                setStatsMenu({ x: a, y: s })
+                                            },
+                                            [n, r]
+                                        )
                                     return (
                                         (0, h.useEffect)(() => {
-                                            s && r()
-                                        }, [s, r]),
+                                            ;(s || statsMenu) && r()
+                                        }, [s, statsMenu, r]),
                                         (0, h.useEffect)(() => {
                                             ;(a || (g.current = !0), a && g.current && !f.current && ((f.current = !0), t.announce(i('controls.announcement.autohide'))))
                                         }, [a, t, i]),
                                         (0, d.jsxs)(aB, {
                                             'data-testid': 'player-controls-root',
-                                            className: `kat:relative kat:flex kat:flex-col kat:h-full kat:w-full kat:@container ${a || s ? '' : 'kat:cursor-none'}`,
+                                            className: `kat:relative kat:flex kat:flex-col kat:h-full kat:w-full kat:@container ${a || s || statsMenu ? '' : 'kat:cursor-none'}`,
+                                            onContextMenuCapture: showStatsMenu,
                                             children: [
                                                 // (0, d.jsx)('div', {
                                                 //     'data-testid': 'top-gradient',
@@ -9290,6 +9813,14 @@
                                                 // }),
                                                 (0, d.jsx)(aOctopusRenderer, {}),
                                                 (0, d.jsx)(ax, {}),
+                                                (0, d.jsx)(aStatsForNerds, {
+                                                    isVisible: statsVisible,
+                                                    menuLocation: statsMenu,
+                                                    onClose: () => setStatsMenu(null),
+                                                    onToggle: () => {
+                                                        ;(setStatsVisible((t) => !t), setStatsMenu(null))
+                                                    }
+                                                }),
                                                 (0, d.jsx)(a3, { isVisible: c }),
                                                 s &&
                                                     (0, d.jsx)('div', {
@@ -9325,7 +9856,13 @@
                                                                     (0, d.jsxs)('div', {
                                                                         'data-testid': 'bottom-left-controls-stack',
                                                                         className: 'kat:flex kat:items-end',
-                                                                        children: [(0, d.jsx)(aA, {}), (0, d.jsx)(a8, {}), (0, d.jsx)(aH, {})]
+                                                                        children: [
+                                                                            (0, d.jsx)(aA, {}),
+                                                                            (0, d.jsx)(a8, {}),
+                                                                            (0, d.jsx)(aH, {}),
+                                                                            skipButtonSeconds > 0 && (0, d.jsx)(aR, { seconds: skipButtonSeconds }),
+                                                                            skipButtonSeconds > 0 && (0, d.jsx)(aI, { seconds: skipButtonSeconds })
+                                                                        ]
                                                                     }),
                                                                     (0, d.jsx)('div', { className: 'kat:flex kat:items-center kat:self-stretch kat:grow kat:pl-20 kat:gap-4' }),
                                                                     (0, d.jsxs)('div', {
@@ -14899,7 +15436,7 @@
                                             rootView: r,
                                             nextEpisodeProvider: t.nextEpisodeProvider
                                         })),
-                                            (this._viewModels = new tF(this._katamariPlayer, this._katamariPlayer.eventSubscriptions(), o)),
+                                            (this._viewModels = new tF(this._katamariPlayer, this._katamariPlayer.eventSubscriptions(), o, r)),
                                             (this._desktopUIBuilder = new rn({
                                                 viewModels: this._viewModels,
                                                 containerElement: s,
@@ -16641,7 +17178,7 @@
                                     }
                                 }
                         }
-                    })(shakaE, shakaB, bitE, bitB)
+                    })(shakaE, shakaB, bitE, bitB, importIds)
                 }
             }
         } catch (err) {

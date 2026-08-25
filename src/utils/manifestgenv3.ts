@@ -14,21 +14,25 @@ async function generateManifest() {
         name: 'Crunchyroll Enhancer – CrOptix',
         version: version,
         description: 'Crunchyroll improvements and fixes',
+        homepage_url: 'https://github.com/stratumadev/croptix',
         permissions: ['storage', 'declarativeNetRequest'],
         host_permissions: ['*://www.crunchyroll.com/*'],
         web_accessible_resources: [
             {
-                resources: ['config_init.js', 'katamari.js', 'subtitle-octopus/*', 'series/*', 'fonts/*'],
+                resources: ['config_init.js', 'katamari.js', 'mobile-fix.js', 'subtitle-octopus/*', 'series/*', 'fonts/*'],
                 matches: ['*://www.crunchyroll.com/*']
             }
         ],
         browser_specific_settings: {
             gecko: {
                 id: '{bc118c9c-5c07-4347-b502-657d03d87065}',
+                strict_min_version: '142.0',
                 data_collection_permissions: {
-                    required: ['none']
+                    required: ['none'],
+                    optional: ['browsingActivity', 'technicalAndInteraction']
                 }
-            }
+            },
+            gecko_android: { strict_min_version: '142.0' }
         },
         icons: {
             '16': 'icons/icon_16x16.png',
@@ -49,14 +53,16 @@ async function generateManifest() {
         content_scripts: [
             {
                 matches: ['*://*.crunchyroll.com/*'],
-                js: ['subtitle-octopus/subtitles-octopus.js', 'katamari.js'],
+                js: ['crunchyroll.js', 'subtitle-octopus/subtitles-octopus.js', 'katamari.js'],
                 world: 'MAIN',
-                run_at: 'document_start'
+                run_at: 'document_start',
+                all_frames: true
             },
             {
                 matches: ['*://www.crunchyroll.com/*'],
                 js: ['content.js'],
                 css: ['css/croptix.css', 'css/croptix-player.css', 'css/croptix-katamari.css'],
+                run_at: 'document_start',
                 all_frames: true
             },
             {
